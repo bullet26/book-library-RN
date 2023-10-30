@@ -5,11 +5,10 @@
     "paths": {
       "assets/*": ["assets/*"],
       "components/*": ["components/*"],
-      "hooks/*": ["hooks/*"],
+      "graphQL/*": ["graphQL/*"],
       "routes/*": ["routes/*"],
       "pages/*": ["pages/*"],
       "theme/*": ["theme/*"],
-      "store/*": ["store/*"],
       "types/*": ["types/*"],
       "UI/*": ["UI/*"],
       "utils/*": ["utils/*"]

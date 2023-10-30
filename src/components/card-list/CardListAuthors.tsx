@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from 'react';
+import { FC, useEffect, useState, useContext } from 'react';
 import {
   SafeAreaView,
   FlatList,
@@ -6,38 +6,26 @@ import {
   TouchableWithoutFeedback,
   ActivityIndicator,
 } from 'react-native';
-import { NavigationProp } from '@react-navigation/native';
 import { useLazyQuery } from '@apollo/client';
 import { SvgUri } from 'react-native-svg';
-import { ALL_BOOKS_BY_DATE } from '../../graphQL';
-import { ReadDateBook } from 'types';
+import { ALL_AUTHORS } from '../../graphQL';
+import { Author } from 'types';
 import { themeContext } from '../../theme';
 
-interface BooksQuery {
-  books: { readDate: ReadDateBook[]; totalCount: number };
+interface AuthorsQuery {
+  getAllAuthors: { authors: Author[]; totalCount: number };
 }
 
-type CLNavigationProp = NavigationProp<
-  {
-    Book: {
-      screen: 'BookDetail';
-      params: { [id: string]: string };
-    };
-  },
-  'Book'
->;
-
-const CardListBooks: FC<{ navigation: CLNavigationProp }> = ({ navigation }) => {
-  const [getBooks, { loading, error, data }] = useLazyQuery<BooksQuery>(ALL_BOOKS_BY_DATE);
+const CardListAuthors: FC = () => {
+  const [getAuthors, { loading, error, data }] = useLazyQuery<AuthorsQuery>(ALL_AUTHORS);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(1000000);
-  const [allData, setData] = useState<ReadDateBook[]>([]);
+  const [allData, setData] = useState<Author[]>([]);
   const [debounceStatus, setDebounce] = useState(false);
-
   const colors = useContext(themeContext);
 
   useEffect(() => {
-    console.log('getBooks', page);
+    console.log('getAuthors', page);
 
     if (allData.length < totalCount) {
       if (loading || debounceStatus) {
@@ -45,10 +33,10 @@ const CardListBooks: FC<{ navigation: CLNavigationProp }> = ({ navigation }) => 
       }
       console.log(debounceStatus);
 
-      getBooks({
+      getAuthors({
         variables: {
           page,
-          limit: 50,
+          limit: 30,
         },
       });
     }
@@ -60,33 +48,27 @@ const CardListBooks: FC<{ navigation: CLNavigationProp }> = ({ navigation }) => 
 
   useEffect(() => {
     if (data) {
-      console.log('setDta');
+      console.log('setData');
 
-      setData((prevState) => [...prevState, ...data?.books.readDate]);
-      setTotalCount(data.books.totalCount);
+      setData((prevState) => [...prevState, ...data?.getAllAuthors.authors]);
+      setTotalCount(data.getAllAuthors.totalCount);
     }
   }, [data]);
-
-  const handleClick = (id: string) => {
-    navigation.navigate('Book', {
-      screen: 'BookDetail',
-      params: { id },
-    });
-  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.backgroundMain }}>
       {loading && page === 1 && <ActivityIndicator size="large" color={colors.primary} />}
+
       <FlatList
         data={allData}
         numColumns={2}
         horizontal={false}
         columnWrapperStyle={{ marginBottom: 10 }}
         renderItem={({ item }) => (
-          <TouchableWithoutFeedback onPress={() => handleClick(item.books.id)}>
-            {!!item.books.bookCover ? (
+          <TouchableWithoutFeedback onPress={() => console.log(item.id)}>
+            {!!item.portrait ? (
               <Image
-                source={{ uri: item.books.bookCover }}
+                source={{ uri: item.portrait }}
                 style={{ width: 180, height: 315, marginRight: 5, marginLeft: 10 }}
               />
             ) : (
@@ -107,4 +89,4 @@ const CardListBooks: FC<{ navigation: CLNavigationProp }> = ({ navigation }) => 
   );
 };
 
-export default CardListBooks;
+export default CardListAuthors;

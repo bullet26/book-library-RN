@@ -1,1 +1,2 @@
-export {CardListBooks} from './card-list';
+export { CardListBooks, CardListAuthors } from './card-list';
+export { BookDetail, BookPlot } from './book';
