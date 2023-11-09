@@ -1,16 +1,9 @@
 import { FC, useContext, useEffect, useState } from 'react';
-import {
-  SafeAreaView,
-  FlatList,
-  Image,
-  TouchableWithoutFeedback,
-  ActivityIndicator,
-  Text,
-} from 'react-native';
+import { SafeAreaView, Image, ActivityIndicator, Text, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useQuery } from '@apollo/client';
 import { Book as IBook } from 'types';
-import { Rating } from 'UI';
+import { Rating } from '../../UI';
 import { ONE_BOOK_BY_ID } from '../../graphQL';
 import { themeContext } from '../../theme';
 
@@ -32,16 +25,18 @@ const BookDetail: FC<{ route: BookRouteProp }> = ({ route }) => {
       {!!loading && <ActivityIndicator size="large" color={colors.primary} />}
       <SafeAreaView style={{ flex: 1, backgroundColor: colors.backgroundAccent }}>
         <Text>{id}</Text>
-        {/* <div className={s.wrapperContent}>
-          <div className={`${s.title} ${s.mobile}`}>{data?.book.title}</div>
-          <div className={s.imgWrapper}>
+        <Rating rating={data?.book.rating || 0} />
+
+        {/* <View className={s.wrapperContent}>
+          <View className={`${s.title} ${s.mobile}`}>{data?.book.title}</View>
+          <View className={s.imgWrapper}>
             {bookCover ? <Image width="100%" src={bookCover} /> : <BookImg width="100%" />}
-            <Rating rating={data?.book.rating || 0} />
-          </div>
-          <div className={s.contentWrapper}>
-            <div className={s.title}>{data?.book.title}</div>
-          </div>
-        </div> */}
+            
+          </View>
+          <View className={s.contentWrapper}>
+            <View className={s.title}>{data?.book.title}</div>
+          </View>
+        </View> */}
       </SafeAreaView>
     </>
   );

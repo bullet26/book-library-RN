@@ -1,20 +1,14 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useContext } from 'react';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+
 import { CardListBooks, CardListAuthors } from '../components';
 import { themeContext } from '../theme';
-import { View } from 'react-native';
 import BookNavigation from './BookNavigation';
-
-function EmptyScreen() {
-  return <View />;
-}
 
 const TabNavigation = () => {
   const Tab = createBottomTabNavigator();
   const colors = useContext(themeContext);
-
-  const Stack = createNativeStackNavigator();
 
   return (
     <Tab.Navigator
@@ -28,8 +22,22 @@ const TabNavigation = () => {
         headerTintColor: colors.textInactive,
       }}
     >
-      <Tab.Screen name="Books" component={CardListBooks} />
-      <Tab.Screen name="Authors" component={CardListAuthors} />
+      <Tab.Screen
+        name="Books"
+        component={CardListBooks}
+        options={{
+          tabBarIcon: ({ color }) => <FontAwesome6 name={'book'} thin size={20} color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Authors"
+        component={CardListAuthors}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <FontAwesome6 name={'user-pen'} light size={20} color={color} />
+          ),
+        }}
+      />
       <Tab.Screen
         name="Book" // чтобы пробросить дочерний роут
         component={BookNavigation}

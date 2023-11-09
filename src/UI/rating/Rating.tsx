@@ -1,28 +1,36 @@
-import { FC } from 'react'
-import { StarTwoTone } from '@ant-design/icons'
-import { Tick } from 'assets'
-import { colorRate, makeArray } from './utils'
-import s from './Rating.module.scss'
+import { FC } from 'react';
+import { View } from '@ant-design/react-native';
+import Icon from 'react-native-vector-icons/AntDesign';
+import { colorRate, makeArray } from './utils';
+import styles from './styles';
+import { FlatList, SafeAreaView, Text } from 'react-native';
 
 interface RatingProps {
-  rating: number
+  rating: number;
 }
 
 const Rating: FC<RatingProps> = (props) => {
-  const { rating } = props
+  const { rating } = props;
 
   return (
-    <div className={s.wrapper}>
-      <div className={s.ratingStar}>
-        {makeArray(rating).map((item, i) => {
-          return <StarTwoTone twoToneColor={colorRate(rating)} style={{ fontSize: 40 }} key={i} />
-        })}
-      </div>
-      <div className={s.ratingCircle} style={{ backgroundColor: colorRate(rating) }}>
-        {rating || <Tick fill="white" height="15px" />}
-      </div>
-    </div>
-  )
-}
+    <SafeAreaView style={styles.wrapper}>
+      <FlatList
+        data={makeArray(rating)}
+        horizontal={true}
+        renderItem={() => (
+          <View>
+            <Icon name="star" color={colorRate(rating)} size={40} />
+          </View>
+        )}
+        keyExtractor={(index) => index.toString()}
+        ItemSeparatorComponent={() => <View style={{ width: 5 }} />}
+      />
 
-export default Rating
+      <View style={{ ...styles.ratingCircle, backgroundColor: colorRate(rating) }}>
+        {<Text style={styles.text}>{rating}</Text> || <Icon name="plus" color="white" size={40} />}
+      </View>
+    </SafeAreaView>
+  );
+};
+
+export default Rating;
