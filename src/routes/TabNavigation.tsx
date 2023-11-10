@@ -1,13 +1,13 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useContext } from 'react';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-
 import { CardListBooks, CardListAuthors } from '../components';
 import { themeContext } from '../theme';
 import BookNavigation from './BookNavigation';
+import { RootStackParamList } from 'types';
 
 const TabNavigation = () => {
-  const Tab = createBottomTabNavigator();
+  const Tab = createBottomTabNavigator<RootStackParamList>();
   const colors = useContext(themeContext);
 
   return (

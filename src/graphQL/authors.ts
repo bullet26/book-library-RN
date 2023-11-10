@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client'
+import { gql } from '@apollo/client';
 
 export const ALL_AUTHORS = gql`
   query GetAllAuthors($page: Int, $limit: Int) {
@@ -12,7 +12,7 @@ export const ALL_AUTHORS = gql`
       totalCount
     }
   }
-`
+`;
 
 export const ONE_AUTHOR_BY_ID = gql`
   query GetOneAuthor($id: ID) {
@@ -35,12 +35,4 @@ export const ONE_AUTHOR_BY_ID = gql`
       }
     }
   }
-`
-export const CREATE_AUTHOR = gql`
-  mutation Mutation($input: AuthorInput) {
-    authorInfo: creteAuthor(input: $input) {
-      surname
-      name
-    }
-  }
-`
+`;

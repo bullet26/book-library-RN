@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client'
+import { gql } from '@apollo/client';
 
 export const SEARCH_IN_BOOKS_AND_AUTHORS = gql`
   query Search($searchString: String) {
@@ -15,22 +15,4 @@ export const SEARCH_IN_BOOKS_AND_AUTHORS = gql`
       }
     }
   }
-`
-
-export const SEARCH_IN_AUTHORS = gql`
-  query Search($searchString: String) {
-    authors: searchInAuthors(searchString: $searchString) {
-      id: _id
-      surname
-      name
-    }
-  }
-`
-export const SEARCH_IN_SERIES = gql`
-  query Search($searchString: String) {
-    series: searchInSeries(searchString: $searchString) {
-      id: _id
-      title
-    }
-  }
-`
+`;

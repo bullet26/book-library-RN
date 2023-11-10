@@ -4,52 +4,31 @@ import {
   TouchableWithoutFeedback,
   ActivityIndicator,
   Text,
-  View,
   ScrollView,
 } from 'react-native';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { useQuery } from '@apollo/client';
-import { Plot } from 'types';
 import { ONE_BOOK_PLOT } from '../../graphQL';
 import { themeContext } from '../../theme';
+import { BookPlotQuery, BookPlotProps } from './type';
 
-interface BookQuery {
-  book: Plot;
-}
-type CLNavigationProp = NavigationProp<
-  {
-    Book: {
-      screen: 'BookDetail';
-      params: { [id: string]: string };
-    };
-  },
-  'Book'
->;
-type BookRouteProp = RouteProp<{ BookPlot: { id: string } }, 'BookPlot'>;
-
-const BookPlot: FC<{ route: BookRouteProp; navigation: CLNavigationProp }> = ({
-  route,
-  navigation,
-}) => {
+const BookPlot: FC<BookPlotProps> = ({ route, navigation }) => {
   const { id } = route?.params;
 
-  const { loading, error, data } = useQuery<BookQuery>(ONE_BOOK_PLOT, { variables: { id } });
-  const [plot, setPlot] = useState<React.JSX.Element[]>();
+  const { loading, error, data } = useQuery<BookPlotQuery>(ONE_BOOK_PLOT, {
+    variables: { bookID: id },
+  });
+  const [plot, setPlot] = useState('add plot someday');
 
   const colors = useContext(themeContext);
 
   const handleClick = (id: string) => {
-    navigation.navigate('Book', {
-      screen: 'BookDetail',
-      params: { id },
-    });
+    navigation.navigate('BookDetail', { id });
   };
 
   useEffect(() => {
     if (!!data?.book?.plot) {
-      const paragraphs = data?.book?.plot
-        .split('<br>')
-        .map((paragraph, index) => <Text key={index}>{paragraph}</Text>);
+      const paragraphs = data?.book?.plot.replace(/<\/br>|<br\/>/g, '\n');
+
       setPlot(paragraphs);
     }
   }, [data]);
@@ -57,13 +36,16 @@ const BookPlot: FC<{ route: BookRouteProp; navigation: CLNavigationProp }> = ({
   return (
     <>
       {!!loading && <ActivityIndicator size="large" color={colors.primary} />}
-      <SafeAreaView style={{ backgroundColor: colors.backgroundAccent }}>
-        <View>{id}</View>
-        <ScrollView>{plot}</ScrollView>
-        <TouchableWithoutFeedback onPress={() => handleClick(data?.book.bookID || '')}>
-          <Text style={{ marginVertical: 20, fontSize: 25 }}>Return to book info...</Text>
-        </TouchableWithoutFeedback>
-      </SafeAreaView>
+      {!!data && (
+        <SafeAreaView style={{ backgroundColor: colors.backgroundAccent }}>
+          <ScrollView>
+            <Text style={{ marginVertical: 10, marginLeft: 10, marginRight: 5 }}>{plot}</Text>
+            <TouchableWithoutFeedback onPress={() => handleClick(id || '')}>
+              <Text style={{ marginVertical: 20, fontSize: 25 }}>Return to book info...</Text>
+            </TouchableWithoutFeedback>
+          </ScrollView>
+        </SafeAreaView>
+      )}
     </>
   );
 };

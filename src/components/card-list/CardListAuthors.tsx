@@ -1,20 +1,11 @@
 import { FC, useEffect, useState, useContext } from 'react';
-import {
-  SafeAreaView,
-  FlatList,
-  Image,
-  TouchableWithoutFeedback,
-  ActivityIndicator,
-} from 'react-native';
+import { SafeAreaView, FlatList, ActivityIndicator } from 'react-native';
 import { useLazyQuery } from '@apollo/client';
-import { SvgUri } from 'react-native-svg';
 import { ALL_AUTHORS } from '../../graphQL';
 import { Author } from 'types';
 import { themeContext } from '../../theme';
-
-interface AuthorsQuery {
-  getAllAuthors: { authors: Author[]; totalCount: number };
-}
+import { ImageCard } from '../../UI';
+import { AuthorsQuery } from './type';
 
 const CardListAuthors: FC = () => {
   const [getAuthors, { loading, error, data }] = useLazyQuery<AuthorsQuery>(ALL_AUTHORS);
@@ -65,20 +56,14 @@ const CardListAuthors: FC = () => {
         horizontal={false}
         columnWrapperStyle={{ marginBottom: 10 }}
         renderItem={({ item }) => (
-          <TouchableWithoutFeedback onPress={() => console.log(item.id)}>
-            {!!item.portrait ? (
-              <Image
-                source={{ uri: item.portrait }}
-                style={{ width: 180, height: 315, marginRight: 5, marginLeft: 10 }}
-              />
-            ) : (
-              <SvgUri
-                width="180px"
-                height="315px"
-                uri="https://res.cloudinary.com/dlyawnfbk/image/upload/v1698343659/book-cover_ijn21c.svg"
-              />
-            )}
-          </TouchableWithoutFeedback>
+          <ImageCard
+            uri={item.portrait}
+            width={180}
+            height={315}
+            style={{ marginRight: 5, marginLeft: 10 }}
+            id={item.id}
+            handleClick={() => console.log(item.id)}
+          />
         )}
         keyExtractor={(item, index) => item.id || index.toString()}
         onEndReached={() => setPage((prevState) => prevState + 1)}

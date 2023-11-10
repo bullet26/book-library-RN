@@ -1,10 +1,10 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BookDetail, BookPlot } from '../components';
 import { FC } from 'react';
+import { BookStackParamList } from 'types';
 
 const BookNavigation: FC = () => {
-  const BookStack = createNativeStackNavigator();
-
+  const BookStack = createNativeStackNavigator<BookStackParamList>();
   return (
     <BookStack.Navigator>
       <BookStack.Screen name="BookDetail" component={BookDetail} options={{ headerShown: false }} />

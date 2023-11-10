@@ -1,33 +1,13 @@
 import { FC, useContext, useEffect, useState } from 'react';
-import {
-  SafeAreaView,
-  FlatList,
-  Image,
-  TouchableWithoutFeedback,
-  ActivityIndicator,
-} from 'react-native';
-import { NavigationProp } from '@react-navigation/native';
+import { SafeAreaView, FlatList, ActivityIndicator } from 'react-native';
 import { useLazyQuery } from '@apollo/client';
-import { SvgUri } from 'react-native-svg';
 import { ALL_BOOKS_BY_DATE } from '../../graphQL';
 import { ReadDateBook } from 'types';
 import { themeContext } from '../../theme';
+import { ImageCard } from '../../UI';
+import { BooksQuery, BookProps } from './type';
 
-interface BooksQuery {
-  books: { readDate: ReadDateBook[]; totalCount: number };
-}
-
-type CLNavigationProp = NavigationProp<
-  {
-    Book: {
-      screen: 'BookDetail';
-      params: { [id: string]: string };
-    };
-  },
-  'Book'
->;
-
-const CardListBooks: FC<{ navigation: CLNavigationProp }> = ({ navigation }) => {
+const CardListBooks: FC<BookProps> = ({ navigation }) => {
   const [getBooks, { loading, error, data }] = useLazyQuery<BooksQuery>(ALL_BOOKS_BY_DATE);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(1000000);
@@ -83,20 +63,14 @@ const CardListBooks: FC<{ navigation: CLNavigationProp }> = ({ navigation }) => 
         horizontal={false}
         columnWrapperStyle={{ marginBottom: 10 }}
         renderItem={({ item }) => (
-          <TouchableWithoutFeedback onPress={() => handleClick(item.books.id)}>
-            {!!item.books.bookCover ? (
-              <Image
-                source={{ uri: item.books.bookCover }}
-                style={{ width: 180, height: 315, marginRight: 5, marginLeft: 10 }}
-              />
-            ) : (
-              <SvgUri
-                width="180px"
-                height="315px"
-                uri="https://res.cloudinary.com/dlyawnfbk/image/upload/v1698343659/book-cover_ijn21c.svg"
-              />
-            )}
-          </TouchableWithoutFeedback>
+          <ImageCard
+            uri={item.books.bookCover}
+            width={180}
+            height={315}
+            style={{ marginRight: 5, marginLeft: 10 }}
+            id={item.books.id}
+            handleClick={handleClick}
+          />
         )}
         keyExtractor={(item, index) => item.id || index.toString()}
         onEndReached={() => setPage((prevState) => prevState + 1)}
