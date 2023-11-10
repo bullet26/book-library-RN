@@ -8,6 +8,8 @@ export interface BooksQuery {
 
 export type BookProps = NativeStackScreenProps<RootStackParamList, 'Books'>;
 
+export type AuthorsProps = NativeStackScreenProps<RootStackParamList, 'Authors'>;
+
 export interface AuthorsQuery {
   getAllAuthors: { authors: Author[]; totalCount: number };
 }

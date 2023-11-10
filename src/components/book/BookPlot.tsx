@@ -37,7 +37,7 @@ const BookPlot: FC<BookPlotProps> = ({ route, navigation }) => {
     <>
       {!!loading && <ActivityIndicator size="large" color={colors.primary} />}
       {!!data && (
-        <SafeAreaView style={{ backgroundColor: colors.backgroundAccent }}>
+        <SafeAreaView style={{ backgroundColor: colors.backgroundAccent, flex: 1 }}>
           <ScrollView>
             <Text style={{ marginVertical: 10, marginLeft: 10, marginRight: 5 }}>{plot}</Text>
             <TouchableWithoutFeedback onPress={() => handleClick(id || '')}>

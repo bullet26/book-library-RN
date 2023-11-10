@@ -27,8 +27,8 @@ const ImageCard: FC<ImageCardProps> = (props) => {
         />
       ) : (
         <SvgUri
-          width="180px"
-          height="315px"
+          width={width + 15}
+          height={height}
           uri="https://res.cloudinary.com/dlyawnfbk/image/upload/v1698343659/book-cover_ijn21c.svg"
         />
       )}

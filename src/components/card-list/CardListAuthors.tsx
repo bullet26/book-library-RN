@@ -5,9 +5,9 @@ import { ALL_AUTHORS } from '../../graphQL';
 import { Author } from 'types';
 import { themeContext } from '../../theme';
 import { ImageCard } from '../../UI';
-import { AuthorsQuery } from './type';
+import { AuthorsQuery, AuthorsProps } from './type';
 
-const CardListAuthors: FC = () => {
+const CardListAuthors: FC<AuthorsProps> = ({ navigation }) => {
   const [getAuthors, { loading, error, data }] = useLazyQuery<AuthorsQuery>(ALL_AUTHORS);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(1000000);
@@ -46,6 +46,10 @@ const CardListAuthors: FC = () => {
     }
   }, [data]);
 
+  const handleClick = (id: string) => {
+    navigation.navigate('Author', { id });
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.backgroundMain }}>
       {loading && page === 1 && <ActivityIndicator size="large" color={colors.primary} />}
@@ -62,7 +66,7 @@ const CardListAuthors: FC = () => {
             height={315}
             style={{ marginRight: 5, marginLeft: 10 }}
             id={item.id}
-            handleClick={() => console.log(item.id)}
+            handleClick={handleClick}
           />
         )}
         keyExtractor={(item, index) => item.id || index.toString()}

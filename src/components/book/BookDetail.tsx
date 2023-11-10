@@ -46,11 +46,16 @@ const BookDetail: FC<BookDetailProps> = ({ route, navigation }) => {
     navigation.navigate('BookPlot', { id });
   };
 
+  const handleClickAuthor = (id: string) => {
+    // TODO route
+    console.log('handleClickAuthor', id);
+  };
+
   return (
     <>
       {!!loading && <ActivityIndicator size="large" color={colors.primary} />}
       {!!data && (
-        <SafeAreaView style={{ backgroundColor: colors.backgroundAccent }}>
+        <SafeAreaView style={{ backgroundColor: colors.backgroundAccent, flex: 1 }}>
           <ScrollView>
             <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
               <ImageCard uri={bookCover} width={250} height={415} />
@@ -59,10 +64,15 @@ const BookDetail: FC<BookDetailProps> = ({ route, navigation }) => {
               {data?.book.title}
             </Text>
             <Rating rating={data?.book.rating || 0} />
-            <Text style={{ marginTop: 10, marginHorizontal: 10 }}>author</Text>
-            <Text style={{ marginHorizontal: 10 }}>
-              {data?.book.author.name} {data?.book.author.surname}
-            </Text>
+            <TouchableWithoutFeedback onPress={() => handleClickAuthor(data.book.author.id || '')}>
+              <View>
+                <Text style={{ marginTop: 10, marginHorizontal: 10 }}>author</Text>
+                <Text style={{ marginHorizontal: 10 }}>
+                  {data?.book.author.name} {data?.book.author.surname}
+                </Text>
+              </View>
+            </TouchableWithoutFeedback>
+
             <Text style={{ marginTop: 10, marginHorizontal: 10 }}>read date</Text>
             <Text style={{ marginHorizontal: 10 }}>
               {readEnd.day} {readEnd.month}, {readEnd.year}

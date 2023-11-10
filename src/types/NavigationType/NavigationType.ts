@@ -5,6 +5,7 @@ export type BookStackParamList = {
 
 export type RootStackParamList = {
   Book: { screen: string; params: { id: string } };
+  Author: { id: string };
   Books: undefined;
   Authors: undefined;
 };
