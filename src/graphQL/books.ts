@@ -70,3 +70,12 @@ export const ALL_BOOKS_BY_SPECIFIC_DATE = gql`
     }
   }
 `;
+
+export const READ_STATISTIC = gql`
+  query GetMostReadedBooks($label: String, $year: Int) {
+    statistic: getReadStatistic(label: $label, year: $year) {
+      count
+      period
+    }
+  }
+`;

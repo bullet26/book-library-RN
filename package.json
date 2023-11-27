@@ -12,10 +12,12 @@
   "dependencies": {
     "@ant-design/react-native": "^5.0.4",
     "@apollo/client": "^3.8.6",
+    "@react-native-community/cli-doctor": "^12.1.1",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/bottom-tabs": "^6.5.11",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.16",
+    "antd-mobile": "^5.33.0",
     "graphql": "^16.8.1",
     "react": "18.2.0",
     "react-native": "0.72.6",

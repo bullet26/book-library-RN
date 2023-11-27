@@ -1,12 +1,5 @@
 import { useContext, useState, useEffect, FC } from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  ActivityIndicator,
-  Text,
-  View,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import { SafeAreaView, ScrollView, ActivityIndicator, Text, View, Pressable } from 'react-native';
 import { useQuery } from '@apollo/client';
 import { ImageCard, Rating } from '../../UI';
 import { ONE_BOOK_BY_ID } from '../../graphQL';
@@ -18,7 +11,7 @@ const BookDetail: FC<BookDetailProps> = ({ route, navigation }) => {
 
   const { loading, error, data } = useQuery<BookQuery>(ONE_BOOK_BY_ID, { variables: { id } });
   const [bookCover, setBookCover] = useState('');
-  const [description, setDescription] = useState<React.JSX.Element[]>();
+  const [description, setDescription] = useState('');
 
   const [readEnd, setReadEnd] = useState({ day: '', month: '', year: '' });
 
@@ -28,9 +21,8 @@ const BookDetail: FC<BookDetailProps> = ({ route, navigation }) => {
     }
 
     if (!!data?.book?.description) {
-      const paragraphs = data?.book?.description
-        .split('<br>')
-        .map((paragraph, index) => <Text key={index}>{paragraph}</Text>);
+      const paragraphs = data?.book?.description.replace(/<\/br>|<br\/>/g, '\n');
+
       setDescription(paragraphs);
     }
 
@@ -47,8 +39,11 @@ const BookDetail: FC<BookDetailProps> = ({ route, navigation }) => {
   };
 
   const handleClickAuthor = (id: string) => {
-    // TODO route
-    console.log('handleClickAuthor', id);
+    navigation.navigate('Author', { id });
+  };
+
+  const handleClickDate = (year: string) => {
+    navigation.navigate('BookBySpecificDate', { year });
   };
 
   return (
@@ -64,26 +59,30 @@ const BookDetail: FC<BookDetailProps> = ({ route, navigation }) => {
               {data?.book.title}
             </Text>
             <Rating rating={data?.book.rating || 0} />
-            <TouchableWithoutFeedback onPress={() => handleClickAuthor(data.book.author.id || '')}>
+            <Pressable onPress={() => handleClickAuthor(data.book.author.id || '')}>
               <View>
                 <Text style={{ marginTop: 10, marginHorizontal: 10 }}>author</Text>
                 <Text style={{ marginHorizontal: 10 }}>
                   {data?.book.author.name} {data?.book.author.surname}
                 </Text>
               </View>
-            </TouchableWithoutFeedback>
+            </Pressable>
+            <Pressable onPress={() => handleClickDate(readEnd.year || '')}>
+              <Text style={{ marginTop: 10, marginHorizontal: 10 }}>read date</Text>
+              <Text style={{ marginHorizontal: 10 }}>
+                {readEnd.day} {readEnd.month}, {readEnd.year}
+              </Text>
+            </Pressable>
 
-            <Text style={{ marginTop: 10, marginHorizontal: 10 }}>read date</Text>
-            <Text style={{ marginHorizontal: 10 }}>
-              {readEnd.day} {readEnd.month}, {readEnd.year}
-            </Text>
-            <View style={{ marginTop: 10, marginHorizontal: 10 }}>{description}</View>
+            <View style={{ marginTop: 10, marginHorizontal: 10 }}>
+              <Text>{description}</Text>
+            </View>
 
-            <TouchableWithoutFeedback onPress={() => handleClickPlot(id || '')}>
+            <Pressable onPress={() => handleClickPlot(id || '')}>
               <Text style={{ marginVertical: 20, marginHorizontal: 10, fontSize: 25 }}>
                 Read book plot...
               </Text>
-            </TouchableWithoutFeedback>
+            </Pressable>
           </ScrollView>
         </SafeAreaView>
       )}
