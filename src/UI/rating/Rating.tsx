@@ -1,9 +1,8 @@
 import { FC } from 'react';
-import { View } from '@ant-design/react-native';
+import { FlatList, SafeAreaView, View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { colorRate, makeArray } from './utils';
 import styles from './styles';
-import { FlatList, SafeAreaView, Text } from 'react-native';
 
 interface RatingProps {
   rating: number;

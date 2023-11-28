@@ -32,13 +32,9 @@ const YearSelect: FC<YearSelectProps> = (props) => {
     navigation.navigate('BookBySpecificDate', { year });
   };
 
-  console.log('====================================');
-  console.log('YearSelect');
-  console.log('====================================');
-
   return (
     <>
-      <Text>Select a year</Text>
+      <Text>Select a year </Text>
 
       {/* <Selector
         defaultValue={[year || '']}

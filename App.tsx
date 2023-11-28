@@ -11,7 +11,7 @@ function App(): JSX.Element {
     <ApolloProvider client={client}>
       <Provider value={DARK_MODE_THEME}>
         <NavigationContainer>
-          <Header />
+          {/* <Header /> */}
           <TabNavigation />
         </NavigationContainer>
       </Provider>
