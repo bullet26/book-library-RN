@@ -5,7 +5,7 @@ import { ALL_BOOKS_BY_DATE } from '../../graphQL';
 import { ReadDateBook } from 'types';
 import { themeContext } from '../../theme';
 import { ImageCard } from '../../UI';
-import { BooksQuery, BookProps } from './type';
+import { BooksQuery, BookProps } from '../header/type';
 
 const CardListBooks: FC<BookProps> = ({ navigation }) => {
   const [getBooks, { loading, error, data }] = useLazyQuery<BooksQuery>(ALL_BOOKS_BY_DATE);

@@ -1,5 +1,13 @@
 import { useContext, useState, useEffect, FC } from 'react';
-import { SafeAreaView, ScrollView, ActivityIndicator, Text, View, Pressable } from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  ActivityIndicator,
+  Text,
+  View,
+  Pressable,
+  FlatList,
+} from 'react-native';
 import { useQuery } from '@apollo/client';
 import { ImageCard, Rating } from '../../UI';
 import { ONE_BOOK_BY_ID } from '../../graphQL';
@@ -13,8 +21,6 @@ const BookDetail: FC<BookDetailProps> = ({ route, navigation }) => {
   const [bookCover, setBookCover] = useState('');
   const [description, setDescription] = useState('');
 
-  const [readEnd, setReadEnd] = useState({ day: '', month: '', year: '' });
-
   useEffect(() => {
     if (!!data) {
       setBookCover(data.book.bookCover);
@@ -24,11 +30,6 @@ const BookDetail: FC<BookDetailProps> = ({ route, navigation }) => {
       const paragraphs = data?.book?.description.replace(/<\/br>|<br\/>/g, '\n');
 
       setDescription(paragraphs);
-    }
-
-    if (!!data?.book?.readDate?.length) {
-      const [{ readEnd }] = data?.book?.readDate;
-      setReadEnd(readEnd);
     }
   }, [data]);
 
@@ -67,12 +68,14 @@ const BookDetail: FC<BookDetailProps> = ({ route, navigation }) => {
                 </Text>
               </View>
             </Pressable>
-            <Pressable onPress={() => handleClickDate(readEnd.year || '')}>
-              <Text style={{ marginTop: 10, marginHorizontal: 10 }}>read date</Text>
-              <Text style={{ marginHorizontal: 10 }}>
-                {readEnd.day} {readEnd.month}, {readEnd.year}
-              </Text>
-            </Pressable>
+            <Text style={{ marginTop: 10, marginHorizontal: 10 }}>read date</Text>
+            {data?.book?.readDate?.map(({ readEnd }, i) => (
+              <Pressable key={i.toString()} onPress={() => handleClickDate(readEnd.year || '')}>
+                <Text style={{ marginHorizontal: 10, marginBottom: 10 }}>
+                  {readEnd.day} {readEnd.month}, {readEnd.year}
+                </Text>
+              </Pressable>
+            ))}
 
             <View style={{ marginTop: 10, marginHorizontal: 10 }}>
               <Text>{description}</Text>

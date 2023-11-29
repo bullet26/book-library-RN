@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { FlatList, SafeAreaView, View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { colorRate, makeArray } from './utils';
 import styles from './styles';
 
@@ -26,7 +27,11 @@ const Rating: FC<RatingProps> = (props) => {
       />
 
       <View style={{ ...styles.ratingCircle, backgroundColor: colorRate(rating) }}>
-        {<Text style={styles.text}>{rating}</Text> || <Icon name="plus" color="white" size={40} />}
+        {!!rating ? (
+          <Text style={styles.text}>{rating}</Text>
+        ) : (
+          <FontAwesome6 name={'check'} size={40} />
+        )}
       </View>
     </SafeAreaView>
   );

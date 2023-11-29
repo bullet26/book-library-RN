@@ -27,6 +27,7 @@ const TabNavigation = () => {
         component={CardListBooks}
         options={{
           tabBarIcon: ({ color }) => <FontAwesome6 name={'book'} thin size={20} color={color} />,
+          headerShown: false,
         }}
       />
       <Tab.Screen
@@ -36,6 +37,7 @@ const TabNavigation = () => {
           tabBarIcon: ({ color }) => (
             <FontAwesome6 name={'user-pen'} light size={20} color={color} />
           ),
+          headerShown: false,
         }}
       />
       <Tab.Screen
