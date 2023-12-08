@@ -1,19 +1,16 @@
 import { FC, useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { useQuery } from '@apollo/client';
 import Selector from 'react-native-select-dropdown';
 import { READ_STATISTIC } from '../../../graphQL';
 import { IStatistic } from 'types';
-import { BooksByDateProps } from '../type';
 
 interface YearSelectProps {
   year?: string;
+  handleChange: (year: string) => void;
 }
 
 const YearSelect: FC<YearSelectProps> = (props) => {
-  const navigation = useNavigation<BooksByDateProps>();
-
-  const { year } = props;
+  const { year, handleChange } = props;
 
   const [allYearsLabels, setAllYearsLabels] = useState<string[]>([]);
 
@@ -29,14 +26,11 @@ const YearSelect: FC<YearSelectProps> = (props) => {
     }
   }, [data]);
 
-  const handleChange = (year: string) => {
-    navigation.navigate('BookBySpecificDate', { year });
-  };
-
   return (
     <>
       <Selector
         defaultButtonText={'Select a year'}
+        defaultValue={year}
         data={allYearsLabels}
         onSelect={(selectedItem) => handleChange(selectedItem)}
       />

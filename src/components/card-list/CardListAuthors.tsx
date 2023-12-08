@@ -5,7 +5,8 @@ import { ALL_AUTHORS } from '../../graphQL';
 import { Author } from 'types';
 import { themeContext } from '../../theme';
 import { ImageCard } from '../../UI';
-import { AuthorsQuery, AuthorsProps } from '../header/type';
+import { Header } from '../../components';
+import { AuthorsQuery, AuthorsProps } from './type';
 
 const CardListAuthors: FC<AuthorsProps> = ({ navigation }) => {
   const [getAuthors, { loading, error, data }] = useLazyQuery<AuthorsQuery>(ALL_AUTHORS);
@@ -53,6 +54,7 @@ const CardListAuthors: FC<AuthorsProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.backgroundMain }}>
       {loading && page === 1 && <ActivityIndicator size="large" color={colors.primary} />}
+      <Header />
       <FlatList
         data={allData}
         numColumns={2}

@@ -5,7 +5,8 @@ import { ALL_BOOKS_BY_DATE } from '../../graphQL';
 import { ReadDateBook } from 'types';
 import { themeContext } from '../../theme';
 import { ImageCard } from '../../UI';
-import { BooksQuery, BookProps } from '../header/type';
+import { Header } from '../../components';
+import { BookProps, BooksQuery } from './type';
 
 const CardListBooks: FC<BookProps> = ({ navigation }) => {
   const [getBooks, { loading, error, data }] = useLazyQuery<BooksQuery>(ALL_BOOKS_BY_DATE);
@@ -57,6 +58,7 @@ const CardListBooks: FC<BookProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.backgroundMain }}>
       {loading && page === 1 && <ActivityIndicator size="large" color={colors.primary} />}
+      <Header />
       <FlatList
         data={allData}
         numColumns={2}
