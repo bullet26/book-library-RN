@@ -53,8 +53,8 @@ const CardListAuthors: FC<AuthorsProps> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.backgroundMain }}>
-      {loading && page === 1 && <ActivityIndicator size="large" color={colors.primary} />}
       <Header />
+      {loading && page === 1 && <ActivityIndicator size="large" color={colors.primary} />}
       <FlatList
         data={allData}
         numColumns={2}
@@ -62,7 +62,7 @@ const CardListAuthors: FC<AuthorsProps> = ({ navigation }) => {
         columnWrapperStyle={{ marginBottom: 10 }}
         renderItem={({ item }) => (
           <ImageCard
-            uri={item.portrait}
+            uri={item.portraitThumbnail}
             width={180}
             height={315}
             style={{ marginRight: 5, marginLeft: 10 }}

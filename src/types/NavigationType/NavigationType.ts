@@ -2,7 +2,7 @@ export type BookStackParamList = {
   BookPlot: { id: string };
   BookDetail: { id: string };
   Author: { id: string };
-  BookBySpecificDate: undefined;
+  BookBySpecificDate: { year: string };
 };
 
 export type RootStackParamList = {

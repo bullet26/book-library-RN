@@ -63,7 +63,7 @@ const Author: FC<AuthorProps> = ({ route, navigation }) => {
                 columnWrapperStyle={{ marginBottom: 10, marginLeft: 20 }}
                 renderItem={({ item }) => (
                   <ImageCard
-                    uri={item.bookCover}
+                    uri={item.bookCoverThumbnail}
                     width={100}
                     height={162}
                     style={{ marginRight: 5, marginLeft: 10 }}

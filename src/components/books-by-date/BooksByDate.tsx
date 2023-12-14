@@ -2,6 +2,7 @@ import { FC, useContext, useEffect, useState } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { ALL_BOOKS_BY_SPECIFIC_DATE } from '../../graphQL';
 import { ActivityIndicator, SafeAreaView } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { ReadDateBook } from 'types';
 import { BooksByDateProps, FormattedBook, BooksByDateQuery } from './type';
 import { themeContext } from '../../theme';
@@ -9,8 +10,8 @@ import { YearSelect } from './date-select';
 import { CardListBooksByDate } from './CardListBooksByDate';
 
 const BooksByDate: FC<BooksByDateProps> = ({ route, navigation }) => {
-  const routeYear = route?.params?.year;
   const [year, setYear] = useState('');
+  const [routeYear, setRouteYear] = useState(route?.params?.year);
 
   const [getBooks, { loading, error, data }] = useLazyQuery<BooksByDateQuery>(
     ALL_BOOKS_BY_SPECIFIC_DATE
@@ -31,8 +32,12 @@ const BooksByDate: FC<BooksByDateProps> = ({ route, navigation }) => {
     setYear(year);
   };
 
+  useFocusEffect(() => {
+    setRouteYear(route?.params?.year);
+  });
+
   useEffect(() => {
-    setYear(routeYear || null);
+    setYear(routeYear);
   }, [routeYear]);
 
   useEffect(() => {

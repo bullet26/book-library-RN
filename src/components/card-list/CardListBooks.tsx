@@ -57,8 +57,8 @@ const CardListBooks: FC<BookProps> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.backgroundMain }}>
-      {loading && page === 1 && <ActivityIndicator size="large" color={colors.primary} />}
       <Header />
+      {loading && page === 1 && <ActivityIndicator size="large" color={colors.primary} />}
       <FlatList
         data={allData}
         numColumns={2}
@@ -66,7 +66,7 @@ const CardListBooks: FC<BookProps> = ({ navigation }) => {
         columnWrapperStyle={{ marginBottom: 10 }}
         renderItem={({ item }) => (
           <ImageCard
-            uri={item.books.bookCover}
+            uri={item.books.bookCoverThumbnail}
             width={180}
             height={315}
             style={{ marginRight: 5, marginLeft: 10 }}

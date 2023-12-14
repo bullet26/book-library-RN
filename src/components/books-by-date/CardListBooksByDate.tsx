@@ -22,7 +22,7 @@ export const CardListBooksByDate: FC<CardListBooksByDateProps> = (props) => {
           columnWrapperStyle={{ marginVertical: 12, marginLeft: 20 }}
           renderItem={({ item }) => (
             <ImageCard
-              uri={item.books.bookCover}
+              uri={item.books.bookCoverThumbnail}
               width={100}
               height={162}
               style={{ marginRight: 5, marginLeft: 10 }}

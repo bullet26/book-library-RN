@@ -1,6 +1,7 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState, useRef } from 'react';
 import { useQuery } from '@apollo/client';
 import Selector from 'react-native-select-dropdown';
+import SelectDropdown from 'react-native-select-dropdown';
 import { READ_STATISTIC } from '../../../graphQL';
 import { IStatistic } from 'types';
 
@@ -11,7 +12,7 @@ interface YearSelectProps {
 
 const YearSelect: FC<YearSelectProps> = (props) => {
   const { year, handleChange } = props;
-
+  const selectorRef = useRef<SelectDropdown>(null);
   const [allYearsLabels, setAllYearsLabels] = useState<string[]>([]);
 
   const { data, error } = useQuery<{ statistic: IStatistic[] }>(READ_STATISTIC, {
@@ -19,6 +20,12 @@ const YearSelect: FC<YearSelectProps> = (props) => {
       label: 'all',
     },
   });
+
+  useEffect(() => {
+    if (!year && !!selectorRef.current) {
+      selectorRef.current.reset();
+    }
+  }, [year]);
 
   useEffect(() => {
     if (data) {
@@ -33,6 +40,7 @@ const YearSelect: FC<YearSelectProps> = (props) => {
         defaultValue={year}
         data={allYearsLabels}
         onSelect={(selectedItem) => handleChange(selectedItem)}
+        ref={selectorRef}
       />
     </>
   );

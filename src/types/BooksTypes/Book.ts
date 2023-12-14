@@ -16,6 +16,7 @@ export interface Book {
   description?: string;
   readDate?: ReadDateBook[];
   bookCover: string;
+  bookCoverThumbnail: string;
 }
 
 export interface BookInput {
@@ -30,6 +31,7 @@ export interface BookInput {
   readEnd: string;
   plot: string | null;
   bookCover: string | null;
+  bookCoverThumbnail: string;
 }
 
 export interface BookInputFormValues extends Omit<BookInput, 'readEnd'> {
