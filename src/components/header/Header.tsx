@@ -1,5 +1,6 @@
-import { Button, TextInput, View } from 'react-native';
+import { Button, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Search } from './Search';
 import { BooksByDateProps } from './type';
 
 const Header = () => {
@@ -19,10 +20,7 @@ const Header = () => {
       }}
     >
       <Button title="Books by year" color="#000" onPress={handleChange} />
-      <TextInput
-        placeholder="Type here to search"
-        onChangeText={(newText) => console.log(newText)}
-      />
+      <Search />
     </View>
   );
 };
