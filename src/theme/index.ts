@@ -7,6 +7,7 @@ export const DARK_MODE_THEME = {
   textInactive: '#fff',
   lighterBGC: '#333',
   fontDividerColor: '#cfcfd2',
+  dark: '#000',
 };
 
 export const themeContext = createContext(DARK_MODE_THEME);

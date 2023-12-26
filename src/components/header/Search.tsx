@@ -1,22 +1,25 @@
-import { useState, useEffect, useRef } from 'react';
-import { TextInput, View } from 'react-native';
+import { useState, useEffect, useContext } from 'react';
+import { TextInput, View, FlatList, Text, Pressable } from 'react-native';
 import { useLazyQuery } from '@apollo/client';
 import { SEARCH_IN_BOOKS_AND_AUTHORS } from '../../graphQL';
 import { useNavigation } from '@react-navigation/native';
-import Selector from 'react-native-select-dropdown';
-import SelectDropdown from 'react-native-select-dropdown';
+import { themeContext } from '../../theme';
+
 import type { ISearchSuccess, ToBookPage, ToAuthorPage } from './type';
-import { checkTypesTitle, checkTypesRoute } from './utils';
+import { checkTypesTitle } from './utils';
 
 export const Search = () => {
   const [makeSearch, { error, data }] = useLazyQuery<ISearchSuccess>(SEARCH_IN_BOOKS_AND_AUTHORS);
-  const [showSearchList, setShowSearchListStatus] = useState(false);
+  const [showSearchListStatus, setShowSearchListStatus] = useState(false);
   const [inputValue, setInputValue] = useState('');
-  const [searchListData, setSearchListData] = useState<string[]>([]);
-  const selectorRef = useRef<SelectDropdown>(null);
+  const [searchListData, setSearchListData] = useState<
+    { id: string; type: string; title: string }[]
+  >([]);
 
   const navigationToBook = useNavigation<ToBookPage>();
   const navigationToAuthor = useNavigation<ToAuthorPage>();
+
+  const colors = useContext(themeContext);
 
   const handleInputChange = (value: string) => {
     setInputValue(value);
@@ -27,22 +30,14 @@ export const Search = () => {
     setShowSearchListStatus(true);
   };
 
-  const handleSearchResultClick = (selectedItem: string, index: number) => {
-    const targetElement = data?.search[index];
-    if (!targetElement) {
-      return;
-    }
-
-    const { id } = targetElement;
-    const parent = checkTypesRoute(targetElement);
-
-    if (!!id && parent === 'books') {
+  const handleSearchResultClick = (id: string, type: string) => {
+    if (!!id && type === 'books') {
       console.log('books');
       navigationToBook.navigate('Book', {
         screen: 'BookDetail',
         params: { id },
       });
-    } else if (!!id && parent === 'authors') {
+    } else if (!!id && type === 'authors') {
       console.log('authors');
       navigationToAuthor.navigate('Author', { id });
     }
@@ -66,31 +61,39 @@ export const Search = () => {
           return checkTypesTitle(item);
         })
       );
-      setTimeout(() => selectorRef.current?.openDropdown());
     } else {
-      setSearchListData(["Couldn't find anything"]);
+      setSearchListData([{ id: '', type: '', title: "Couldn't find anything" }]);
     }
   }, [data]);
 
   return (
-    <View style={{ zIndex: 2 }}>
-      {!showSearchList && (
-        <TextInput
-          placeholder="Type here to search"
-          value={inputValue}
-          onChangeText={(newText) => handleInputChange(newText)}
-        />
-      )}
+    <View style={{ width: '50%' }}>
+      <TextInput
+        placeholder="Type here to search"
+        value={inputValue}
+        onChangeText={(newText) => handleInputChange(newText)}
+      />
 
-      {!!data && showSearchList && (
-        <Selector
-          defaultButtonText={inputValue}
+      {!!data && showSearchListStatus && (
+        <FlatList
+          style={{ position: 'absolute', top: 45, backgroundColor: colors.dark }}
           data={searchListData}
-          onSelect={(selectedItem, index) => handleSearchResultClick(selectedItem, index)}
-          onBlur={() => setShowSearchListStatus(false)}
-          dropdownStyle={{ backgroundColor: '#000' }}
-          buttonStyle={{ backgroundColor: '#000' }}
-          ref={selectorRef}
+          renderItem={({ item }) => (
+            <Pressable
+              style={{
+                paddingVertical: 10,
+                paddingHorizontal: 5,
+                borderColor: colors.textInactive,
+                borderWidth: 2,
+              }}
+              onPress={() => {
+                handleSearchResultClick(item.id, item.type);
+              }}
+            >
+              <Text style={{ fontSize: 18 }}>{item.title}</Text>
+            </Pressable>
+          )}
+          keyExtractor={(item) => item.id}
         />
       )}
     </View>

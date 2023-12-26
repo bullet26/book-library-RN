@@ -17,6 +17,7 @@ const Header = () => {
         flexWrap: 'nowrap',
         justifyContent: 'space-around',
         backgroundColor: '#000',
+        zIndex: 2,
       }}
     >
       <Button title="Books by year" color="#000" onPress={handleChange} />
