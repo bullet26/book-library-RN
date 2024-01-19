@@ -1,10 +1,10 @@
 import { FC, useContext, useEffect, useState } from 'react';
-import { SafeAreaView, FlatList, ActivityIndicator } from 'react-native';
+import { SafeAreaView, FlatList, ActivityIndicator, View } from 'react-native';
 import { useLazyQuery } from '@apollo/client';
 import { ALL_BOOKS_BY_DATE } from '../../graphQL';
 import { ReadDateBook } from 'types';
 import { themeContext } from '../../theme';
-import { ImageCard } from '../../UI';
+import { ImageCard, Rating } from '../../UI';
 import { Header } from '../../components';
 import { BookProps, BooksQuery } from './type';
 
@@ -65,14 +65,17 @@ const CardListBooks: FC<BookProps> = ({ navigation }) => {
         horizontal={false}
         columnWrapperStyle={{ marginBottom: 10 }}
         renderItem={({ item }) => (
-          <ImageCard
-            uri={item.books.bookCoverThumbnail}
-            width={180}
-            height={315}
-            style={{ marginRight: 5, marginLeft: 10 }}
-            id={item.books.id}
-            handleClick={handleClick}
-          />
+          <View>
+            <ImageCard
+              uri={item.books.bookCoverThumbnail}
+              width={180}
+              height={315}
+              style={{ marginRight: 5, marginLeft: 10 }}
+              id={item.books.id}
+              handleClick={handleClick}
+            />
+            <Rating rating={item.books.rating || 0} type="circle-only" />
+          </View>
         )}
         keyExtractor={(item, index) => item.id || index.toString()}
         onEndReached={() => setPage((prevState) => prevState + 1)}

@@ -1,6 +1,6 @@
 import { FC, useContext } from 'react';
-import { SectionList, FlatList, Text } from 'react-native';
-import { ImageCard } from '../../UI';
+import { SectionList, FlatList, Text, View } from 'react-native';
+import { ImageCard, Rating } from '../../UI';
 import { CardListBooksByDateProps } from './type';
 import { themeContext } from '../../theme';
 import { styles } from './style';
@@ -21,14 +21,17 @@ export const CardListBooksByDate: FC<CardListBooksByDateProps> = (props) => {
           horizontal={false}
           columnWrapperStyle={{ marginVertical: 12, marginLeft: 20 }}
           renderItem={({ item }) => (
-            <ImageCard
-              uri={item.books.bookCoverThumbnail}
-              width={100}
-              height={162}
-              style={{ marginRight: 5, marginLeft: 10 }}
-              id={item.books.id}
-              handleClick={() => handleClickBook(item.books.id)}
-            />
+            <View>
+              <ImageCard
+                uri={item.books.bookCoverThumbnail}
+                width={100}
+                height={162}
+                style={{ marginRight: 5, marginLeft: 10 }}
+                id={item.books.id}
+                handleClick={() => handleClickBook(item.books.id)}
+              />
+              <Rating rating={item.books.rating || 0} type="circle-only" />
+            </View>
           )}
         />
       )}

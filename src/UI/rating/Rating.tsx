@@ -7,33 +7,47 @@ import styles from './styles';
 
 interface RatingProps {
   rating: number;
+  type: 'star' | 'circle-only';
 }
 
 const Rating: FC<RatingProps> = (props) => {
-  const { rating } = props;
+  const { rating, type } = props;
 
   return (
-    <SafeAreaView style={styles.wrapper}>
-      <FlatList
-        data={makeArray(rating)}
-        horizontal={true}
-        renderItem={() => (
-          <View>
-            <Icon name="star" color={colorRate(rating)} size={40} />
-          </View>
-        )}
-        keyExtractor={(index) => index.toString()}
-        ItemSeparatorComponent={() => <View style={{ width: 5 }} />}
-      />
+    <>
+      {type === 'star' && (
+        <SafeAreaView style={styles.wrapper}>
+          <FlatList
+            data={makeArray(rating)}
+            horizontal={true}
+            renderItem={() => (
+              <View>
+                <Icon name="star" color={colorRate(rating)} size={40} />
+              </View>
+            )}
+            keyExtractor={(index) => index.toString()}
+            ItemSeparatorComponent={() => <View style={{ width: 5 }} />}
+          />
 
-      <View style={{ ...styles.ratingCircle, backgroundColor: colorRate(rating) }}>
-        {!!rating ? (
-          <Text style={styles.text}>{rating}</Text>
-        ) : (
-          <FontAwesome6 name={'check'} size={40} />
-        )}
-      </View>
-    </SafeAreaView>
+          <View style={{ ...styles.ratingCircle, backgroundColor: colorRate(rating) }}>
+            {!!rating ? (
+              <Text style={styles.text}>{rating}</Text>
+            ) : (
+              <FontAwesome6 name={'check'} size={40} />
+            )}
+          </View>
+        </SafeAreaView>
+      )}
+      {type === 'circle-only' && (
+        <View style={{ ...styles.circleOnly, backgroundColor: colorRate(rating) }}>
+          {!!rating ? (
+            <Text style={styles.circleOnlyText}>{rating}</Text>
+          ) : (
+            <FontAwesome6 name={'check'} size={40} />
+          )}
+        </View>
+      )}
+    </>
   );
 };
 

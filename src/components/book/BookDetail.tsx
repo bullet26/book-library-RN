@@ -59,7 +59,7 @@ const BookDetail: FC<BookDetailProps> = ({ route, navigation }) => {
             <Text style={{ marginTop: 15, fontSize: 30, textAlign: 'center' }}>
               {data?.book.title}
             </Text>
-            <Rating rating={data?.book.rating || 0} />
+            <Rating rating={data?.book.rating || 0} type="star" />
             <Pressable onPress={() => handleClickAuthor(data.book.author.id || '')}>
               <View>
                 <Text style={{ marginTop: 10, marginHorizontal: 10 }}>author</Text>
