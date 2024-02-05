@@ -6,9 +6,10 @@ import {
   Text,
   View,
   Pressable,
-  FlatList,
+  useWindowDimensions,
 } from 'react-native';
 import { useQuery } from '@apollo/client';
+import RenderHtml from 'react-native-render-html';
 import { ImageCard, Rating } from '../../UI';
 import { ONE_BOOK_BY_ID } from '../../graphQL';
 import { themeContext } from '../../theme';
@@ -19,17 +20,10 @@ const BookDetail: FC<BookDetailProps> = ({ route, navigation }) => {
 
   const { loading, error, data } = useQuery<BookQuery>(ONE_BOOK_BY_ID, { variables: { id } });
   const [bookCover, setBookCover] = useState('');
-  const [description, setDescription] = useState('');
 
   useEffect(() => {
     if (!!data) {
       setBookCover(data.book.bookCover);
-    }
-
-    if (!!data?.book?.description) {
-      const paragraphs = data?.book?.description.replace(/<\/br>|<br\/>/g, '\n');
-
-      setDescription(paragraphs);
     }
   }, [data]);
 
@@ -46,6 +40,8 @@ const BookDetail: FC<BookDetailProps> = ({ route, navigation }) => {
   const handleClickDate = (year: string) => {
     navigation.navigate('BookBySpecificDate', { year });
   };
+
+  const { width } = useWindowDimensions();
 
   return (
     <>
@@ -78,7 +74,12 @@ const BookDetail: FC<BookDetailProps> = ({ route, navigation }) => {
             ))}
 
             <View style={{ marginTop: 10, marginHorizontal: 10 }}>
-              <Text>{description}</Text>
+              <RenderHtml
+                contentWidth={width}
+                source={{
+                  html: data?.book?.description || 'Add annotation someday',
+                }}
+              />
             </View>
 
             <Pressable onPress={() => handleClickPlot(id || '')}>

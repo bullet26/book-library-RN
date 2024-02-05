@@ -1,12 +1,14 @@
-import { FC, useContext, useEffect, useState } from 'react';
+import { FC, useContext } from 'react';
 import {
   SafeAreaView,
   TouchableWithoutFeedback,
   ActivityIndicator,
   Text,
   ScrollView,
+  useWindowDimensions,
 } from 'react-native';
 import { useQuery } from '@apollo/client';
+import RenderHtml from 'react-native-render-html';
 import { ONE_BOOK_PLOT } from '../../graphQL';
 import { themeContext } from '../../theme';
 import { BookPlotQuery, BookPlotProps } from './type';
@@ -17,7 +19,6 @@ const BookPlot: FC<BookPlotProps> = ({ route, navigation }) => {
   const { loading, error, data } = useQuery<BookPlotQuery>(ONE_BOOK_PLOT, {
     variables: { bookID: id },
   });
-  const [plot, setPlot] = useState('add plot someday');
 
   const colors = useContext(themeContext);
 
@@ -25,21 +26,20 @@ const BookPlot: FC<BookPlotProps> = ({ route, navigation }) => {
     navigation.navigate('BookDetail', { id });
   };
 
-  useEffect(() => {
-    if (!!data?.book?.plot) {
-      const paragraphs = data?.book?.plot.replace(/<\/br>|<br\/>/g, '\n');
-
-      setPlot(paragraphs);
-    }
-  }, [data]);
+  const { width } = useWindowDimensions();
 
   return (
     <>
       {!!loading && <ActivityIndicator size="large" color={colors.primary} />}
       {!!data && (
         <SafeAreaView style={{ backgroundColor: colors.backgroundAccent, flex: 1 }}>
-          <ScrollView>
-            <Text style={{ marginVertical: 10, marginLeft: 10, marginRight: 5 }}>{plot}</Text>
+          <ScrollView style={{ marginTop: 5, marginHorizontal: 10 }}>
+            <RenderHtml
+              contentWidth={width}
+              source={{
+                html: data?.book?.plot,
+              }}
+            />
             <TouchableWithoutFeedback onPress={() => handleClick(id || '')}>
               <Text style={{ marginVertical: 20, fontSize: 25 }}>Return to book info...</Text>
             </TouchableWithoutFeedback>
