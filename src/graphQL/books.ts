@@ -42,7 +42,29 @@ export const ONE_BOOK_BY_ID = gql`
       readDate {
         readEnd
       }
+      tags {
+        id: _id
+        tag
+      }
       bookCover
+    }
+  }
+`;
+
+export const ALL_BOOKS_BY_TAG = gql`
+  query GetBooksByTag($id: ID) {
+    tagData: getTagById(id: $id) {
+      tag
+      booksInTag {
+        id: _id
+        title
+        bookCoverThumbnail
+        rating
+        author {
+          surname
+          name
+        }
+      }
     }
   }
 `;
@@ -78,6 +100,15 @@ export const READ_STATISTIC = gql`
     statistic: getReadStatistic(label: $label, year: $year) {
       count
       period
+    }
+  }
+`;
+
+export const ALL_TAGS = gql`
+  query GetAllTags {
+    tags: getAllTags {
+      id: _id
+      tag
     }
   }
 `;

@@ -7,6 +7,7 @@ import {
   View,
   Pressable,
   useWindowDimensions,
+  Button,
 } from 'react-native';
 import { useQuery } from '@apollo/client';
 import RenderHtml from 'react-native-render-html';
@@ -39,6 +40,10 @@ const BookDetail: FC<BookDetailProps> = ({ route, navigation }) => {
 
   const handleClickDate = (year: string) => {
     navigation.navigate('BookBySpecificDate', { year });
+  };
+
+  const handleClickTag = (id: string) => {
+    navigation.navigate('BookByTag', { id });
   };
 
   const { width } = useWindowDimensions();
@@ -81,7 +86,29 @@ const BookDetail: FC<BookDetailProps> = ({ route, navigation }) => {
                 }}
               />
             </View>
-
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                columnGap: 5,
+                rowGap: 10,
+                justifyContent: 'space-around',
+                marginTop: 15,
+                marginHorizontal: 10,
+              }}
+            >
+              {data.book.tags.map((item) => (
+                <Button
+                  key={item.id}
+                  title={item.tag}
+                  color="purple"
+                  onPress={() => {
+                    handleClickTag(item.id);
+                  }}
+                />
+              ))}
+            </View>
             <Pressable onPress={() => handleClickPlot(id || '')}>
               <Text style={{ marginVertical: 20, marginHorizontal: 10, fontSize: 25 }}>
                 Read book plot...
