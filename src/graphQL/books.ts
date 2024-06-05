@@ -52,8 +52,8 @@ export const ONE_BOOK_BY_ID = gql`
 `;
 
 export const ALL_BOOKS_BY_TAG = gql`
-  query GetBooksByTag($id: ID) {
-    tagData: getTagById(id: $id) {
+  query GetBooksByTag($id: ID, $sortBy: String) {
+    tagData: getTagById(id: $id, sortBy: $sortBy) {
       tag
       booksInTag {
         id: _id
@@ -67,7 +67,7 @@ export const ALL_BOOKS_BY_TAG = gql`
       }
     }
   }
-`;
+`
 
 export const ONE_BOOK_PLOT = gql`
   query GetOneBookPlot($bookID: ID) {

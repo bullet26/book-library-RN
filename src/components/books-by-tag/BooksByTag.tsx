@@ -11,6 +11,7 @@ import { TagSelect } from './tag-select';
 export const BooksByTag: FC<BooksByTagProps> = ({ route, navigation }) => {
   const [tagID, setTagID] = useState(route?.params?.id);
   const [routeTagID, setRouteTagID] = useState(route?.params?.id);
+  const [sortBy, setSortType] = useState('title');
 
   const [getBooks, { loading, error, data }] = useLazyQuery<BooksByTagQuery>(ALL_BOOKS_BY_TAG);
 
@@ -26,12 +27,14 @@ export const BooksByTag: FC<BooksByTagProps> = ({ route, navigation }) => {
     getBooks({
       variables: {
         id: tagID,
+        sortBy,
       },
     });
-  }, [tagID]);
+  }, [tagID, sortBy]);
 
-  const handleChangeTag = (id: string) => {
+  const handleChangeTag = (id: string, sortBy: string) => {
     setTagID(id);
+    setSortType(sortBy);
   };
 
   const colors = useContext(themeContext);
@@ -59,7 +62,24 @@ export const BooksByTag: FC<BooksByTagProps> = ({ route, navigation }) => {
             <Text style={{ fontSize: 25 }}>Books by tag: </Text>
             <Text style={{ fontSize: 25, color: 'purple' }}>#{data?.tagData.tag}</Text>
           </View>
-          <TagSelect tag={data?.tagData.tag} tagID={tagID} handleChange={handleChangeTag} />
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              marginVertical: 5,
+              marginHorizontal: 20,
+            }}
+          >
+            <Text style={{ fontSize: 18 }}>Books sort by: </Text>
+            <Text style={{ fontSize: 18, color: 'purple' }}>{sortBy}</Text>
+          </View>
+          <TagSelect
+            tag={data?.tagData.tag}
+            tagID={tagID}
+            handleChange={handleChangeTag}
+            sortBy={sortBy}
+          />
           <FlatList
             data={data?.tagData.booksInTag}
             numColumns={3}

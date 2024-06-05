@@ -8,11 +8,12 @@ import { themeContext } from '../../../theme';
 interface YearSelectProps {
   tag?: string;
   tagID?: string;
-  handleChange: (year: string) => void;
+  sortBy: string;
+  handleChange: (id: string, sortBy: string) => void;
 }
 
 const TagSelect: FC<YearSelectProps> = (props) => {
-  const { tag, tagID, handleChange } = props;
+  const { tag, tagID, sortBy, handleChange } = props;
   const [showSelectorStatus, setShowSelectorStatus] = useState(false);
 
   const colors = useContext(themeContext);
@@ -47,32 +48,77 @@ const TagSelect: FC<YearSelectProps> = (props) => {
         </Pressable>
       )}
       {(!tag || showSelectorStatus) && (
-        <FlatList
-          style={{ marginLeft: 50 }}
-          numColumns={2}
-          horizontal={false}
-          data={data?.tags}
-          renderItem={({ item }) => (
+        <>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              marginVertical: 10,
+            }}
+          >
             <Pressable
               style={{
                 padding: 15,
                 marginRight: 25,
                 marginBottom: 10,
-                backgroundColor: 'purple',
+                backgroundColor: '#3C0949',
                 borderColor: colors.textInactive,
                 borderWidth: 2,
                 borderRadius: 20,
               }}
               onPress={() => {
                 setShowSelectorStatus(false);
-                handleChange(item.id);
+                handleChange(tagID || '', 'title');
               }}
             >
-              <Text style={{ fontSize: 18 }}>{item.tag}</Text>
+              <Text style={{ fontSize: 18 }}>sort by Title</Text>
             </Pressable>
-          )}
-          keyExtractor={(item, index) => item.id || index.toString()}
-        />
+            <Pressable
+              style={{
+                padding: 15,
+                marginRight: 25,
+                marginBottom: 10,
+                backgroundColor: '#3C0949',
+                borderColor: colors.textInactive,
+                borderWidth: 2,
+                borderRadius: 20,
+              }}
+              onPress={() => {
+                setShowSelectorStatus(false);
+                handleChange(tagID || '', 'author');
+              }}
+            >
+              <Text style={{ fontSize: 18 }}> by Author Surname</Text>
+            </Pressable>
+          </View>
+          <FlatList
+            style={{ marginLeft: 50 }}
+            numColumns={2}
+            horizontal={false}
+            data={data?.tags}
+            renderItem={({ item }) => (
+              <Pressable
+                style={{
+                  padding: 15,
+                  marginRight: 25,
+                  marginBottom: 10,
+                  backgroundColor: '#672976',
+                  borderColor: colors.textInactive,
+                  borderWidth: 2,
+                  borderRadius: 20,
+                }}
+                onPress={() => {
+                  setShowSelectorStatus(false);
+                  handleChange(item.id, sortBy);
+                }}
+              >
+                <Text style={{ fontSize: 18 }}>{item.tag}</Text>
+              </Pressable>
+            )}
+            keyExtractor={(item, index) => item.id || index.toString()}
+          />
+        </>
       )}
     </View>
   );
