@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { CSSProperties, FC } from 'react';
 import { FlatList, SafeAreaView, View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
@@ -8,10 +8,11 @@ import styles from './styles';
 interface RatingProps {
   rating: number;
   type: 'star' | 'circle-only';
+  style?: CSSProperties;
 }
 
 const Rating: FC<RatingProps> = (props) => {
-  const { rating, type } = props;
+  const { rating, type, style } = props;
 
   return (
     <>

@@ -1,7 +1,7 @@
 import { FC, useContext, useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { Book } from 'types';
-import { ImageCard } from '../../UI';
+import { ImageCard, Rating } from '../../UI';
 import { themeContext } from '../../theme';
 import { ONE_AUTHOR_BY_ID } from '../../graphQL';
 import { SectionList, ActivityIndicator, SafeAreaView, Text, View, FlatList } from 'react-native';
@@ -62,14 +62,17 @@ const Author: FC<AuthorProps> = ({ route, navigation }) => {
                 horizontal={false}
                 columnWrapperStyle={{ marginBottom: 10, marginLeft: 20 }}
                 renderItem={({ item }) => (
-                  <ImageCard
-                    uri={item.bookCoverThumbnail}
-                    width={100}
-                    height={162}
-                    style={{ marginRight: 5, marginLeft: 10 }}
-                    id={item.id}
-                    handleClick={handleClick}
-                  />
+                  <View>
+                    <ImageCard
+                      uri={item.bookCoverThumbnail}
+                      width={100}
+                      height={162}
+                      style={{ marginRight: 5, marginLeft: 10 }}
+                      id={item.id}
+                      handleClick={handleClick}
+                    />
+                    <Rating rating={item.rating || 0} type="circle-only" />
+                  </View>
                 )}
               />
             )}
