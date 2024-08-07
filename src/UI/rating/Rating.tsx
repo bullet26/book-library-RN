@@ -2,7 +2,8 @@ import { CSSProperties, FC } from 'react';
 import { FlatList, SafeAreaView, View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import { colorRate, makeArray } from './utils';
+import { colorRate } from '../../utils';
+import { makeArray } from './utils';
 import styles from './styles';
 
 interface RatingProps {

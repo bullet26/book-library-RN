@@ -1,7 +1,14 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useContext } from 'react';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import { CardListBooks, CardListAuthors, Author, BooksByDate, BooksByTag } from '../components';
+import {
+  CardListBooks,
+  CardListAuthors,
+  Author,
+  BooksByDate,
+  BooksByTag,
+  CardListMostRededAuthors,
+} from '../components';
 import { themeContext } from '../theme';
 import BookNavigation from './BookNavigation';
 import { RootStackParamList } from 'types';
@@ -58,6 +65,11 @@ const TabNavigation = () => {
       <Tab.Screen
         name="Author" // чтобы пробросить дочерний роут
         component={Author}
+        options={{ tabBarItemStyle: { display: 'none' }, headerShown: false }}
+      />
+      <Tab.Screen
+        name="MostRededAuthors" // чтобы пробросить дочерний роут
+        component={CardListMostRededAuthors}
         options={{ tabBarItemStyle: { display: 'none' }, headerShown: false }}
       />
     </Tab.Navigator>

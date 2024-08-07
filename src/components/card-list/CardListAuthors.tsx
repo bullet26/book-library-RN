@@ -1,11 +1,11 @@
 import { FC, useEffect, useState, useContext } from 'react';
-import { SafeAreaView, FlatList, ActivityIndicator } from 'react-native';
+import { SafeAreaView, FlatList, ActivityIndicator, Button } from 'react-native';
 import { useLazyQuery } from '@apollo/client';
 import { ALL_AUTHORS } from '../../graphQL';
 import { Author } from 'types';
 import { themeContext } from '../../theme';
 import { ImageCard } from '../../UI';
-import { Header } from '../../components';
+import { Header } from '..';
 import { AuthorsQuery, AuthorsProps } from './type';
 
 const CardListAuthors: FC<AuthorsProps> = ({ navigation }) => {
@@ -51,9 +51,14 @@ const CardListAuthors: FC<AuthorsProps> = ({ navigation }) => {
     navigation.navigate('Author', { id });
   };
 
+  const handleClickMostReded = () => {
+    navigation.navigate('MostRededAuthors');
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.backgroundMain }}>
       <Header />
+      <Button title="Show most reded authors" color="#6c0e4b" onPress={handleClickMostReded} />
       {loading && page === 1 && <ActivityIndicator size="large" color={colors.primary} />}
       <FlatList
         data={allData}

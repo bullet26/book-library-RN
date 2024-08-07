@@ -13,4 +13,5 @@ export type RootStackParamList = {
   BookBySpecificDate: undefined;
   BookByTag: undefined;
   Authors: undefined;
+  MostRededAuthors: undefined;
 };

@@ -38,3 +38,15 @@ export const ONE_AUTHOR_BY_ID = gql`
     }
   }
 `;
+
+export const ALL_AUTHORS_BY_BOOKS_COUNT = gql`
+  query GetAllAuthorsByBooksCount {
+    authors: getAllAuthorsByBooksCount {
+      name
+      surname
+      id
+      portraitThumbnail
+      count
+    }
+  }
+`;

@@ -8,5 +8,5 @@ export {
   READ_STATISTIC,
   ALL_TAGS,
 } from './books';
-export { ALL_AUTHORS, ONE_AUTHOR_BY_ID } from './authors';
+export { ALL_AUTHORS, ONE_AUTHOR_BY_ID, ALL_AUTHORS_BY_BOOKS_COUNT } from './authors';
 export { SEARCH_IN_BOOKS_AND_AUTHORS } from './search';

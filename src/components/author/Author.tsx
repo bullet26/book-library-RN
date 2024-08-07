@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useMemo, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { Book } from 'types';
 import { ImageCard, Rating } from '../../UI';
@@ -6,37 +6,57 @@ import { themeContext } from '../../theme';
 import { ONE_AUTHOR_BY_ID } from '../../graphQL';
 import { SectionList, ActivityIndicator, SafeAreaView, Text, View, FlatList } from 'react-native';
 import { AuthorProps, AuthorQuery } from './type';
+import { colorRate } from '../../utils';
 
 const Author: FC<AuthorProps> = ({ route, navigation }) => {
   const { id } = route?.params;
-  const [booksData, setBooks] = useState<{ title: string; data: [{ booksData: Book[] }] }[]>([]);
+  //const [booksData, setBooks] = useState<{ title: string; data: [{ booksData: Book[] }] }[]>([]);
 
   const { loading, error, data } = useQuery<AuthorQuery>(ONE_AUTHOR_BY_ID, {
     variables: { id },
   });
 
-  useEffect(() => {
-    setBooks([]);
-    if (!!data?.author?.series?.length) {
-      setBooks(
-        data.author.series.map((item) => {
-          return {
-            title: item.title,
-            data: [{ booksData: item.booksInSeries }],
-          };
-        })
-      );
+  const { booksData, booksQuant, booksAverageRating } = useMemo(() => {
+    const booksData: { title: string; data: [{ booksData: Book[] }] }[] = [];
+    const series = data?.author?.series;
+    const books = data?.author?.booksWithoutSeries;
+    let booksInSeriesQuant = 0;
+    let booksWithoutSeriesQuant = books?.length || 0;
+    let booksInSeriesTotalRating = 0;
+    let booksWithoutSeriesTotalRating = 0;
+
+    if (!!series) {
+      series.forEach(({ title, booksInSeries }) => {
+        booksInSeriesQuant += booksInSeries?.length || 0;
+        booksInSeries.forEach(({ rating }) => (booksInSeriesTotalRating += rating));
+
+        booksData.push({
+          title,
+          data: [{ booksData: booksInSeries }],
+        });
+      });
     }
-    if (!!data?.author?.booksWithoutSeries?.length) {
-      setBooks((prevState) => [
-        ...prevState,
-        {
-          title: 'Books outside the series',
-          data: [{ booksData: data.author.booksWithoutSeries }],
-        },
-      ]);
+
+    if (!!books) {
+      booksData.push({
+        title: 'Books outside the series',
+        data: [{ booksData: books }],
+      });
+
+      books.forEach(({ rating }) => (booksWithoutSeriesTotalRating += rating));
     }
-  }, [data]);
+
+    const booksQuant = booksInSeriesQuant + booksWithoutSeriesQuant;
+    const booksAverageRating =
+      Math.ceil(((booksInSeriesTotalRating + booksWithoutSeriesTotalRating) / booksQuant) * 100) /
+      100;
+
+    return {
+      booksData,
+      booksQuant,
+      booksAverageRating,
+    };
+  }, [data?.author]);
 
   const colors = useContext(themeContext);
 
@@ -49,8 +69,10 @@ const Author: FC<AuthorProps> = ({ route, navigation }) => {
 
   return (
     <>
-      {!!loading && <ActivityIndicator size="large" color={colors.primary} />}
-      {!!booksData && (
+      {(!!loading || !booksData.length) && (
+        <ActivityIndicator size="large" color={colors.primary} />
+      )}
+      {!!booksData.length && (
         <SafeAreaView style={{ backgroundColor: colors.backgroundAccent, flex: 1 }}>
           <SectionList
             sections={booksData}
@@ -84,10 +106,17 @@ const Author: FC<AuthorProps> = ({ route, navigation }) => {
                 <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
                   <ImageCard uri={data?.author.portrait || ''} width={250} height={415} />
                 </View>
-                <Text
-                  style={{ marginTop: 15, marginBottom: 15, fontSize: 30, textAlign: 'center' }}
-                >
+                <Text style={{ marginTop: 15, fontSize: 30, textAlign: 'center' }}>
                   {data?.author.name || ''} {data?.author.surname || ''}
+                </Text>
+                <Text style={{ marginTop: 10, fontSize: 20 }}>
+                  Total number of books read: {booksQuant || 'unknown'}
+                </Text>
+                <Text style={{ marginTop: 10, marginBottom: 15, fontSize: 20 }}>
+                  Average rating:{' '}
+                  <Text style={{ color: colorRate(booksAverageRating) }}>
+                    {booksAverageRating || 'unknown'}
+                  </Text>
                 </Text>
               </>
             )}

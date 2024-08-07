@@ -20,7 +20,7 @@ const Header = () => {
         zIndex: 2,
       }}
     >
-      <Button title="Books by year" color="#000" onPress={handleChange} />
+      <Button title="Books by year" color="#000000" onPress={handleChange} />
       <Search />
     </View>
   );
