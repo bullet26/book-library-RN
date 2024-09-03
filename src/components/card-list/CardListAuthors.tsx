@@ -1,5 +1,5 @@
 import { FC, useEffect, useState, useContext } from 'react';
-import { SafeAreaView, FlatList, ActivityIndicator, Button } from 'react-native';
+import { SafeAreaView, FlatList, ActivityIndicator, Button, View } from 'react-native';
 import { useLazyQuery } from '@apollo/client';
 import { ALL_AUTHORS } from '../../graphQL';
 import { Author } from 'types';
@@ -59,7 +59,17 @@ const CardListAuthors: FC<AuthorsProps> = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.backgroundMain }}>
       <Header />
       <Button title="Show most reded authors" color="#6c0e4b" onPress={handleClickMostReded} />
-      {loading && page === 1 && <ActivityIndicator size="large" color={colors.primary} />}
+      {loading && page === 1 && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            backgroundColor: colors.backgroundMain,
+          }}
+        >
+          <ActivityIndicator size="large" color={colors.primary} />
+        </View>
+      )}
       <FlatList
         data={allData}
         numColumns={2}

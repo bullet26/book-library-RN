@@ -50,7 +50,17 @@ const BookDetail: FC<BookDetailProps> = ({ route, navigation }) => {
 
   return (
     <>
-      {!!loading && <ActivityIndicator size="large" color={colors.primary} />}
+      {!!loading && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            backgroundColor: colors.backgroundMain,
+          }}
+        >
+          <ActivityIndicator size="large" color={colors.primary} />
+        </View>
+      )}
       {!!data && (
         <SafeAreaView style={{ backgroundColor: colors.backgroundAccent, flex: 1 }}>
           <ScrollView>

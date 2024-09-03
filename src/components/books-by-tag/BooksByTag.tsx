@@ -48,9 +48,20 @@ export const BooksByTag: FC<BooksByTagProps> = ({ route, navigation }) => {
 
   return (
     <>
-      {!!loading && <ActivityIndicator size="large" color={colors.primary} />}
+      {!!loading && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            backgroundColor: colors.backgroundMain,
+          }}
+        >
+          <ActivityIndicator size="large" color={colors.primary} />
+        </View>
+      )}
+
       {!loading && (
-        <SafeAreaView>
+        <SafeAreaView style={{ backgroundColor: colors.backgroundMain }}>
           <View
             style={{
               display: 'flex',

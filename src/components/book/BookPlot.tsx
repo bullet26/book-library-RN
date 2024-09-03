@@ -6,6 +6,7 @@ import {
   Text,
   ScrollView,
   useWindowDimensions,
+  View,
 } from 'react-native';
 import { useQuery } from '@apollo/client';
 import RenderHtml from 'react-native-render-html';
@@ -30,7 +31,17 @@ const BookPlot: FC<BookPlotProps> = ({ route, navigation }) => {
 
   return (
     <>
-      {!!loading && <ActivityIndicator size="large" color={colors.primary} />}
+      {!!loading && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            backgroundColor: colors.backgroundMain,
+          }}
+        >
+          <ActivityIndicator size="large" color={colors.primary} />
+        </View>
+      )}
       {!!data && (
         <SafeAreaView style={{ backgroundColor: colors.backgroundAccent, flex: 1 }}>
           <ScrollView style={{ marginTop: 5, marginHorizontal: 10 }}>

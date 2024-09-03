@@ -19,7 +19,17 @@ const CardListMostRededAuthors: FC<MostRededAuthorsProps> = ({ navigation }) => 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.backgroundMain }}>
       <Header />
-      {loading && <ActivityIndicator size="large" color={colors.primary} />}
+      {loading && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            backgroundColor: colors.backgroundMain,
+          }}
+        >
+          <ActivityIndicator size="large" color={colors.primary} />
+        </View>
+      )}
       {!!data && (
         <FlatList
           data={data?.authors || []}

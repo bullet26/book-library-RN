@@ -1,7 +1,7 @@
 import { FC, useContext, useEffect, useState } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { ALL_BOOKS_BY_SPECIFIC_DATE } from '../../graphQL';
-import { ActivityIndicator, SafeAreaView } from 'react-native';
+import { ActivityIndicator, SafeAreaView, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { ReadDateBook } from 'types';
 import { BooksByDateProps, FormattedBook, BooksByDateQuery } from './type';
@@ -72,7 +72,17 @@ const BooksByDate: FC<BooksByDateProps> = ({ route, navigation }) => {
 
   return (
     <>
-      {!!loading && <ActivityIndicator size="large" color={colors.primary} />}
+      {!!loading && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            backgroundColor: colors.backgroundMain,
+          }}
+        >
+          <ActivityIndicator size="large" color={colors.primary} />
+        </View>
+      )}
       {!loading && (
         <SafeAreaView style={{ backgroundColor: colors.backgroundMain, flex: 1 }}>
           <YearSelect year={year} handleChange={handleChangeYear} />

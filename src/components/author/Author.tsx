@@ -70,7 +70,15 @@ const Author: FC<AuthorProps> = ({ route, navigation }) => {
   return (
     <>
       {(!!loading || !booksData.length) && (
-        <ActivityIndicator size="large" color={colors.primary} />
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            backgroundColor: colors.backgroundMain,
+          }}
+        >
+          <ActivityIndicator size="large" color={colors.primary} />
+        </View>
       )}
       {!!booksData.length && (
         <SafeAreaView style={{ backgroundColor: colors.backgroundAccent, flex: 1 }}>

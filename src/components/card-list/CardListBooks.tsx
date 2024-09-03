@@ -58,7 +58,17 @@ const CardListBooks: FC<BookProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.backgroundMain }}>
       <Header />
-      {loading && page === 1 && <ActivityIndicator size="large" color={colors.primary} />}
+      {loading && page === 1 && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            backgroundColor: colors.backgroundMain,
+          }}
+        >
+          <ActivityIndicator size="large" color={colors.primary} />
+        </View>
+      )}
       <FlatList
         data={allData}
         numColumns={2}
