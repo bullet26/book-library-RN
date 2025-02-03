@@ -1,6 +1,5 @@
 import { FC } from 'react';
-import FastImage from 'react-native-fast-image';
-import { TouchableWithoutFeedback } from 'react-native';
+import { Image, TouchableWithoutFeedback } from 'react-native';
 import { SvgUri } from 'react-native-svg';
 
 interface ImageCardProps {
@@ -18,14 +17,13 @@ const ImageCard: FC<ImageCardProps> = (props) => {
   return (
     <TouchableWithoutFeedback onPress={() => handleClick(id)}>
       {!!uri ? (
-        <FastImage
+        <Image
           source={{ uri }}
           style={{
             width,
             height,
             ...style,
           }}
-          resizeMode={FastImage.resizeMode.cover}
         />
       ) : (
         <SvgUri
