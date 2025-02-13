@@ -1,8 +1,8 @@
-import { FC, useEffect, useState, useContext } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { FlatList, Pressable, Text, View } from 'react-native';
 import { useQuery } from '@apollo/client';
 import { READ_STATISTIC } from '../../../graphQL';
-import { themeContext } from '../../../theme';
+import { colors } from '../../../theme';
 import { IStatistic } from 'types';
 
 interface YearSelectProps {
@@ -14,8 +14,6 @@ const YearSelect: FC<YearSelectProps> = (props) => {
   const { year, handleChange } = props;
   const [allYearsLabels, setAllYearsLabels] = useState<string[]>([]);
   const [showSelectorStatus, setShowSelectorStatus] = useState(false);
-
-  const colors = useContext(themeContext);
 
   const { data, error } = useQuery<{ statistic: IStatistic[] }>(READ_STATISTIC, {
     variables: {

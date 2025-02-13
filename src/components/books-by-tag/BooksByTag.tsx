@@ -1,11 +1,11 @@
-import { FC, useContext, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { SafeAreaView, FlatList, ActivityIndicator, View, Text } from 'react-native';
 import { useLazyQuery } from '@apollo/client';
 import { useFocusEffect } from '@react-navigation/native';
 import { ALL_BOOKS_BY_TAG } from '../../graphQL';
 import { ImageCard, Rating } from '../../UI';
 import { BooksByTagQuery, BooksByTagProps } from './type';
-import { themeContext } from '../../theme';
+import { colors } from '../../theme';
 import { TagSelect } from './tag-select';
 
 export const BooksByTag: FC<BooksByTagProps> = ({ route, navigation }) => {
@@ -37,8 +37,6 @@ export const BooksByTag: FC<BooksByTagProps> = ({ route, navigation }) => {
     setSortType(sortBy);
   };
 
-  const colors = useContext(themeContext);
-
   const handleClickBook = (id: string) => {
     navigation.navigate('Book', {
       screen: 'BookDetail',
@@ -61,7 +59,7 @@ export const BooksByTag: FC<BooksByTagProps> = ({ route, navigation }) => {
       )}
 
       {!loading && (
-        <SafeAreaView style={{ backgroundColor: colors.backgroundMain }}>
+        <SafeAreaView style={{ backgroundColor: colors.backgroundMain, flex: 1 }}>
           <View
             style={{
               display: 'flex',
@@ -105,6 +103,7 @@ export const BooksByTag: FC<BooksByTagProps> = ({ route, navigation }) => {
                   style={{ marginRight: 5, marginLeft: 10 }}
                   id={item.id}
                   handleClick={() => handleClickBook(item.id)}
+                  title={item.title}
                 />
                 <Rating rating={item.rating || 0} type="circle-only" />
               </View>

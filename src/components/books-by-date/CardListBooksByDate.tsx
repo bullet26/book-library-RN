@@ -2,13 +2,11 @@ import { FC, useContext } from 'react';
 import { SectionList, FlatList, Text, View } from 'react-native';
 import { ImageCard, Rating } from '../../UI';
 import { CardListBooksByDateProps } from './type';
-import { themeContext } from '../../theme';
+import { colors } from '../../theme';
 import { styles } from './style';
 
 export const CardListBooksByDate: FC<CardListBooksByDateProps> = (props) => {
   const { handleClickBook, year, booksData } = props;
-
-  const colors = useContext(themeContext);
 
   return (
     <SectionList
@@ -29,6 +27,7 @@ export const CardListBooksByDate: FC<CardListBooksByDateProps> = (props) => {
                 style={{ marginRight: 5, marginLeft: 10 }}
                 id={item.books.id}
                 handleClick={() => handleClickBook(item.books.id)}
+                title={item.books.title}
               />
               <Rating rating={item.books.rating || 0} type="circle-only" />
             </View>

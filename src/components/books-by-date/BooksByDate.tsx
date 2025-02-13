@@ -1,11 +1,11 @@
-import { FC, useContext, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { ALL_BOOKS_BY_SPECIFIC_DATE } from '../../graphQL';
 import { ActivityIndicator, SafeAreaView, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { ReadDateBook } from 'types';
 import { BooksByDateProps, FormattedBook, BooksByDateQuery } from './type';
-import { themeContext } from '../../theme';
+import { colors } from '../../theme';
 import { YearSelect } from './date-select';
 import { CardListBooksByDate } from './CardListBooksByDate';
 
@@ -16,8 +16,6 @@ const BooksByDate: FC<BooksByDateProps> = ({ route, navigation }) => {
   const [getBooks, { loading, error, data }] = useLazyQuery<BooksByDateQuery>(
     ALL_BOOKS_BY_SPECIFIC_DATE
   );
-
-  const colors = useContext(themeContext);
 
   const [formattedBooks, setFormattedBooksState] = useState<FormattedBook>([]);
 

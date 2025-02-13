@@ -11,7 +11,7 @@ import {
 import { useQuery } from '@apollo/client';
 import RenderHtml from 'react-native-render-html';
 import { ONE_BOOK_PLOT } from '../../graphQL';
-import { themeContext } from '../../theme';
+import { colors } from '../../theme';
 import { BookPlotQuery, BookPlotProps } from './type';
 
 const BookPlot: FC<BookPlotProps> = ({ route, navigation }) => {
@@ -20,8 +20,6 @@ const BookPlot: FC<BookPlotProps> = ({ route, navigation }) => {
   const { loading, error, data } = useQuery<BookPlotQuery>(ONE_BOOK_PLOT, {
     variables: { bookID: id },
   });
-
-  const colors = useContext(themeContext);
 
   const handleClick = (id: string) => {
     navigation.navigate('BookDetail', { id });

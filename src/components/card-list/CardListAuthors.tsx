@@ -1,9 +1,9 @@
-import { FC, useEffect, useState, useContext } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { SafeAreaView, FlatList, ActivityIndicator, Button, View } from 'react-native';
 import { useLazyQuery } from '@apollo/client';
 import { ALL_AUTHORS } from '../../graphQL';
 import { Author } from 'types';
-import { themeContext } from '../../theme';
+import { colors } from '../../theme';
 import { ImageCard } from '../../UI';
 import { Header } from '..';
 import { AuthorsQuery, AuthorsProps } from './type';
@@ -14,7 +14,6 @@ const CardListAuthors: FC<AuthorsProps> = ({ navigation }) => {
   const [totalCount, setTotalCount] = useState(1000000);
   const [allData, setData] = useState<Author[]>([]);
   const [debounceStatus, setDebounce] = useState(false);
-  const colors = useContext(themeContext);
 
   useEffect(() => {
     console.log('getAuthors', page);
@@ -83,6 +82,8 @@ const CardListAuthors: FC<AuthorsProps> = ({ navigation }) => {
             style={{ marginRight: 5, marginLeft: 10 }}
             id={item.id}
             handleClick={handleClick}
+            title={`${item.surname}, ${item.name}`}
+            titlePosition="bottom"
           />
         )}
         keyExtractor={(item, index) => item.id || index.toString()}

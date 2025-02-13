@@ -11,9 +11,9 @@ import {
 } from 'react-native';
 import { useQuery } from '@apollo/client';
 import RenderHtml from 'react-native-render-html';
-import { ImageCard, Rating } from '../../UI';
+import { ImageCard, ImageCarousel, Rating } from '../../UI';
 import { ONE_BOOK_BY_ID } from '../../graphQL';
-import { themeContext } from '../../theme';
+import { colors } from '../../theme';
 import { BookQuery, BookDetailProps } from './type';
 
 const BookDetail: FC<BookDetailProps> = ({ route, navigation }) => {
@@ -27,8 +27,6 @@ const BookDetail: FC<BookDetailProps> = ({ route, navigation }) => {
       setBookCover(data.book.bookCover);
     }
   }, [data]);
-
-  const colors = useContext(themeContext);
 
   const handleClickPlot = (id: string) => {
     navigation.navigate('BookPlot', { id });
@@ -119,6 +117,12 @@ const BookDetail: FC<BookDetailProps> = ({ route, navigation }) => {
                 />
               ))}
             </View>
+            {!!data?.book?.series && (
+              <ImageCarousel
+                data={data?.book.series.booksInSeries}
+                title={data?.book.series.title}
+              />
+            )}
             <Pressable onPress={() => handleClickPlot(id || '')}>
               <Text style={{ marginVertical: 20, marginHorizontal: 10, fontSize: 25 }}>
                 Read book plot...

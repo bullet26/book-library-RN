@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
 export const DARK_MODE_THEME = {
   primary: '#9E339F',
@@ -10,6 +10,8 @@ export const DARK_MODE_THEME = {
   dark: '#000',
 };
 
-export const themeContext = createContext(DARK_MODE_THEME);
+const themeContext = createContext(DARK_MODE_THEME);
 
 export const { Provider } = themeContext;
+
+export const colors = useContext(themeContext);

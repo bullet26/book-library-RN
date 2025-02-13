@@ -1,8 +1,8 @@
-import { FC, useContext, useEffect, useMemo, useState } from 'react';
+import { FC, useContext, useMemo } from 'react';
 import { useQuery } from '@apollo/client';
 import { Book } from 'types';
 import { ImageCard, Rating } from '../../UI';
-import { themeContext } from '../../theme';
+import { colors } from '../../theme';
 import { ONE_AUTHOR_BY_ID } from '../../graphQL';
 import { SectionList, ActivityIndicator, SafeAreaView, Text, View, FlatList } from 'react-native';
 import { AuthorProps, AuthorQuery } from './type';
@@ -57,8 +57,6 @@ const Author: FC<AuthorProps> = ({ route, navigation }) => {
       booksAverageRating,
     };
   }, [data?.author]);
-
-  const colors = useContext(themeContext);
 
   const handleClick = (id: string) => {
     navigation.navigate('Book', {
@@ -121,7 +119,7 @@ const Author: FC<AuthorProps> = ({ route, navigation }) => {
                   Total number of books read: {booksQuant || 'unknown'}
                 </Text>
                 <Text style={{ marginTop: 10, marginBottom: 15, fontSize: 20 }}>
-                  Average rating:{' '}
+                  Average rating:
                   <Text style={{ color: colorRate(booksAverageRating) }}>
                     {booksAverageRating || 'unknown'}
                   </Text>

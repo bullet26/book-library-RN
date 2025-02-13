@@ -1,9 +1,9 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { TextInput, View, FlatList, Text, Pressable } from 'react-native';
 import { useLazyQuery } from '@apollo/client';
 import { SEARCH_IN_BOOKS_AND_AUTHORS } from '../../graphQL';
 import { useNavigation } from '@react-navigation/native';
-import { themeContext } from '../../theme';
+import { colors } from '../../theme';
 
 import type { ISearchSuccess, ToBookPage, ToAuthorPage } from './type';
 import { checkTypesTitle } from './utils';
@@ -18,8 +18,6 @@ export const Search = () => {
 
   const navigationToBook = useNavigation<ToBookPage>();
   const navigationToAuthor = useNavigation<ToAuthorPage>();
-
-  const colors = useContext(themeContext);
 
   const handleInputChange = (value: string) => {
     setInputValue(value);

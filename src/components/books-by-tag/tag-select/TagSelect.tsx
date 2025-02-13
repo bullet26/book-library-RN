@@ -1,9 +1,9 @@
-import { FC, useState, useContext } from 'react';
+import { FC, useState } from 'react';
 import { FlatList, Pressable, Text, View } from 'react-native';
 import { useQuery } from '@apollo/client';
 import { Tag } from 'types';
 import { ALL_TAGS } from '../../../graphQL';
-import { themeContext } from '../../../theme';
+import { colors } from '../../../theme';
 
 interface YearSelectProps {
   tag?: string;
@@ -15,8 +15,6 @@ interface YearSelectProps {
 const TagSelect: FC<YearSelectProps> = (props) => {
   const { tag, tagID, sortBy, handleChange } = props;
   const [showSelectorStatus, setShowSelectorStatus] = useState(false);
-
-  const colors = useContext(themeContext);
 
   const { data, error } = useQuery<{ tags: Tag[] }>(ALL_TAGS, {});
 

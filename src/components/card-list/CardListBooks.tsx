@@ -1,9 +1,9 @@
-import { FC, useContext, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { SafeAreaView, FlatList, ActivityIndicator, View } from 'react-native';
 import { useLazyQuery } from '@apollo/client';
 import { ALL_BOOKS_BY_DATE } from '../../graphQL';
 import { ReadDateBook } from 'types';
-import { themeContext } from '../../theme';
+import { colors } from '../../theme';
 import { ImageCard, Rating } from '../../UI';
 import { Header } from '../../components';
 import { BookProps, BooksQuery } from './type';
@@ -14,8 +14,6 @@ const CardListBooks: FC<BookProps> = ({ navigation }) => {
   const [totalCount, setTotalCount] = useState(1000000);
   const [allData, setData] = useState<ReadDateBook[]>([]);
   const [debounceStatus, setDebounce] = useState(false);
-
-  const colors = useContext(themeContext);
 
   useEffect(() => {
     console.log('getBooks', page);
@@ -83,6 +81,7 @@ const CardListBooks: FC<BookProps> = ({ navigation }) => {
               style={{ marginRight: 5, marginLeft: 10 }}
               id={item.books.id}
               handleClick={handleClick}
+              title={item.books.title}
             />
             <Rating rating={item.books.rating || 0} type="circle-only" />
           </View>
