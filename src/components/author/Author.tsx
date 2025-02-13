@@ -98,6 +98,7 @@ const Author: FC<AuthorProps> = ({ route, navigation }) => {
                       style={{ marginRight: 5, marginLeft: 10 }}
                       id={item.id}
                       handleClick={handleClick}
+                      title={item.title}
                     />
                     <Rating rating={item.rating || 0} type="circle-only" />
                   </View>
