@@ -117,10 +117,10 @@ const Author: FC<AuthorProps> = ({ route, navigation }) => {
                   {data?.author.name || ''} {data?.author.surname || ''}
                 </Text>
                 <Text style={{ marginTop: 10, fontSize: 20 }}>
-                  Total number of books read: {booksQuant || 'unknown'}
+                  Total number of books read:&nbsp;{booksQuant || 'unknown'}
                 </Text>
                 <Text style={{ marginTop: 10, marginBottom: 15, fontSize: 20 }}>
-                  Average rating:
+                  Average rating:&nbsp;
                   <Text style={{ color: colorRate(booksAverageRating) }}>
                     {booksAverageRating || 'unknown'}
                   </Text>

@@ -38,12 +38,15 @@ const YearSelect: FC<YearSelectProps> = (props) => {
     >
       {!!year && (
         <Pressable
-          style={{
-            padding: 15,
-            backgroundColor: colors.dark,
-            borderColor: colors.textInactive,
-            borderWidth: 2,
-          }}
+          style={({ pressed }) => [
+            {
+              padding: 15,
+              backgroundColor: colors.dark,
+              opacity: pressed ? 0.5 : 1,
+              borderColor: pressed ? colors.primary : colors.textInactive,
+              borderWidth: 2,
+            },
+          ]}
           onPress={() => {
             setShowSelectorStatus((prevState) => !prevState);
           }}
@@ -59,14 +62,17 @@ const YearSelect: FC<YearSelectProps> = (props) => {
           data={allYearsLabels}
           renderItem={({ item }) => (
             <Pressable
-              style={{
-                padding: 15,
-                marginRight: 25,
-                marginBottom: 10,
-                backgroundColor: colors.dark,
-                borderColor: colors.textInactive,
-                borderWidth: 2,
-              }}
+              style={({ pressed }) => [
+                {
+                  padding: 15,
+                  marginRight: 25,
+                  marginBottom: 10,
+                  backgroundColor: colors.dark,
+                  opacity: pressed ? 0.5 : 1,
+                  borderColor: pressed ? colors.primary : colors.textInactive,
+                  borderWidth: 2,
+                },
+              ]}
               onPress={() => {
                 setShowSelectorStatus(false);
                 handleChange(item);

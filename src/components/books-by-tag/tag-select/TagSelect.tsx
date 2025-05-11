@@ -30,14 +30,16 @@ const TagSelect: FC<YearSelectProps> = (props) => {
     >
       {!!tag && (
         <Pressable
-          style={{
-            padding: 15,
-            backgroundColor: colors.dark,
-            borderColor: colors.textInactive,
-            borderWidth: 2,
-            borderRadius: 20,
-            marginBottom: 10,
-          }}
+          style={({ pressed }) => [
+            {
+              padding: 15,
+              backgroundColor: colors.dark,
+              borderColor: pressed ? colors.primary : colors.textInactive,
+              borderWidth: 2,
+              borderRadius: 20,
+              marginBottom: 10,
+            },
+          ]}
           onPress={() => {
             setShowSelectorStatus((prevState) => !prevState);
           }}
@@ -56,15 +58,18 @@ const TagSelect: FC<YearSelectProps> = (props) => {
             }}
           >
             <Pressable
-              style={{
-                padding: 15,
-                marginRight: 25,
-                marginBottom: 10,
-                backgroundColor: '#3C0949',
-                borderColor: colors.textInactive,
-                borderWidth: 2,
-                borderRadius: 20,
-              }}
+              style={({ pressed }) => [
+                {
+                  padding: 15,
+                  marginRight: 25,
+                  marginBottom: 10,
+                  backgroundColor: '#3C0949',
+                  opacity: pressed ? 0.5 : 1,
+                  borderColor: pressed ? colors.backgroundAccent : colors.textInactive,
+                  borderWidth: 2,
+                  borderRadius: 20,
+                },
+              ]}
               onPress={() => {
                 setShowSelectorStatus(false);
                 handleChange(tagID || '', 'title');
@@ -73,15 +78,18 @@ const TagSelect: FC<YearSelectProps> = (props) => {
               <Text style={{ fontSize: 18 }}>sort by Title</Text>
             </Pressable>
             <Pressable
-              style={{
-                padding: 15,
-                marginRight: 25,
-                marginBottom: 10,
-                backgroundColor: '#3C0949',
-                borderColor: colors.textInactive,
-                borderWidth: 2,
-                borderRadius: 20,
-              }}
+              style={({ pressed }) => [
+                {
+                  padding: 15,
+                  marginRight: 25,
+                  marginBottom: 10,
+                  backgroundColor: '#3C0949',
+                  opacity: pressed ? 0.5 : 1,
+                  borderColor: pressed ? colors.backgroundAccent : colors.textInactive,
+                  borderWidth: 2,
+                  borderRadius: 20,
+                },
+              ]}
               onPress={() => {
                 setShowSelectorStatus(false);
                 handleChange(tagID || '', 'author');
@@ -97,15 +105,18 @@ const TagSelect: FC<YearSelectProps> = (props) => {
             data={data?.tags}
             renderItem={({ item }) => (
               <Pressable
-                style={{
-                  padding: 15,
-                  marginRight: 25,
-                  marginBottom: 10,
-                  backgroundColor: '#672976',
-                  borderColor: colors.textInactive,
-                  borderWidth: 2,
-                  borderRadius: 20,
-                }}
+                style={({ pressed }) => [
+                  {
+                    padding: 15,
+                    marginRight: 25,
+                    marginBottom: 10,
+                    backgroundColor: '#672976',
+                    opacity: pressed ? 0.5 : 1,
+                    borderColor: pressed ? colors.backgroundMain : colors.textInactive,
+                    borderWidth: 2,
+                    borderRadius: 20,
+                  },
+                ]}
                 onPress={() => {
                   setShowSelectorStatus(false);
                   handleChange(item.id, sortBy);

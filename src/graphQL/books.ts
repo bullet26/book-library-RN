@@ -47,6 +47,7 @@ export const ONE_BOOK_BY_ID = gql`
         tag
       }
       bookCover
+      isAdditionalMediaExist
     }
   }
 `;
@@ -67,7 +68,7 @@ export const ALL_BOOKS_BY_TAG = gql`
       }
     }
   }
-`
+`;
 
 export const ONE_BOOK_PLOT = gql`
   query GetOneBookPlot($bookID: ID) {
@@ -109,6 +110,27 @@ export const ALL_TAGS = gql`
     tags: getAllTags {
       id: _id
       tag
+    }
+  }
+`;
+
+export const ALL_MEDIA_FOR_BOOK = gql`
+  query Query($id: ID) {
+    book: getOneBook(id: $id) {
+      id: _id
+      title
+      media: additionalMedia {
+        video {
+          id: _id
+          type
+          url
+        }
+        image {
+          id: _id
+          url
+          type
+        }
+      }
     }
   }
 `;

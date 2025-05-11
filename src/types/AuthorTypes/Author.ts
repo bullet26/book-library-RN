@@ -18,11 +18,3 @@ export interface MostRededAuthorResponse {
   portraitThumbnail: string;
   count: number;
 }
-
-export interface AuthorInput {
-  name: string;
-  surname: string;
-  portrait: string | null;
-  portraitThumbnail: string | null;
-  transcriptionName: string | null;
-}

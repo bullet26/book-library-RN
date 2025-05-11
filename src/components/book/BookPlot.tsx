@@ -1,7 +1,7 @@
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 import {
   SafeAreaView,
-  TouchableWithoutFeedback,
+  Pressable,
   ActivityIndicator,
   Text,
   ScrollView,
@@ -42,16 +42,26 @@ const BookPlot: FC<BookPlotProps> = ({ route, navigation }) => {
       )}
       {!!data && (
         <SafeAreaView style={{ backgroundColor: colors.backgroundAccent, flex: 1 }}>
-          <ScrollView style={{ marginTop: 5, marginHorizontal: 10 }}>
+          <ScrollView style={{ marginTop: 5, paddingHorizontal: 10 }}>
             <RenderHtml
               contentWidth={width}
               source={{
                 html: data?.book?.plot,
               }}
             />
-            <TouchableWithoutFeedback onPress={() => handleClick(id || '')}>
-              <Text style={{ marginVertical: 20, fontSize: 25 }}>Return to book info...</Text>
-            </TouchableWithoutFeedback>
+            <Pressable
+              key={Math.random()}
+              onPress={() => handleClick(id || '')}
+              style={({ pressed }) => [
+                {
+                  backgroundColor: pressed ? colors.backgroundMain : '',
+                  paddingVertical: 10,
+                  marginVertical: 10,
+                },
+              ]}
+            >
+              <Text style={{ fontSize: 25 }}>Return to book info...</Text>
+            </Pressable>
           </ScrollView>
         </SafeAreaView>
       )}

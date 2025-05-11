@@ -1,6 +1,7 @@
-import { FC } from 'react';
-import { Image, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { FC, useState } from 'react';
+import { Image, Text, Pressable, View } from 'react-native';
 import { SvgUri } from 'react-native-svg';
+import ImageView from 'react-native-image-viewing';
 import { colors } from '../../theme';
 
 interface ImageCardProps {
@@ -15,19 +16,28 @@ interface ImageCardProps {
 }
 
 const ImageCard: FC<ImageCardProps> = (props) => {
-  const {
-    uri,
-    width,
-    height,
-    style,
-    id = '',
-    title,
-    titlePosition,
-    handleClick = () => {},
-  } = props;
+  const { uri, width, height, style, id = '', title, titlePosition, handleClick } = props;
+
+  const [visible, setIsVisible] = useState(false);
+
+  const showFullSizeImg = () => {
+    setIsVisible(true);
+  };
+
+  const handleClickImage = () => {
+    const fn = !!handleClick ? () => handleClick(id) : showFullSizeImg;
+    fn();
+  };
 
   return (
-    <TouchableWithoutFeedback onPress={() => handleClick(id)}>
+    <Pressable
+      onPress={handleClickImage}
+      style={({ pressed }) => [
+        {
+          opacity: pressed ? 0.5 : 1,
+        },
+      ]}
+    >
       <View style={{ width, height, ...style }}>
         {!!uri ? (
           <Image
@@ -63,7 +73,13 @@ const ImageCard: FC<ImageCardProps> = (props) => {
           </View>
         )}
       </View>
-    </TouchableWithoutFeedback>
+      <ImageView
+        images={[{ uri }]}
+        imageIndex={0}
+        visible={visible}
+        onRequestClose={() => setIsVisible(false)}
+      />
+    </Pressable>
   );
 };
 

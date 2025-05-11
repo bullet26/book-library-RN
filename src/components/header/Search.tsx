@@ -78,12 +78,15 @@ export const Search = () => {
           data={searchListData}
           renderItem={({ item }) => (
             <Pressable
-              style={{
-                paddingVertical: 10,
-                paddingHorizontal: 5,
-                borderColor: colors.textInactive,
-                borderWidth: 2,
-              }}
+              style={({ pressed }) => [
+                {
+                  paddingVertical: 10,
+                  paddingHorizontal: 5,
+                  borderColor: pressed ? colors.backgroundMain : colors.textInactive,
+                  opacity: pressed ? 0.5 : 1,
+                  borderWidth: 2,
+                },
+              ]}
               onPress={() => {
                 handleSearchResultClick(item.id, item.type);
               }}

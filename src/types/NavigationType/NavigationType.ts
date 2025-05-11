@@ -1,6 +1,7 @@
 export type BookStackParamList = {
   BookPlot: { id: string };
   BookDetail: { id: string };
+  BookMedia: { id: string };
   Author: { id: string };
   BookBySpecificDate: { year: string };
   BookByTag: { id: string };
