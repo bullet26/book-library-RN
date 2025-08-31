@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import {
   SafeAreaView,
   Pressable,
@@ -14,7 +13,7 @@ import { ONE_BOOK_PLOT } from '../../graphQL';
 import { colors } from '../../theme';
 import { BookPlotQuery, BookPlotProps } from './type';
 
-const BookPlot: FC<BookPlotProps> = ({ route, navigation }) => {
+export const BookPlot = ({ route, navigation }: BookPlotProps) => {
   const { id } = route?.params;
 
   const { loading, error, data } = useQuery<BookPlotQuery>(ONE_BOOK_PLOT, {
@@ -68,5 +67,3 @@ const BookPlot: FC<BookPlotProps> = ({ route, navigation }) => {
     </>
   );
 };
-
-export default BookPlot;

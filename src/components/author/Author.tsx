@@ -1,4 +1,4 @@
-import { FC, useContext, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useQuery } from '@apollo/client';
 import { Book } from 'types';
 import { ImageCard, Rating } from '../../UI';
@@ -8,7 +8,7 @@ import { SectionList, ActivityIndicator, SafeAreaView, Text, View, FlatList } fr
 import { AuthorProps, AuthorQuery } from './type';
 import { colorRate } from '../../utils';
 
-const Author: FC<AuthorProps> = ({ route, navigation }) => {
+export const Author = ({ route, navigation }: AuthorProps) => {
   const { id } = route?.params;
   //const [booksData, setBooks] = useState<{ title: string; data: [{ booksData: Book[] }] }[]>([]);
 
@@ -134,4 +134,3 @@ const Author: FC<AuthorProps> = ({ route, navigation }) => {
   );
 };
 
-export default Author;

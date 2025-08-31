@@ -1,3 +1,3 @@
-export { default as BookDetail } from './BookDetail';
-export { default as BookPlot } from './BookPlot';
-export { default as BookMedia } from './BookMedia';
+export { BookDetail } from './BookDetail';
+export { BookPlot } from './BookPlot';
+export { BookMedia } from './BookMedia';

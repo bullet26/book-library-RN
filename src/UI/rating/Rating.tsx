@@ -1,4 +1,4 @@
-import { CSSProperties, FC } from 'react';
+import { CSSProperties } from 'react';
 import { FlatList, SafeAreaView, View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
@@ -12,7 +12,7 @@ interface RatingProps {
   style?: CSSProperties;
 }
 
-const Rating: FC<RatingProps> = (props) => {
+export const Rating = (props: RatingProps) => {
   const { rating, type, style } = props;
 
   return (
@@ -52,5 +52,3 @@ const Rating: FC<RatingProps> = (props) => {
     </>
   );
 };
-
-export default Rating;

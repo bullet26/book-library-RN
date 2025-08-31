@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FlatList, Pressable, Text, View } from 'react-native';
 import { useQuery } from '@apollo/client';
 import { READ_STATISTIC } from '../../../graphQL';
@@ -10,7 +10,7 @@ interface YearSelectProps {
   handleChange: (year: string) => void;
 }
 
-const YearSelect: FC<YearSelectProps> = (props) => {
+export const YearSelect = (props: YearSelectProps) => {
   const { year, handleChange } = props;
   const [allYearsLabels, setAllYearsLabels] = useState<string[]>([]);
   const [showSelectorStatus, setShowSelectorStatus] = useState(false);
@@ -87,5 +87,3 @@ const YearSelect: FC<YearSelectProps> = (props) => {
     </View>
   );
 };
-
-export default YearSelect;

@@ -1,1 +1,1 @@
-export { default as CountBadge } from './CountBadge';
+export { CountBadge } from './CountBadge';

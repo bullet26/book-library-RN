@@ -1,3 +1,3 @@
-export { default as CardListBooks } from './CardListBooks';
-export { default as CardListAuthors } from './CardListAuthors';
-export { default as CardListMostRededAuthors } from './CardListMostRededAuthors';
+export { CardListBooks } from './CardListBooks';
+export { CardListAuthors } from './CardListAuthors';
+export { CardListMostRededAuthors } from './CardListMostRededAuthors';

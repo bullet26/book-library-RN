@@ -1,2 +1,2 @@
-export { default as TabNavigation } from './TabNavigation';
-export { default as BookNavigation } from './BookNavigation';
+export { TabNavigation } from './TabNavigation';
+export { BookNavigation } from './BookNavigation';

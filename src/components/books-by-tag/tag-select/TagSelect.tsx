@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { FlatList, Pressable, Text, View } from 'react-native';
 import { useQuery } from '@apollo/client';
 import { Tag } from 'types';
@@ -12,7 +12,7 @@ interface YearSelectProps {
   handleChange: (id: string, sortBy: string) => void;
 }
 
-const TagSelect: FC<YearSelectProps> = (props) => {
+export const TagSelect = (props: YearSelectProps) => {
   const { tag, tagID, sortBy, handleChange } = props;
   const [showSelectorStatus, setShowSelectorStatus] = useState(false);
 
@@ -132,5 +132,3 @@ const TagSelect: FC<YearSelectProps> = (props) => {
     </View>
   );
 };
-
-export default TagSelect;

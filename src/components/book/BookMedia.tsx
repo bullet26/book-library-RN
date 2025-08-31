@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -15,7 +15,7 @@ import { colors } from '../../theme';
 import { BookMediaProps, BooMediaQuery } from './type';
 import { ImageCard } from '../../UI';
 
-const BookMedia: FC<BookMediaProps> = ({ route }) => {
+export const BookMedia = ({ route }: BookMediaProps) => {
   const { id } = route?.params;
 
   const { loading, error, data } = useQuery<BooMediaQuery>(ALL_MEDIA_FOR_BOOK, {
@@ -104,5 +104,3 @@ const BookMedia: FC<BookMediaProps> = ({ route }) => {
     </>
   );
 };
-
-export default BookMedia;

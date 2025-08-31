@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SafeAreaView, FlatList, ActivityIndicator, View } from 'react-native';
 import { useLazyQuery } from '@apollo/client';
 import { ALL_BOOKS_BY_DATE } from '../../graphQL';
@@ -8,7 +8,7 @@ import { ImageCard, Rating } from '../../UI';
 import { Header } from '../../components';
 import { BookProps, BooksQuery } from './type';
 
-const CardListBooks: FC<BookProps> = ({ navigation }) => {
+export const CardListBooks = ({ navigation }: BookProps) => {
   const [getBooks, { loading, error, data }] = useLazyQuery<BooksQuery>(ALL_BOOKS_BY_DATE);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(1000000);
@@ -94,5 +94,3 @@ const CardListBooks: FC<BookProps> = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-
-export default CardListBooks;

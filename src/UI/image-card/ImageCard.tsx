@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { Image, Text, Pressable, View } from 'react-native';
 import { SvgUri } from 'react-native-svg';
 import ImageView from 'react-native-image-viewing';
@@ -15,7 +15,7 @@ interface ImageCardProps {
   titlePosition?: 'top' | 'bottom';
 }
 
-const ImageCard: FC<ImageCardProps> = (props) => {
+export const ImageCard = (props: ImageCardProps) => {
   const { uri, width, height, style, id = '', title, titlePosition, handleClick } = props;
 
   const [visible, setIsVisible] = useState(false);
@@ -82,5 +82,3 @@ const ImageCard: FC<ImageCardProps> = (props) => {
     </Pressable>
   );
 };
-
-export default ImageCard;

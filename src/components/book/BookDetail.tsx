@@ -1,4 +1,4 @@
-import { useState, useEffect, FC, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -17,7 +17,7 @@ import { ONE_BOOK_BY_ID } from '../../graphQL';
 import { colors } from '../../theme';
 import { BookQuery, BookDetailProps } from './type';
 
-const BookDetail: FC<BookDetailProps> = ({ route, navigation }) => {
+export const BookDetail = ({ route, navigation }: BookDetailProps) => {
   const { id } = route?.params;
 
   const { loading, error, data } = useQuery<BookQuery>(ONE_BOOK_BY_ID, { variables: { id } });
@@ -192,5 +192,3 @@ const BookDetail: FC<BookDetailProps> = ({ route, navigation }) => {
     </>
   );
 };
-
-export default BookDetail;

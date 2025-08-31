@@ -4,7 +4,7 @@ import { BookDetail, BookMedia, BookPlot } from '../components';
 import { BookStackParamList } from 'types';
 import { colors } from '../theme';
 
-const BookNavigation = () => {
+export const BookNavigation = () => {
   const BookStack = createNativeStackNavigator<BookStackParamList>();
   return (
     <SafeAreaView style={{ backgroundColor: colors.backgroundAccent, flex: 1 }}>
@@ -20,5 +20,3 @@ const BookNavigation = () => {
     </SafeAreaView>
   );
 };
-
-export default BookNavigation;

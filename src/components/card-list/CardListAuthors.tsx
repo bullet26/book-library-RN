@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SafeAreaView, FlatList, ActivityIndicator, Button, View } from 'react-native';
 import { useLazyQuery } from '@apollo/client';
 import { ALL_AUTHORS } from '../../graphQL';
@@ -8,7 +8,7 @@ import { ImageCard } from '../../UI';
 import { Header } from '..';
 import { AuthorsQuery, AuthorsProps } from './type';
 
-const CardListAuthors: FC<AuthorsProps> = ({ navigation }) => {
+export const CardListAuthors = ({ navigation }: AuthorsProps) => {
   const [getAuthors, { loading, error, data }] = useLazyQuery<AuthorsQuery>(ALL_AUTHORS);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(1000000);
@@ -94,5 +94,3 @@ const CardListAuthors: FC<AuthorsProps> = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-
-export default CardListAuthors;

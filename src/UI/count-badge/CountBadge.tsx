@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { View, Text } from 'react-native';
 
 import { getCountColor } from './utils';
@@ -8,7 +7,7 @@ interface CountBadgeProps {
   count: number;
 }
 
-const CountBadge: FC<CountBadgeProps> = (props) => {
+export const CountBadge = (props: CountBadgeProps) => {
   const { count } = props;
 
   return (
@@ -17,5 +16,3 @@ const CountBadge: FC<CountBadgeProps> = (props) => {
     </View>
   );
 };
-
-export default CountBadge;

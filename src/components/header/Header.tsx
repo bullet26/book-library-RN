@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Search } from './Search';
 import { BooksByDateProps } from './type';
 
-const Header = () => {
+export const Header = () => {
   const navigation = useNavigation<BooksByDateProps>();
 
   const handleChange = () => {
@@ -25,5 +25,3 @@ const Header = () => {
     </View>
   );
 };
-
-export default Header;

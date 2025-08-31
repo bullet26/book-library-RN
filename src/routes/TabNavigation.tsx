@@ -9,11 +9,11 @@ import {
   CardListMostRededAuthors,
 } from '../components';
 import { colors } from '../theme';
-import BookNavigation from './BookNavigation';
+import { BookNavigation } from './BookNavigation';
 import { RootStackParamList } from 'types';
 import { SafeAreaView } from 'react-native';
 
-const TabNavigation = () => {
+export const TabNavigation = () => {
   const Tab = createBottomTabNavigator<RootStackParamList>();
 
   return (
@@ -76,5 +76,3 @@ const TabNavigation = () => {
     </SafeAreaView>
   );
 };
-
-export default TabNavigation;

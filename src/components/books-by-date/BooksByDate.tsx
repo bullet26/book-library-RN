@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { ALL_BOOKS_BY_SPECIFIC_DATE } from '../../graphQL';
 import { ActivityIndicator, SafeAreaView, View } from 'react-native';
@@ -9,7 +9,7 @@ import { colors } from '../../theme';
 import { YearSelect } from './date-select';
 import { CardListBooksByDate } from './CardListBooksByDate';
 
-const BooksByDate: FC<BooksByDateProps> = ({ route, navigation }) => {
+export const BooksByDate = ({ route, navigation }: BooksByDateProps) => {
   const [year, setYear] = useState('');
   const [routeYear, setRouteYear] = useState(route?.params?.year);
 
@@ -96,5 +96,3 @@ const BooksByDate: FC<BooksByDateProps> = ({ route, navigation }) => {
     </>
   );
 };
-
-export default BooksByDate;
