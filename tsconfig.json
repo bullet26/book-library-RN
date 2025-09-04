@@ -7,6 +7,7 @@
       "components/*": ["components/*"],
       "graphQL/*": ["graphQL/*"],
       "routes/*": ["routes/*"],
+      "hooks/*": ["hooks/*"],
       "pages/*": ["pages/*"],
       "theme/*": ["theme/*"],
       "types/*": ["types/*"],

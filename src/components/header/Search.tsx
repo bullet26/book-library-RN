@@ -7,11 +7,13 @@ import { colors } from '../../theme';
 
 import type { ISearchSuccess, ToBookPage, ToAuthorPage } from './type';
 import { checkTypesTitle } from './utils';
+import { useDebounce } from 'hooks/useDebounce';
 
 export const Search = () => {
   const [makeSearch, { error, data }] = useLazyQuery<ISearchSuccess>(SEARCH_IN_BOOKS_AND_AUTHORS);
   const [showSearchListStatus, setShowSearchListStatus] = useState(false);
   const [inputValue, setInputValue] = useState('');
+  const debouncedValue = useDebounce(inputValue, 800);
   const [searchListData, setSearchListData] = useState<
     { id: string; type: string; title: string }[]
   >([]);
@@ -44,13 +46,10 @@ export const Search = () => {
   };
 
   useEffect(() => {
-    const debounce = setTimeout(() => {
-      if (inputValue) {
-        handleSearch(inputValue);
-      }
-    }, 800);
-    return () => clearInterval(debounce);
-  }, [inputValue]);
+    if (debouncedValue) {
+      handleSearch(debouncedValue);
+    }
+  }, [debouncedValue]);
 
   useEffect(() => {
     if (!!data?.search.length) {
