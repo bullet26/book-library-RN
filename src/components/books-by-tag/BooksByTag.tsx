@@ -1,19 +1,20 @@
-import { FC, useEffect, useState } from 'react';
-import { SafeAreaView, FlatList, ActivityIndicator, View, Text } from 'react-native';
-import { useLazyQuery } from '@apollo/client';
+import { useEffect, useState } from 'react';
+import { FlatList, ActivityIndicator, View, Text } from 'react-native';
+import { useLazyQuery } from '@apollo/client/react';
 import { useFocusEffect } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { ALL_BOOKS_BY_TAG } from '../../graphQL';
 import { ImageCard, Rating } from '../../UI';
-import { BooksByTagQuery, BooksByTagProps } from './type';
+import { BooksByTagProps } from './type';
 import { colors } from '../../theme';
 import { TagSelect } from './tag-select';
 
-export const BooksByTag: FC<BooksByTagProps> = ({ route, navigation }) => {
-  const [tagID, setTagID] = useState(route?.params?.id);
-  const [routeTagID, setRouteTagID] = useState(route?.params?.id);
+export const BooksByTag = ({ route, navigation }: BooksByTagProps) => {
+  const [tagID, setTagID] = useState(route.params.id);
+  const [routeTagID, setRouteTagID] = useState(route.params.id);
   const [sortBy, setSortType] = useState('title');
 
-  const [getBooks, { loading, error, data }] = useLazyQuery<BooksByTagQuery>(ALL_BOOKS_BY_TAG);
+  const [getBooks, { loading, error, data }] = useLazyQuery(ALL_BOOKS_BY_TAG);
 
   useFocusEffect(() => {
     setRouteTagID(route?.params?.id);
@@ -68,8 +69,8 @@ export const BooksByTag: FC<BooksByTagProps> = ({ route, navigation }) => {
               marginVertical: 10,
             }}
           >
-            <Text style={{ fontSize: 25 }}>Books by tag: </Text>
-            <Text style={{ fontSize: 25, color: 'purple' }}>#{data?.tagData.tag}</Text>
+            <Text style={{ fontSize: 25, color: colors.textMain }}>Books by tag: </Text>
+            <Text style={{ fontSize: 25, color: colors.primary }}>#{data?.tagData.tag}</Text>
           </View>
           <View
             style={{
@@ -80,8 +81,8 @@ export const BooksByTag: FC<BooksByTagProps> = ({ route, navigation }) => {
               marginHorizontal: 20,
             }}
           >
-            <Text style={{ fontSize: 18 }}>Books sort by: </Text>
-            <Text style={{ fontSize: 18, color: 'purple' }}>{sortBy}</Text>
+            <Text style={{ fontSize: 18, color: colors.textAccent }}>Books sort by: </Text>
+            <Text style={{ fontSize: 18, color: colors.primary }}>{sortBy}</Text>
           </View>
           <TagSelect
             tag={data?.tagData.tag}

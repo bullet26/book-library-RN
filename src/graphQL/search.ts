@@ -1,18 +1,18 @@
-import { gql } from '@apollo/client';
+import { graphql } from './__generated__';
 
-export const SEARCH_IN_BOOKS_AND_AUTHORS = gql`
-  query Search($searchString: String) {
+export const SEARCH_IN_BOOKS_AND_AUTHORS = graphql(`
+  query SearchInBooksAndAuthors($searchString: String!) {
     search(searchString: $searchString) {
       __typename
       ... on Book {
-        id: _id
+        id
         title
       }
       ... on Author {
-        id: _id
+        id
         name
         surname
       }
     }
   }
-`;
+`);

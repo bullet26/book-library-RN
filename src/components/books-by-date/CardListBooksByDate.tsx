@@ -1,17 +1,16 @@
-import { FC, useContext } from 'react';
 import { SectionList, FlatList, Text, View } from 'react-native';
 import { ImageCard, Rating } from '../../UI';
 import { CardListBooksByDateProps } from './type';
 import { colors } from '../../theme';
 import { styles } from './style';
 
-export const CardListBooksByDate: FC<CardListBooksByDateProps> = (props) => {
+export const CardListBooksByDate = (props: CardListBooksByDateProps) => {
   const { handleClickBook, year, booksData } = props;
 
   return (
     <SectionList
       sections={booksData}
-      keyExtractor={(index) => index.toString()}
+      keyExtractor={index => index.toString()}
       renderItem={({ item }) => (
         <FlatList
           data={item.books}

@@ -1,13 +1,14 @@
-import { SafeAreaView, FlatList, ActivityIndicator, View } from 'react-native';
-import { useQuery } from '@apollo/client';
+import { FlatList, ActivityIndicator, View } from 'react-native';
+import { useQuery } from '@apollo/client/react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { ALL_AUTHORS_BY_BOOKS_COUNT } from '../../graphQL';
 import { colors } from '../../theme';
 import { CountBadge, ImageCard } from '../../UI';
 import { Header } from '../header';
-import { MostRededAuthorsQuery, MostRededAuthorsProps } from './type';
+import { MostRededAuthorsProps } from './type';
 
 export const CardListMostRededAuthors = ({ navigation }: MostRededAuthorsProps) => {
-  const { loading, error, data } = useQuery<MostRededAuthorsQuery>(ALL_AUTHORS_BY_BOOKS_COUNT);
+  const { loading, error, data } = useQuery(ALL_AUTHORS_BY_BOOKS_COUNT);
 
   const handleClick = (id: string) => {
     navigation.navigate('Author', { id });

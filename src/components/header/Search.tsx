@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import { TextInput, View, FlatList, Text, Pressable } from 'react-native';
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client/react';
 import { SEARCH_IN_BOOKS_AND_AUTHORS } from '../../graphQL';
 import { useNavigation } from '@react-navigation/native';
 import { colors } from '../../theme';
 
-import type { ISearchSuccess, ToBookPage, ToAuthorPage } from './type';
+import type { ToBookPage, ToAuthorPage } from './type';
 import { checkTypesTitle } from './utils';
-import { useDebounce } from 'hooks/useDebounce';
+import { useDebounce } from '../../hooks';
 
 export const Search = () => {
-  const [makeSearch, { error, data }] = useLazyQuery<ISearchSuccess>(SEARCH_IN_BOOKS_AND_AUTHORS);
+  const [makeSearch, { error, data }] = useLazyQuery(SEARCH_IN_BOOKS_AND_AUTHORS);
   const [showSearchListStatus, setShowSearchListStatus] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const debouncedValue = useDebounce(inputValue, 800);
@@ -54,9 +54,9 @@ export const Search = () => {
   useEffect(() => {
     if (!!data?.search.length) {
       setSearchListData(
-        data?.search.map((item) => {
+        data?.search.map(item => {
           return checkTypesTitle(item);
-        })
+        }),
       );
     } else {
       setSearchListData([{ id: '', type: '', title: "Couldn't find anything" }]);
@@ -68,7 +68,10 @@ export const Search = () => {
       <TextInput
         placeholder="Type here to search"
         value={inputValue}
-        onChangeText={(newText) => handleInputChange(newText)}
+        onChangeText={newText => handleInputChange(newText)}
+        style={{
+          color: colors.textWhite,
+        }}
       />
 
       {!!data && showSearchListStatus && (
@@ -81,7 +84,7 @@ export const Search = () => {
                 {
                   paddingVertical: 10,
                   paddingHorizontal: 5,
-                  borderColor: pressed ? colors.backgroundMain : colors.textInactive,
+                  borderColor: pressed ? colors.backgroundMain : colors.textWhite,
                   opacity: pressed ? 0.5 : 1,
                   borderWidth: 2,
                 },
@@ -90,10 +93,10 @@ export const Search = () => {
                 handleSearchResultClick(item.id, item.type);
               }}
             >
-              <Text style={{ fontSize: 18 }}>{item.title}</Text>
+              <Text style={{ fontSize: 18, color: colors.textMain }}>{item.title}</Text>
             </Pressable>
           )}
-          keyExtractor={(item) => item.id}
+          keyExtractor={item => item.id}
         />
       )}
     </View>

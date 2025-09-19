@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import {
-  SafeAreaView,
   ScrollView,
   ActivityIndicator,
   Text,
@@ -9,26 +8,37 @@ import {
   useWindowDimensions,
   Button,
 } from 'react-native';
-import { useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 import RenderHtml from 'react-native-render-html';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 import { ImageCard, ImageCarousel, Rating } from '../../UI';
 import { ONE_BOOK_BY_ID } from '../../graphQL';
 import { colors } from '../../theme';
-import { BookQuery, BookDetailProps } from './type';
+import { BookDetailProps } from './type';
 
 export const BookDetail = ({ route, navigation }: BookDetailProps) => {
   const { id } = route?.params;
 
-  const { loading, error, data } = useQuery<BookQuery>(ONE_BOOK_BY_ID, { variables: { id } });
+  const { loading, error, data } = useQuery(ONE_BOOK_BY_ID, {
+    skip: !id,
+    variables: { id },
+  });
   const [bookCover, setBookCover] = useState('');
-  const pressedIndexRef = useRef<number | null>(null);
+  const pressedIndexRef = useRef<number | string | null>(null);
 
   useEffect(() => {
-    if (!!data) {
+    if (!!data?.book?.bookCover) {
       setBookCover(data.book.bookCover);
     }
   }, [data]);
+
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener('focus', () => {
+  //     pressedIndexRef.current = null;
+  //   });
+  //   return unsubscribe;
+  // }, [navigation]);
 
   const handleClickPlot = () => {
     navigation.navigate('BookPlot', { id });
@@ -70,7 +80,7 @@ export const BookDetail = ({ route, navigation }: BookDetailProps) => {
           <ScrollView style={{ paddingHorizontal: 10 }}>
             <View
               style={{
-                justifyContent: data?.book.isAdditionalMediaExist ? 'flex-end' : 'center',
+                justifyContent: data.book?.isAdditionalMediaExist ? 'flex-end' : 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
                 columnGap: 10,
@@ -78,7 +88,7 @@ export const BookDetail = ({ route, navigation }: BookDetailProps) => {
               }}
             >
               <ImageCard uri={bookCover} width={250} height={415} />
-              {data?.book.isAdditionalMediaExist && (
+              {data.book?.isAdditionalMediaExist && (
                 <Pressable
                   onPress={handleClickMedia}
                   style={({ pressed }) => [
@@ -89,17 +99,24 @@ export const BookDetail = ({ route, navigation }: BookDetailProps) => {
                     },
                   ]}
                 >
-                  <FontAwesome6 name={'image'} solid size={30} color={colors.primary} />
+                  <FontAwesome6 name={'image'} iconStyle="solid" size={30} color={colors.primary} />
                 </Pressable>
               )}
             </View>
-            <Text style={{ marginTop: 15, fontSize: 30, textAlign: 'center' }}>
-              {data?.book.title}
+            <Text
+              style={{ marginTop: 15, fontSize: 30, textAlign: 'center', color: colors.textMain }}
+            >
+              {data.book?.title}
             </Text>
-            <Rating rating={data?.book.rating || 0} type="star" />
+            <Rating rating={data.book?.rating || 0} type="star" />
             <Pressable
-              key={Math.random()}
-              onPress={() => handleClickAuthor(data.book.author.id || '')}
+              onPress={() => handleClickAuthor(data.book?.author.id || '')}
+              onPressIn={() => {
+                pressedIndexRef.current = 'author';
+              }}
+              onPressOut={() => {
+                setTimeout(() => (pressedIndexRef.current = null), 500);
+              }}
               style={({ pressed }) => [
                 {
                   backgroundColor: pressed ? colors.backgroundMain : '',
@@ -109,9 +126,9 @@ export const BookDetail = ({ route, navigation }: BookDetailProps) => {
               ]}
             >
               <View>
-                <Text>author</Text>
-                <Text>
-                  {data?.book.author.name} {data?.book.author.surname}
+                <Text style={{ color: colors.textAccent }}>author</Text>
+                <Text style={{ color: colors.textAccent }}>
+                  {data.book?.author.name} {data.book?.author.surname}
                 </Text>
               </View>
             </Pressable>
@@ -130,8 +147,8 @@ export const BookDetail = ({ route, navigation }: BookDetailProps) => {
                   paddingVertical: 5,
                 }}
               >
-                <Text>read date</Text>
-                <Text>
+                <Text style={{ color: colors.textAccent }}>read date</Text>
+                <Text style={{ color: colors.textAccent }}>
                   {readEnd.day} {readEnd.month}, {readEnd.year}
                 </Text>
               </Pressable>
@@ -140,6 +157,7 @@ export const BookDetail = ({ route, navigation }: BookDetailProps) => {
             <View style={{ marginTop: 10 }}>
               <RenderHtml
                 contentWidth={width}
+                tagsStyles={{ body: { color: colors.textAccent } }}
                 source={{
                   html: data?.book?.description || 'Add annotation someday',
                 }}
@@ -156,7 +174,7 @@ export const BookDetail = ({ route, navigation }: BookDetailProps) => {
                 marginTop: 15,
               }}
             >
-              {data.book.tags.map((item) => (
+              {data.book?.tags.map(item => (
                 <Button
                   key={item.id}
                   title={item.tag}
@@ -167,7 +185,7 @@ export const BookDetail = ({ route, navigation }: BookDetailProps) => {
                 />
               ))}
             </View>
-            {!!data?.book?.series && (
+            {data.book?.series && (
               <ImageCarousel
                 data={data?.book.series.booksInSeries}
                 title={data?.book.series.title}
@@ -184,7 +202,7 @@ export const BookDetail = ({ route, navigation }: BookDetailProps) => {
                 },
               ]}
             >
-              <Text style={{ fontSize: 25 }}>Read book plot...</Text>
+              <Text style={{ fontSize: 25, color: colors.textMain }}>Read book plot...</Text>
             </Pressable>
           </ScrollView>
         </SafeAreaView>

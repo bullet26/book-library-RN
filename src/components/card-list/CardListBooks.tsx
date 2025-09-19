@@ -1,33 +1,30 @@
 import { useEffect, useState } from 'react';
-import { SafeAreaView, FlatList, ActivityIndicator, View } from 'react-native';
-import { useLazyQuery } from '@apollo/client';
+import { FlatList, ActivityIndicator, View } from 'react-native';
+import { useLazyQuery } from '@apollo/client/react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { ALL_BOOKS_BY_DATE } from '../../graphQL';
-import { ReadDateBook } from 'types';
 import { colors } from '../../theme';
 import { ImageCard, Rating } from '../../UI';
 import { Header } from '../../components';
-import { BookProps, BooksQuery } from './type';
+import { BookProps, ReadDateBook } from './type';
 
 export const CardListBooks = ({ navigation }: BookProps) => {
-  const [getBooks, { loading, error, data }] = useLazyQuery<BooksQuery>(ALL_BOOKS_BY_DATE);
+  const [getBooks, { loading, error, data }] = useLazyQuery(ALL_BOOKS_BY_DATE);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(1000000);
-  const [allData, setData] = useState<ReadDateBook[]>([]);
+  const [allData, setData] = useState<ReadDateBook>([]);
   const [debounceStatus, setDebounce] = useState(false);
 
   useEffect(() => {
-    console.log('getBooks', page);
-
     if (allData.length < totalCount) {
       if (loading || debounceStatus) {
         return;
       }
-      console.log(debounceStatus);
 
       getBooks({
         variables: {
           page,
-          limit: 50,
+          limit: 20,
         },
       });
     }
@@ -39,9 +36,7 @@ export const CardListBooks = ({ navigation }: BookProps) => {
 
   useEffect(() => {
     if (data) {
-      console.log('setDta');
-
-      setData((prevState) => [...prevState, ...data?.books.readDate]);
+      setData(prevState => [...prevState, ...data?.books.readDate]);
       setTotalCount(data.books.totalCount);
     }
   }, [data]);
@@ -87,7 +82,7 @@ export const CardListBooks = ({ navigation }: BookProps) => {
           </View>
         )}
         keyExtractor={(item, index) => item.id || index.toString()}
-        onEndReached={() => setPage((prevState) => prevState + 1)}
+        onEndReached={() => setPage(prevState => prevState + 1)}
         onEndReachedThreshold={0.5}
       />
       {loading && page > 1 && <ActivityIndicator size="small" color={colors.primary} />}

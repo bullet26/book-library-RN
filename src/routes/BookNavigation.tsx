@@ -1,13 +1,13 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { BookDetail, BookMedia, BookPlot } from '../components';
-import { BookStackParamList } from 'types';
+import { BookStackParamList } from '../types';
 import { colors } from '../theme';
 
 export const BookNavigation = () => {
   const BookStack = createNativeStackNavigator<BookStackParamList>();
   return (
-    <SafeAreaView style={{ backgroundColor: colors.backgroundAccent, flex: 1 }}>
+    <SafeAreaView style={{ backgroundColor: colors.backgroundAccent, flex: 1, paddingTop: 10 }}>
       <BookStack.Navigator>
         <BookStack.Screen
           name="BookDetail"

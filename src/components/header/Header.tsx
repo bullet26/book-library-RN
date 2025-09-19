@@ -7,7 +7,7 @@ export const Header = () => {
   const navigation = useNavigation<BooksByDateProps>();
 
   const handleChange = () => {
-    navigation.navigate('BookBySpecificDate');
+    navigation.navigate('BookBySpecificDate', { year: new Date().getFullYear().toString() });
   };
   return (
     <View

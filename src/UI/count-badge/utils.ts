@@ -6,8 +6,8 @@ export const getCountColor = (count: number) => {
   } else if (count === 4) {
     return '#17BECF';
   } else if (count === 3) {
-    return 'darkblue';
+    return '#2CA02C';
   } else if (count === 2) {
-    return 'pink';
+    return '#FF7F0E';
   }
 };

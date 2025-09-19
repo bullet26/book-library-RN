@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, FlatList, Dimensions, StyleSheet, Text } from 'react-native';
-import { Book } from '../../types';
 import { ImageCard } from '../../UI';
+import { GetOneBookIdQuery } from '../../graphQL/__generated__/graphql';
+import { colors } from '../../theme';
 
 const { width } = Dimensions.get('window');
 const ITEMS_PER_PAGE = 3;
@@ -9,7 +10,7 @@ const ITEM_WIDTH = width / ITEMS_PER_PAGE;
 
 interface ImageCarouselProps {
   title: string;
-  data: Book[];
+  data: NonNullable<NonNullable<GetOneBookIdQuery['book']>['series']>['booksInSeries'];
 }
 
 export const ImageCarousel = (props: ImageCarouselProps) => {
@@ -18,8 +19,10 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
   return (
     <View style={{ marginTop: 15 }}>
       <Text>
-        <Text style={{ fontSize: 14 }}>All books in the series:&nbsp;</Text>
-        <Text style={{ fontSize: 18 }}>{title}</Text>
+        <Text style={{ fontSize: 14, color: colors.textAccent }}>
+          All books in the series:&nbsp;
+        </Text>
+        <Text style={{ fontSize: 18, color: colors.textMain }}>{title}</Text>
       </Text>
       <FlatList
         data={data}
@@ -28,7 +31,7 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
         showsHorizontalScrollIndicator={false}
         snapToInterval={width}
         decelerationRate="fast"
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
           <View style={styles.card}>
             <ImageCard

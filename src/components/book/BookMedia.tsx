@@ -1,24 +1,18 @@
 import { useState } from 'react';
-import {
-  ActivityIndicator,
-  FlatList,
-  Linking,
-  Pressable,
-  SafeAreaView,
-  Text,
-  View,
-} from 'react-native';
-import { useQuery } from '@apollo/client';
+import { ActivityIndicator, FlatList, Linking, Pressable, Text, View } from 'react-native';
+import { useQuery } from '@apollo/client/react';
 import ImageView from 'react-native-image-viewing';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { ALL_MEDIA_FOR_BOOK } from '../../graphQL';
 import { colors } from '../../theme';
-import { BookMediaProps, BooMediaQuery } from './type';
+import { BookMediaProps } from './type';
 import { ImageCard } from '../../UI';
 
 export const BookMedia = ({ route }: BookMediaProps) => {
   const { id } = route?.params;
 
-  const { loading, error, data } = useQuery<BooMediaQuery>(ALL_MEDIA_FOR_BOOK, {
+  const { loading, error, data } = useQuery(ALL_MEDIA_FOR_BOOK, {
+    skip: !id,
     variables: { id },
   });
 
@@ -28,14 +22,14 @@ export const BookMedia = ({ route }: BookMediaProps) => {
   const media = data?.book?.media;
 
   const handleClickImage = (id: string) => {
-    const currentIndex = media?.image.findIndex((item) => item.id === id) || 0;
+    const currentIndex = media?.image.findIndex(item => item.id === id) || 0;
     const correctIndex = currentIndex === -1 ? 0 : currentIndex;
     setIndex(correctIndex);
     setIsVisible(true);
   };
 
   const handleClickVideo = async (id: string) => {
-    const url = media?.video.find((item) => item.id === id)?.url;
+    const url = media?.video.find(item => item.id === id)?.url;
 
     if (url) await Linking.openURL(url);
   };
@@ -66,7 +60,7 @@ export const BookMedia = ({ route }: BookMediaProps) => {
                   },
                 ]}
               >
-                <Text style={{ fontSize: 18, padding: 15 }}>
+                <Text style={{ fontSize: 18, padding: 15, color: colors.textAccent }}>
                   {item.type} #{i + 1}
                 </Text>
               </Pressable>
@@ -78,7 +72,7 @@ export const BookMedia = ({ route }: BookMediaProps) => {
               <FlatList
                 data={media.image}
                 numColumns={3}
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={item => item.id.toString()}
                 renderItem={({ item }) => (
                   <ImageCard
                     uri={item.url}
@@ -90,7 +84,7 @@ export const BookMedia = ({ route }: BookMediaProps) => {
                 )}
               />
               <ImageView
-                images={media.image.map((item) => ({
+                images={media.image.map(item => ({
                   uri: item.url,
                 }))}
                 imageIndex={index}

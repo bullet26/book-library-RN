@@ -6,7 +6,7 @@ import { colors } from '../../theme';
 
 interface ImageCardProps {
   id?: string;
-  uri: string;
+  uri?: string | null;
   width: number;
   height: number;
   style?: { [x: string]: string | number };
@@ -39,7 +39,7 @@ export const ImageCard = (props: ImageCardProps) => {
       ]}
     >
       <View style={{ width, height, ...style }}>
-        {!!uri ? (
+        {uri ? (
           <Image
             source={{ uri }}
             style={{
@@ -69,12 +69,12 @@ export const ImageCard = (props: ImageCardProps) => {
               width,
             }}
           >
-            <Text style={{ color: colors.textInactive }}>{title}</Text>
+            <Text style={{ color: colors.textWhite }}>{title}</Text>
           </View>
         )}
       </View>
       <ImageView
-        images={[{ uri }]}
+        images={[{ uri: uri ?? '' }]}
         imageIndex={0}
         visible={visible}
         onRequestClose={() => setIsVisible(false)}

@@ -1,5 +1,5 @@
 module.exports = {
-  arrowParens: 'always',
+  arrowParens: 'avoid',
   bracketSpacing: true,
   jsxBracketSameLine: false,
   jsxSingleQuote: false,
@@ -9,5 +9,5 @@ module.exports = {
   printWidth: 100,
   useTabs: false,
   tabWidth: 2,
-  trailingComma: 'es5',
+  trailingComma: 'all',
 };

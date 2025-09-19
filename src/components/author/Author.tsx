@@ -1,23 +1,24 @@
 import { useMemo } from 'react';
-import { useQuery } from '@apollo/client';
-import { Book } from 'types';
+import { useQuery } from '@apollo/client/react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { ImageCard, Rating } from '../../UI';
 import { colors } from '../../theme';
 import { ONE_AUTHOR_BY_ID } from '../../graphQL';
-import { SectionList, ActivityIndicator, SafeAreaView, Text, View, FlatList } from 'react-native';
-import { AuthorProps, AuthorQuery } from './type';
+import { SectionList, ActivityIndicator, Text, View, FlatList } from 'react-native';
+import { AuthorProps, FormattedBooksData } from './type';
 import { colorRate } from '../../utils';
 
 export const Author = ({ route, navigation }: AuthorProps) => {
   const { id } = route?.params;
-  //const [booksData, setBooks] = useState<{ title: string; data: [{ booksData: Book[] }] }[]>([]);
 
-  const { loading, error, data } = useQuery<AuthorQuery>(ONE_AUTHOR_BY_ID, {
+  const { loading, error, data } = useQuery(ONE_AUTHOR_BY_ID, {
+    skip: !id,
     variables: { id },
   });
 
   const { booksData, booksQuant, booksAverageRating } = useMemo(() => {
-    const booksData: { title: string; data: [{ booksData: Book[] }] }[] = [];
+    const booksData: FormattedBooksData = [];
+
     const series = data?.author?.series;
     const books = data?.author?.booksWithoutSeries;
     let booksInSeriesQuant = 0;
@@ -28,7 +29,11 @@ export const Author = ({ route, navigation }: AuthorProps) => {
     if (!!series) {
       series.forEach(({ title, booksInSeries }) => {
         booksInSeriesQuant += booksInSeries?.length || 0;
-        booksInSeries.forEach(({ rating }) => (booksInSeriesTotalRating += rating));
+        booksInSeries.forEach(({ rating }) => {
+          if (rating) {
+            booksInSeriesTotalRating += rating;
+          }
+        });
 
         booksData.push({
           title,
@@ -43,7 +48,11 @@ export const Author = ({ route, navigation }: AuthorProps) => {
         data: [{ booksData: books }],
       });
 
-      books.forEach(({ rating }) => (booksWithoutSeriesTotalRating += rating));
+      books.forEach(({ rating }) => {
+        if (rating) {
+          booksWithoutSeriesTotalRating += rating;
+        }
+      });
     }
 
     const booksQuant = booksInSeriesQuant + booksWithoutSeriesQuant;
@@ -79,10 +88,10 @@ export const Author = ({ route, navigation }: AuthorProps) => {
         </View>
       )}
       {!!booksData.length && (
-        <SafeAreaView style={{ backgroundColor: colors.backgroundAccent, flex: 1 }}>
+        <SafeAreaView style={{ backgroundColor: colors.backgroundAccent, flex: 1, paddingTop: 20 }}>
           <SectionList
             sections={booksData}
-            keyExtractor={(index) => index.toString()}
+            keyExtractor={index => index.toString()}
             renderItem={({ item }) => (
               <FlatList
                 data={item.booksData}
@@ -106,20 +115,36 @@ export const Author = ({ route, navigation }: AuthorProps) => {
               />
             )}
             renderSectionHeader={({ section: { title } }) => (
-              <Text style={{ marginBottom: 15 }}>&nbsp;&nbsp;{title}&nbsp;&nbsp;</Text>
+              <Text style={{ marginBottom: 15, color: colors.textMain }}>
+                &nbsp;&nbsp;{title}&nbsp;&nbsp;
+              </Text>
             )}
             ListHeaderComponent={() => (
               <>
                 <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-                  <ImageCard uri={data?.author.portrait || ''} width={250} height={415} />
+                  <ImageCard uri={data?.author?.portrait || ''} width={250} height={415} />
                 </View>
-                <Text style={{ marginTop: 15, fontSize: 30, textAlign: 'center' }}>
-                  {data?.author.name || ''} {data?.author.surname || ''}
+                <Text
+                  style={{
+                    marginTop: 15,
+                    fontSize: 30,
+                    textAlign: 'center',
+                    color: colors.textMain,
+                  }}
+                >
+                  {data?.author?.name || ''} {data?.author?.surname || ''}
                 </Text>
-                <Text style={{ marginTop: 10, fontSize: 20 }}>
+                <Text style={{ marginTop: 10, fontSize: 20, color: colors.textAccent }}>
                   Total number of books read:&nbsp;{booksQuant || 'unknown'}
                 </Text>
-                <Text style={{ marginTop: 10, marginBottom: 15, fontSize: 20 }}>
+                <Text
+                  style={{
+                    marginTop: 10,
+                    marginBottom: 15,
+                    fontSize: 20,
+                    color: colors.textAccent,
+                  }}
+                >
                   Average rating:&nbsp;
                   <Text style={{ color: colorRate(booksAverageRating) }}>
                     {booksAverageRating || 'unknown'}
@@ -133,4 +158,3 @@ export const Author = ({ route, navigation }: AuthorProps) => {
     </>
   );
 };
-

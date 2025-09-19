@@ -1,10 +1,10 @@
-import { gql } from '@apollo/client';
+import { graphql } from './__generated__';
 
-export const ALL_AUTHORS = gql`
+export const ALL_AUTHORS = graphql(`
   query GetAllAuthors($page: Int, $limit: Int) {
     getAllAuthors(page: $page, limit: $limit) {
       authors {
-        id: _id
+        id
         name
         surname
         portraitThumbnail
@@ -12,10 +12,10 @@ export const ALL_AUTHORS = gql`
       totalCount
     }
   }
-`;
+`);
 
-export const ONE_AUTHOR_BY_ID = gql`
-  query GetOneAuthor($id: ID) {
+export const ONE_AUTHOR_BY_ID = graphql(`
+  query GetOneAuthorById($id: ID) {
     author: getOneAuthor(id: $id) {
       name
       surname
@@ -26,20 +26,20 @@ export const ONE_AUTHOR_BY_ID = gql`
           title
           rating
           bookCoverThumbnail
-          id: _id
+          id
         }
       }
       booksWithoutSeries {
         title
         rating
         bookCoverThumbnail
-        id: _id
+        id
       }
     }
   }
-`;
+`);
 
-export const ALL_AUTHORS_BY_BOOKS_COUNT = gql`
+export const ALL_AUTHORS_BY_BOOKS_COUNT = graphql(`
   query GetAllAuthorsByBooksCount {
     authors: getAllAuthorsByBooksCount {
       name
@@ -49,4 +49,4 @@ export const ALL_AUTHORS_BY_BOOKS_COUNT = gql`
       count
     }
   }
-`;
+`);

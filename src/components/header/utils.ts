@@ -1,6 +1,8 @@
-import { Author, Book, Search as ISearch } from 'types';
+import { Author, Book, SearchInBooksAndAuthorsQuery } from '../../graphQL/__generated__/graphql';
 
-export const checkTypesTitle = (item: ISearch) => {
+type Search = SearchInBooksAndAuthorsQuery['search'][number];
+
+export const checkTypesTitle = (item: Search) => {
   if (Object.hasOwn(item, 'name')) {
     const author = item as Author;
     return {

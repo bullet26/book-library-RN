@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 import {
   CardListBooks,
   CardListAuthors,
@@ -10,8 +10,8 @@ import {
 } from '../components';
 import { colors } from '../theme';
 import { BookNavigation } from './BookNavigation';
-import { RootStackParamList } from 'types';
-import { SafeAreaView } from 'react-native';
+import { RootStackParamList } from '../types';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const TabNavigation = () => {
   const Tab = createBottomTabNavigator<RootStackParamList>();
@@ -24,16 +24,18 @@ export const TabNavigation = () => {
           tabBarActiveBackgroundColor: colors.backgroundAccent,
           tabBarActiveTintColor: colors.primary,
           tabBarInactiveBackgroundColor: colors.backgroundMain,
-          tabBarInactiveTintColor: colors.textInactive,
+          tabBarInactiveTintColor: colors.textWhite,
           headerStyle: { backgroundColor: colors.backgroundAccent },
-          headerTintColor: colors.textInactive,
+          headerTintColor: colors.textWhite,
         }}
       >
         <Tab.Screen
           name="Books"
           component={CardListBooks}
           options={{
-            tabBarIcon: ({ color }) => <FontAwesome6 name={'book'} thin size={20} color={color} />,
+            tabBarIcon: ({ color }) => (
+              <FontAwesome6 name="book" iconStyle="solid" size={20} color={color} />
+            ),
             headerShown: false,
           }}
         />
@@ -42,7 +44,7 @@ export const TabNavigation = () => {
           component={CardListAuthors}
           options={{
             tabBarIcon: ({ color }) => (
-              <FontAwesome6 name={'user-pen'} light size={20} color={color} />
+              <FontAwesome6 name="user-pen" iconStyle="solid" size={20} color={color} />
             ),
             headerShown: false,
           }}

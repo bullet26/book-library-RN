@@ -1,12 +1,12 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from 'types/NavigationType';
-import { ReadDateBook } from 'types';
+import { RootStackParamList } from '../../types';
+import { GetAllBooksBySpecificDateQuery } from '../../graphQL/__generated__/graphql';
 
 export type BooksByDateProps = NativeStackScreenProps<RootStackParamList, 'BookBySpecificDate'>;
 
-export interface BooksByDateQuery {
-  bookInYear: ReadDateBook[];
-}
+export type ReadDateBook = NonNullable<
+  NonNullable<GetAllBooksBySpecificDateQuery['bookInYear']>[number]
+>;
 
 export type FormattedBook = { title: string; data: [{ books: ReadDateBook[] }] }[];
 

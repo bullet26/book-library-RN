@@ -1,21 +1,20 @@
 import { useEffect, useState } from 'react';
-import { useLazyQuery } from '@apollo/client';
-import { ALL_BOOKS_BY_SPECIFIC_DATE } from '../../graphQL';
-import { ActivityIndicator, SafeAreaView, View } from 'react-native';
+import { useLazyQuery } from '@apollo/client/react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ActivityIndicator, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { ReadDateBook } from 'types';
-import { BooksByDateProps, FormattedBook, BooksByDateQuery } from './type';
+import { ALL_BOOKS_BY_SPECIFIC_DATE } from '../../graphQL';
+import { BooksByDateProps, FormattedBook } from './type';
 import { colors } from '../../theme';
 import { YearSelect } from './date-select';
 import { CardListBooksByDate } from './CardListBooksByDate';
+import { ReadDateBook } from './type';
 
 export const BooksByDate = ({ route, navigation }: BooksByDateProps) => {
   const [year, setYear] = useState('');
-  const [routeYear, setRouteYear] = useState(route?.params?.year);
+  const [routeYear, setRouteYear] = useState(route.params.year);
 
-  const [getBooks, { loading, error, data }] = useLazyQuery<BooksByDateQuery>(
-    ALL_BOOKS_BY_SPECIFIC_DATE
-  );
+  const [getBooks, { loading, error, data }] = useLazyQuery(ALL_BOOKS_BY_SPECIFIC_DATE);
 
   const [formattedBooks, setFormattedBooksState] = useState<FormattedBook>([]);
 
@@ -31,7 +30,7 @@ export const BooksByDate = ({ route, navigation }: BooksByDateProps) => {
   };
 
   useFocusEffect(() => {
-    setRouteYear(route?.params?.year);
+    setRouteYear(route.params.year);
   });
 
   useEffect(() => {

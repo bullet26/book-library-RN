@@ -1,11 +1,11 @@
 import React from 'react';
-import { ApolloProvider } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client/react';
 import { NavigationContainer } from '@react-navigation/native';
 import { client } from './src/graphQL';
 import { TabNavigation } from './src/routes';
 import { Provider, DARK_MODE_THEME } from './src/theme';
 
-function App(): JSX.Element {
+function App() {
   return (
     <ApolloProvider client={client}>
       <Provider value={DARK_MODE_THEME}>

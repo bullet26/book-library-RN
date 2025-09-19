@@ -1,18 +1,5 @@
 {
-  "extends": "@tsconfig/react-native/tsconfig.json",
-  "compilerOptions": {
-    "baseUrl": "src",
-    "paths": {
-      "assets/*": ["assets/*"],
-      "components/*": ["components/*"],
-      "graphQL/*": ["graphQL/*"],
-      "routes/*": ["routes/*"],
-      "hooks/*": ["hooks/*"],
-      "pages/*": ["pages/*"],
-      "theme/*": ["theme/*"],
-      "types/*": ["types/*"],
-      "UI/*": ["UI/*"],
-      "utils/*": ["utils/*"]
-    }
-  }
+  "extends": "@react-native/typescript-config",
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["**/node_modules", "**/Pods"]
 }

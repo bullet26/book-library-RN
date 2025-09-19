@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { FlatList, Pressable, Text, View } from 'react-native';
-import { useQuery } from '@apollo/client';
-import { Tag } from 'types';
+import { useQuery } from '@apollo/client/react';
 import { ALL_TAGS } from '../../../graphQL';
 import { colors } from '../../../theme';
 
@@ -16,7 +15,7 @@ export const TagSelect = (props: YearSelectProps) => {
   const { tag, tagID, sortBy, handleChange } = props;
   const [showSelectorStatus, setShowSelectorStatus] = useState(false);
 
-  const { data, error } = useQuery<{ tags: Tag[] }>(ALL_TAGS, {});
+  const { data, error } = useQuery(ALL_TAGS, {});
 
   return (
     <View
@@ -34,17 +33,17 @@ export const TagSelect = (props: YearSelectProps) => {
             {
               padding: 15,
               backgroundColor: colors.dark,
-              borderColor: pressed ? colors.primary : colors.textInactive,
+              borderColor: pressed ? colors.primary : colors.textWhite,
               borderWidth: 2,
               borderRadius: 20,
               marginBottom: 10,
             },
           ]}
           onPress={() => {
-            setShowSelectorStatus((prevState) => !prevState);
+            setShowSelectorStatus(prevState => !prevState);
           }}
         >
-          <Text style={{ fontSize: 18 }}>{tag}</Text>
+          <Text style={{ fontSize: 18, color: colors.textWhite }}>{tag}</Text>
         </Pressable>
       )}
       {(!tag || showSelectorStatus) && (
@@ -65,7 +64,7 @@ export const TagSelect = (props: YearSelectProps) => {
                   marginBottom: 10,
                   backgroundColor: '#3C0949',
                   opacity: pressed ? 0.5 : 1,
-                  borderColor: pressed ? colors.backgroundAccent : colors.textInactive,
+                  borderColor: pressed ? colors.backgroundAccent : colors.textWhite,
                   borderWidth: 2,
                   borderRadius: 20,
                 },
@@ -75,7 +74,7 @@ export const TagSelect = (props: YearSelectProps) => {
                 handleChange(tagID || '', 'title');
               }}
             >
-              <Text style={{ fontSize: 18 }}>sort by Title</Text>
+              <Text style={{ fontSize: 18, color: colors.textMain }}>sort by Title</Text>
             </Pressable>
             <Pressable
               style={({ pressed }) => [
@@ -85,7 +84,7 @@ export const TagSelect = (props: YearSelectProps) => {
                   marginBottom: 10,
                   backgroundColor: '#3C0949',
                   opacity: pressed ? 0.5 : 1,
-                  borderColor: pressed ? colors.backgroundAccent : colors.textInactive,
+                  borderColor: pressed ? colors.backgroundAccent : colors.textWhite,
                   borderWidth: 2,
                   borderRadius: 20,
                 },
@@ -95,7 +94,7 @@ export const TagSelect = (props: YearSelectProps) => {
                 handleChange(tagID || '', 'author');
               }}
             >
-              <Text style={{ fontSize: 18 }}> by Author Surname</Text>
+              <Text style={{ fontSize: 18, color: colors.textMain }}> by Author Surname</Text>
             </Pressable>
           </View>
           <FlatList
@@ -112,7 +111,7 @@ export const TagSelect = (props: YearSelectProps) => {
                     marginBottom: 10,
                     backgroundColor: '#672976',
                     opacity: pressed ? 0.5 : 1,
-                    borderColor: pressed ? colors.backgroundMain : colors.textInactive,
+                    borderColor: pressed ? colors.backgroundMain : colors.textWhite,
                     borderWidth: 2,
                     borderRadius: 20,
                   },
@@ -122,7 +121,7 @@ export const TagSelect = (props: YearSelectProps) => {
                   handleChange(item.id, sortBy);
                 }}
               >
-                <Text style={{ fontSize: 18 }}>{item.tag}</Text>
+                <Text style={{ fontSize: 18, color: colors.textAccent }}>{item.tag}</Text>
               </Pressable>
             )}
             keyExtractor={(item, index) => item.id || index.toString()}

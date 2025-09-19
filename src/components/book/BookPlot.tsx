@@ -1,5 +1,4 @@
 import {
-  SafeAreaView,
   Pressable,
   ActivityIndicator,
   Text,
@@ -7,16 +6,18 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import { useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import RenderHtml from 'react-native-render-html';
 import { ONE_BOOK_PLOT } from '../../graphQL';
 import { colors } from '../../theme';
-import { BookPlotQuery, BookPlotProps } from './type';
+import { BookPlotProps } from './type';
 
 export const BookPlot = ({ route, navigation }: BookPlotProps) => {
   const { id } = route?.params;
 
-  const { loading, error, data } = useQuery<BookPlotQuery>(ONE_BOOK_PLOT, {
+  const { loading, error, data } = useQuery(ONE_BOOK_PLOT, {
+    skip: !id,
     variables: { bookID: id },
   });
 
@@ -43,9 +44,10 @@ export const BookPlot = ({ route, navigation }: BookPlotProps) => {
         <SafeAreaView style={{ backgroundColor: colors.backgroundAccent, flex: 1 }}>
           <ScrollView style={{ marginTop: 5, paddingHorizontal: 10 }}>
             <RenderHtml
+              tagsStyles={{ body: { color: colors.textAccent } }}
               contentWidth={width}
               source={{
-                html: data?.book?.plot,
+                html: data?.book?.plot || '<div><h2>No plot available</h2></div>',
               }}
             />
             <Pressable
@@ -59,7 +61,7 @@ export const BookPlot = ({ route, navigation }: BookPlotProps) => {
                 },
               ]}
             >
-              <Text style={{ fontSize: 25 }}>Return to book info...</Text>
+              <Text style={{ fontSize: 25, color: colors.textMain }}>Return to book info...</Text>
             </Pressable>
           </ScrollView>
         </SafeAreaView>

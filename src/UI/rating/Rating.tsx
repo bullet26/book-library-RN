@@ -1,7 +1,7 @@
 import { CSSProperties } from 'react';
-import { FlatList, SafeAreaView, View, Text } from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { FlatList, View, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 import { colorRate } from '../../utils';
 import { makeArray } from './utils';
 import styles from './styles';
@@ -18,24 +18,38 @@ export const Rating = (props: RatingProps) => {
   return (
     <>
       {type === 'star' && (
-        <SafeAreaView style={styles.wrapper}>
-          <FlatList
-            data={makeArray(rating)}
-            horizontal={true}
-            renderItem={() => (
-              <View>
-                <Icon name="star" color={colorRate(rating)} size={40} />
-              </View>
+        <SafeAreaView style={{ ...styles.wrapper, ...(style && { style }) }}>
+          <View style={{ flexDirection: 'row', columnGap: 5 }}>
+            <FlatList
+              data={makeArray(rating)}
+              horizontal={true}
+              renderItem={() => (
+                <View>
+                  <FontAwesome6
+                    name="star"
+                    iconStyle="solid"
+                    style={{ color: colorRate(rating) }}
+                    size={40}
+                  />
+                </View>
+              )}
+              keyExtractor={index => index.toString()}
+              ItemSeparatorComponent={() => <View style={{ width: 5 }} />}
+            />
+            {!Number.isInteger(rating) && (
+              <FontAwesome6
+                name="star-half"
+                iconStyle="solid"
+                style={{ color: colorRate(rating) }}
+                size={40}
+              />
             )}
-            keyExtractor={(index) => index.toString()}
-            ItemSeparatorComponent={() => <View style={{ width: 5 }} />}
-          />
-
+          </View>
           <View style={{ ...styles.ratingCircle, backgroundColor: colorRate(rating) }}>
             {!!rating ? (
               <Text style={styles.text}>{rating}</Text>
             ) : (
-              <FontAwesome6 name={'check'} size={40} />
+              <FontAwesome6 iconStyle="solid" name="check" size={40} />
             )}
           </View>
         </SafeAreaView>
@@ -45,7 +59,7 @@ export const Rating = (props: RatingProps) => {
           {!!rating ? (
             <Text style={styles.circleOnlyText}>{rating}</Text>
           ) : (
-            <FontAwesome6 name={'check'} size={40} />
+            <FontAwesome6 iconStyle="solid" name="check" size={40} />
           )}
         </View>
       )}

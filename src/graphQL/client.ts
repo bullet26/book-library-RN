@@ -1,6 +1,6 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 
 export const client = new ApolloClient({
-  uri: 'https://book-deploy-server-graphql.vercel.app/graphql',
+  link: new HttpLink({ uri: 'https://book-server-rose.vercel.app/graphql' }),
   cache: new InMemoryCache(),
 });

@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { FlatList, Pressable, Text, View } from 'react-native';
-import { useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 import { READ_STATISTIC } from '../../../graphQL';
 import { colors } from '../../../theme';
-import { IStatistic } from 'types';
 
 interface YearSelectProps {
   year?: string;
@@ -15,7 +14,7 @@ export const YearSelect = (props: YearSelectProps) => {
   const [allYearsLabels, setAllYearsLabels] = useState<string[]>([]);
   const [showSelectorStatus, setShowSelectorStatus] = useState(false);
 
-  const { data, error } = useQuery<{ statistic: IStatistic[] }>(READ_STATISTIC, {
+  const { data, error } = useQuery(READ_STATISTIC, {
     variables: {
       label: 'all',
     },
@@ -43,20 +42,20 @@ export const YearSelect = (props: YearSelectProps) => {
               padding: 15,
               backgroundColor: colors.dark,
               opacity: pressed ? 0.5 : 1,
-              borderColor: pressed ? colors.primary : colors.textInactive,
+              borderColor: pressed ? colors.primary : colors.textWhite,
               borderWidth: 2,
             },
           ]}
           onPress={() => {
-            setShowSelectorStatus((prevState) => !prevState);
+            setShowSelectorStatus(prevState => !prevState);
           }}
         >
-          <Text style={{ fontSize: 18 }}>{year}</Text>
+          <Text style={{ fontSize: 18, color: colors.textMain }}>{year}</Text>
         </Pressable>
       )}
       {(!year || showSelectorStatus) && (
         <FlatList
-          style={{ marginLeft: 50 }}
+          style={{ marginLeft: 50, marginTop: 10 }}
           numColumns={3}
           horizontal={false}
           data={allYearsLabels}
@@ -69,7 +68,7 @@ export const YearSelect = (props: YearSelectProps) => {
                   marginBottom: 10,
                   backgroundColor: colors.dark,
                   opacity: pressed ? 0.5 : 1,
-                  borderColor: pressed ? colors.primary : colors.textInactive,
+                  borderColor: pressed ? colors.primary : colors.textWhite,
                   borderWidth: 2,
                 },
               ]}
@@ -78,10 +77,10 @@ export const YearSelect = (props: YearSelectProps) => {
                 handleChange(item);
               }}
             >
-              <Text style={{ fontSize: 18 }}>{item}</Text>
+              <Text style={{ fontSize: 18, color: colors.textAccent }}>{item}</Text>
             </Pressable>
           )}
-          keyExtractor={(index) => index.toString()}
+          keyExtractor={index => index.toString()}
         />
       )}
     </View>

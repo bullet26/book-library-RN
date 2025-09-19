@@ -1,33 +1,30 @@
 import { useEffect, useState } from 'react';
-import { SafeAreaView, FlatList, ActivityIndicator, Button, View } from 'react-native';
-import { useLazyQuery } from '@apollo/client';
+import { FlatList, ActivityIndicator, Button, View } from 'react-native';
+import { useLazyQuery } from '@apollo/client/react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { ALL_AUTHORS } from '../../graphQL';
-import { Author } from 'types';
 import { colors } from '../../theme';
 import { ImageCard } from '../../UI';
 import { Header } from '..';
-import { AuthorsQuery, AuthorsProps } from './type';
+import { AuthorsDaa, AuthorsProps } from './type';
 
 export const CardListAuthors = ({ navigation }: AuthorsProps) => {
-  const [getAuthors, { loading, error, data }] = useLazyQuery<AuthorsQuery>(ALL_AUTHORS);
+  const [getAuthors, { loading, error, data }] = useLazyQuery(ALL_AUTHORS);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(1000000);
-  const [allData, setData] = useState<Author[]>([]);
+  const [allData, setData] = useState<AuthorsDaa>([]);
   const [debounceStatus, setDebounce] = useState(false);
 
   useEffect(() => {
-    console.log('getAuthors', page);
-
     if (allData.length < totalCount) {
       if (loading || debounceStatus) {
         return;
       }
-      console.log(debounceStatus);
 
       getAuthors({
         variables: {
           page,
-          limit: 30,
+          limit: 20,
         },
       });
     }
@@ -39,9 +36,7 @@ export const CardListAuthors = ({ navigation }: AuthorsProps) => {
 
   useEffect(() => {
     if (data) {
-      console.log('setData');
-
-      setData((prevState) => [...prevState, ...data?.getAllAuthors.authors]);
+      setData(prevState => [...prevState, ...data?.getAllAuthors.authors]);
       setTotalCount(data.getAllAuthors.totalCount);
     }
   }, [data]);
@@ -87,7 +82,7 @@ export const CardListAuthors = ({ navigation }: AuthorsProps) => {
           />
         )}
         keyExtractor={(item, index) => item.id || index.toString()}
-        onEndReached={() => setPage((prevState) => prevState + 1)}
+        onEndReached={() => setPage(prevState => prevState + 1)}
         onEndReachedThreshold={0.5}
       />
       {loading && page > 1 && <ActivityIndicator size="small" color={colors.primary} />}
