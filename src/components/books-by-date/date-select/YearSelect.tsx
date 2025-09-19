@@ -3,6 +3,7 @@ import { FlatList, Pressable, Text, View } from 'react-native';
 import { useQuery } from '@apollo/client/react';
 import { READ_STATISTIC } from '../../../graphQL';
 import { colors } from '../../../theme';
+import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 
 interface YearSelectProps {
   year?: string;
@@ -35,7 +36,7 @@ export const YearSelect = (props: YearSelectProps) => {
         backgroundColor: colors.backgroundMain,
       }}
     >
-      {!!year && (
+      {!!allYearsLabels && (
         <Pressable
           style={({ pressed }) => [
             {
@@ -44,16 +45,36 @@ export const YearSelect = (props: YearSelectProps) => {
               opacity: pressed ? 0.5 : 1,
               borderColor: pressed ? colors.primary : colors.textWhite,
               borderWidth: 2,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
             },
           ]}
           onPress={() => {
             setShowSelectorStatus(prevState => !prevState);
           }}
         >
-          <Text style={{ fontSize: 18, color: colors.textMain }}>{year}</Text>
+          {showSelectorStatus ? (
+            <>
+              <Text style={{ fontSize: 18, color: colors.textMain }}>Close</Text>
+              <FontAwesome6
+                name="xmark"
+                iconStyle="solid"
+                style={{ color: colors.textMain }}
+                size={25}
+              />
+            </>
+          ) : (
+            <FontAwesome6
+              name="pen-to-square"
+              iconStyle="solid"
+              style={{ color: colors.textMain }}
+              size={30}
+            />
+          )}
         </Pressable>
       )}
-      {(!year || showSelectorStatus) && (
+      {showSelectorStatus && (
         <FlatList
           style={{ marginLeft: 50, marginTop: 10 }}
           numColumns={3}
@@ -68,7 +89,8 @@ export const YearSelect = (props: YearSelectProps) => {
                   marginBottom: 10,
                   backgroundColor: colors.dark,
                   opacity: pressed ? 0.5 : 1,
-                  borderColor: pressed ? colors.primary : colors.textWhite,
+                  borderColor:
+                    String(year) === String(item) || pressed ? colors.primary : colors.textWhite,
                   borderWidth: 2,
                 },
               ]}
@@ -77,7 +99,14 @@ export const YearSelect = (props: YearSelectProps) => {
                 handleChange(item);
               }}
             >
-              <Text style={{ fontSize: 18, color: colors.textAccent }}>{item}</Text>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: String(year) === String(item) ? colors.primary : colors.textAccent,
+                }}
+              >
+                {item}
+              </Text>
             </Pressable>
           )}
           keyExtractor={index => index.toString()}

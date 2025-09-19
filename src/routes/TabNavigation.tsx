@@ -52,7 +52,10 @@ export const TabNavigation = () => {
         <Tab.Screen
           name="Book" // чтобы пробросить дочерний роут
           component={BookNavigation}
-          options={{ tabBarItemStyle: { display: 'none' }, headerShown: false }}
+          options={{
+            tabBarItemStyle: { display: 'none' },
+            headerShown: false,
+          }}
         />
         <Tab.Screen
           name="BookBySpecificDate" // чтобы пробросить дочерний роут

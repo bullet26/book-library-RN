@@ -3,6 +3,7 @@ import { FlatList, Pressable, Text, View } from 'react-native';
 import { useQuery } from '@apollo/client/react';
 import { ALL_TAGS } from '../../../graphQL';
 import { colors } from '../../../theme';
+import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 
 interface YearSelectProps {
   tag?: string;
@@ -27,7 +28,7 @@ export const TagSelect = (props: YearSelectProps) => {
         backgroundColor: showSelectorStatus ? colors.backgroundMain : 'transparent',
       }}
     >
-      {!!tag && (
+      {data?.tags && (
         <Pressable
           style={({ pressed }) => [
             {
@@ -37,16 +38,36 @@ export const TagSelect = (props: YearSelectProps) => {
               borderWidth: 2,
               borderRadius: 20,
               marginBottom: 10,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
             },
           ]}
           onPress={() => {
             setShowSelectorStatus(prevState => !prevState);
           }}
         >
-          <Text style={{ fontSize: 18, color: colors.textWhite }}>{tag}</Text>
+          {showSelectorStatus ? (
+            <>
+              <Text style={{ fontSize: 18, color: colors.textMain }}>Close</Text>
+              <FontAwesome6
+                name="xmark"
+                iconStyle="solid"
+                style={{ color: colors.textMain }}
+                size={25}
+              />
+            </>
+          ) : (
+            <FontAwesome6
+              name="pen-to-square"
+              iconStyle="solid"
+              style={{ color: colors.textMain }}
+              size={30}
+            />
+          )}
         </Pressable>
       )}
-      {(!tag || showSelectorStatus) && (
+      {showSelectorStatus && (
         <>
           <View
             style={{
@@ -64,7 +85,12 @@ export const TagSelect = (props: YearSelectProps) => {
                   marginBottom: 10,
                   backgroundColor: '#3C0949',
                   opacity: pressed ? 0.5 : 1,
-                  borderColor: pressed ? colors.backgroundAccent : colors.textWhite,
+                  borderColor:
+                    sortBy === 'title'
+                      ? colors.textWhite
+                      : pressed
+                      ? colors.backgroundAccent
+                      : colors.primary,
                   borderWidth: 2,
                   borderRadius: 20,
                 },
@@ -74,7 +100,14 @@ export const TagSelect = (props: YearSelectProps) => {
                 handleChange(tagID || '', 'title');
               }}
             >
-              <Text style={{ fontSize: 18, color: colors.textMain }}>sort by Title</Text>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: sortBy === 'title' ? colors.textWhite : colors.textMain,
+                }}
+              >
+                sort by Title
+              </Text>
             </Pressable>
             <Pressable
               style={({ pressed }) => [
@@ -84,7 +117,12 @@ export const TagSelect = (props: YearSelectProps) => {
                   marginBottom: 10,
                   backgroundColor: '#3C0949',
                   opacity: pressed ? 0.5 : 1,
-                  borderColor: pressed ? colors.backgroundAccent : colors.textWhite,
+                  borderColor:
+                    sortBy === 'author'
+                      ? colors.textWhite
+                      : pressed
+                      ? colors.backgroundAccent
+                      : colors.primary,
                   borderWidth: 2,
                   borderRadius: 20,
                 },
@@ -94,7 +132,14 @@ export const TagSelect = (props: YearSelectProps) => {
                 handleChange(tagID || '', 'author');
               }}
             >
-              <Text style={{ fontSize: 18, color: colors.textMain }}> by Author Surname</Text>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: sortBy === 'author' ? colors.textWhite : colors.textMain,
+                }}
+              >
+                by Author Surname
+              </Text>
             </Pressable>
           </View>
           <FlatList
@@ -111,7 +156,13 @@ export const TagSelect = (props: YearSelectProps) => {
                     marginBottom: 10,
                     backgroundColor: '#672976',
                     opacity: pressed ? 0.5 : 1,
-                    borderColor: pressed ? colors.backgroundMain : colors.textWhite,
+                    borderColor:
+                      tag === item.tag
+                        ? colors.textWhite
+                        : pressed
+                        ? colors.backgroundMain
+                        : colors.primary,
+
                     borderWidth: 2,
                     borderRadius: 20,
                   },
@@ -121,7 +172,14 @@ export const TagSelect = (props: YearSelectProps) => {
                   handleChange(item.id, sortBy);
                 }}
               >
-                <Text style={{ fontSize: 18, color: colors.textAccent }}>{item.tag}</Text>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color: tag === item.tag ? colors.textWhite : colors.textAccent,
+                  }}
+                >
+                  {item.tag}
+                </Text>
               </Pressable>
             )}
             keyExtractor={(item, index) => item.id || index.toString()}

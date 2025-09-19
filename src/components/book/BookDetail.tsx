@@ -25,20 +25,12 @@ export const BookDetail = ({ route, navigation }: BookDetailProps) => {
     variables: { id },
   });
   const [bookCover, setBookCover] = useState('');
-  const pressedIndexRef = useRef<number | string | null>(null);
 
   useEffect(() => {
     if (!!data?.book?.bookCover) {
       setBookCover(data.book.bookCover);
     }
   }, [data]);
-
-  // useEffect(() => {
-  //   const unsubscribe = navigation.addListener('focus', () => {
-  //     pressedIndexRef.current = null;
-  //   });
-  //   return unsubscribe;
-  // }, [navigation]);
 
   const handleClickPlot = () => {
     navigation.navigate('BookPlot', { id });
@@ -111,12 +103,6 @@ export const BookDetail = ({ route, navigation }: BookDetailProps) => {
             <Rating rating={data.book?.rating || 0} type="star" />
             <Pressable
               onPress={() => handleClickAuthor(data.book?.author.id || '')}
-              onPressIn={() => {
-                pressedIndexRef.current = 'author';
-              }}
-              onPressOut={() => {
-                setTimeout(() => (pressedIndexRef.current = null), 500);
-              }}
               style={({ pressed }) => [
                 {
                   backgroundColor: pressed ? colors.backgroundMain : '',
@@ -136,16 +122,12 @@ export const BookDetail = ({ route, navigation }: BookDetailProps) => {
               <Pressable
                 key={i.toString()}
                 onPress={() => handleClickDate(readEnd.year || '')}
-                onPressIn={() => {
-                  pressedIndexRef.current = i;
-                }}
-                onPressOut={() => {
-                  setTimeout(() => (pressedIndexRef.current = null), 500);
-                }}
-                style={{
-                  backgroundColor: pressedIndexRef.current === i ? colors.backgroundMain : '',
-                  paddingVertical: 5,
-                }}
+                style={({ pressed }) => [
+                  {
+                    backgroundColor: pressed ? colors.backgroundMain : '',
+                    paddingVertical: 5,
+                  },
+                ]}
               >
                 <Text style={{ color: colors.textAccent }}>read date</Text>
                 <Text style={{ color: colors.textAccent }}>
@@ -175,14 +157,21 @@ export const BookDetail = ({ route, navigation }: BookDetailProps) => {
               }}
             >
               {data.book?.tags.map(item => (
-                <Button
+                <Pressable
                   key={item.id}
-                  title={item.tag}
-                  color="purple"
                   onPress={() => {
                     handleClickTag(item.id);
                   }}
-                />
+                  style={({ pressed }) => [
+                    {
+                      backgroundColor: pressed ? colors.primary : 'purple',
+                      padding: 10,
+                      borderRadius: 8,
+                    },
+                  ]}
+                >
+                  <Text style={{ fontSize: 25, color: colors.textMain }}>{item.tag}</Text>
+                </Pressable>
               ))}
             </View>
             {data.book?.series && (
@@ -193,7 +182,6 @@ export const BookDetail = ({ route, navigation }: BookDetailProps) => {
             )}
             <Pressable
               onPress={handleClickPlot}
-              key={Math.random()}
               style={({ pressed }) => [
                 {
                   backgroundColor: pressed ? colors.backgroundMain : '',

@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     window = UIWindow(frame: UIScreen.main.bounds)
 
     factory.startReactNative(
-      withModuleName: "Books",
+      withModuleName: "BooksMobile",
       in: window,
       launchOptions: launchOptions
     )

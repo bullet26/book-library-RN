@@ -33,7 +33,7 @@ export const Rating = (props: RatingProps) => {
                   />
                 </View>
               )}
-              keyExtractor={index => index.toString()}
+              keyExtractor={(_, index) => index.toString()}
               ItemSeparatorComponent={() => <View style={{ width: 5 }} />}
             />
             {!Number.isInteger(rating) && (
