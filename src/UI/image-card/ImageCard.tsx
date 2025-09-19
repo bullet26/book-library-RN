@@ -3,6 +3,7 @@ import { Image, Text, Pressable, View } from 'react-native';
 import { SvgUri } from 'react-native-svg';
 import ImageView from 'react-native-image-viewing';
 import { colors } from '../../theme';
+import { normalizeUrl } from '../../utils';
 
 interface ImageCardProps {
   id?: string;
@@ -41,7 +42,7 @@ export const ImageCard = (props: ImageCardProps) => {
       <View style={{ width, height, ...style }}>
         {uri ? (
           <Image
-            source={{ uri }}
+            source={{ uri: normalizeUrl(uri) }}
             style={{
               width,
               height,
@@ -74,7 +75,7 @@ export const ImageCard = (props: ImageCardProps) => {
         )}
       </View>
       <ImageView
-        images={[{ uri: uri ?? '' }]}
+        images={[{ uri: uri ? normalizeUrl(uri) : '' }]}
         imageIndex={0}
         visible={visible}
         onRequestClose={() => setIsVisible(false)}

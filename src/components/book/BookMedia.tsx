@@ -7,6 +7,7 @@ import { ALL_MEDIA_FOR_BOOK } from '../../graphQL';
 import { colors } from '../../theme';
 import { BookMediaProps } from './type';
 import { ImageCard } from '../../UI';
+import { normalizeUrl } from '../../utils';
 
 export const BookMedia = ({ route }: BookMediaProps) => {
   const { id } = route?.params;
@@ -85,7 +86,7 @@ export const BookMedia = ({ route }: BookMediaProps) => {
               />
               <ImageView
                 images={media.image.map(item => ({
-                  uri: item.url,
+                  uri: normalizeUrl(item.url),
                 }))}
                 imageIndex={index}
                 visible={visible}
