@@ -33,6 +33,7 @@ export const YearSelect = (props: YearSelectProps) => {
         zIndex: 2,
         position: 'absolute',
         right: 0,
+        top: 33,
         backgroundColor: colors.backgroundMain,
       }}
     >

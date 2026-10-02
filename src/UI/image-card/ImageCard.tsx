@@ -26,7 +26,7 @@ export const ImageCard = (props: ImageCardProps) => {
   };
 
   const handleClickImage = () => {
-    const fn = !!handleClick ? () => handleClick(id) : showFullSizeImg;
+    const fn = handleClick ? () => handleClick(id) : showFullSizeImg;
     fn();
   };
 

@@ -24,15 +24,15 @@ export const ONE_AUTHOR_BY_ID = graphql(`
         title
         booksInSeries {
           title
-          rating
           bookCoverThumbnail
+          rating
           id
         }
       }
       booksWithoutSeries {
         title
-        rating
         bookCoverThumbnail
+        rating
         id
       }
     }
@@ -40,13 +40,16 @@ export const ONE_AUTHOR_BY_ID = graphql(`
 `);
 
 export const ALL_AUTHORS_BY_BOOKS_COUNT = graphql(`
-  query GetAllAuthorsByBooksCount {
-    authors: getAllAuthorsByBooksCount {
-      name
-      surname
-      id
-      portraitThumbnail
-      count
+  query GetAllAuthorsByBooksCount($page: Int, $limit: Int) {
+    getAllAuthorsByBooksCount(page: $page, limit: $limit) {
+      authors {
+        name
+        surname
+        id
+        portraitThumbnail
+        count
+      }
+      totalCount
     }
   }
 `);

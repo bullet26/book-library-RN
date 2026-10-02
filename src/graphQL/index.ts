@@ -1,10 +1,8 @@
 export { client } from './client';
 export {
-  ALL_BOOKS_BY_DATE,
+  ALL_BOOKS,
   ONE_BOOK_BY_ID,
   ONE_BOOK_PLOT,
-  ALL_BOOKS_BY_SPECIFIC_DATE,
-  ALL_BOOKS_BY_TAG,
   READ_STATISTIC,
   ALL_TAGS,
   ALL_MEDIA_FOR_BOOK,

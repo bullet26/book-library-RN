@@ -35,67 +35,68 @@ export const BookMedia = ({ route }: BookMediaProps) => {
     if (url) await Linking.openURL(url);
   };
 
-  return (
-    <>
-      {!!loading && (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            backgroundColor: colors.backgroundMain,
-          }}
-        >
-          <ActivityIndicator size="large" color={colors.primary} />
-        </View>
-      )}
-      {!!data && (
-        <SafeAreaView style={{ backgroundColor: colors.backgroundAccent, flex: 1 }}>
-          <View style={{ flexDirection: 'row' }}>
-            {media?.video.map((item, i) => (
-              <Pressable
-                key={item.id}
-                onPress={() => handleClickVideo(item.id)}
-                style={({ pressed }) => [
-                  {
-                    opacity: pressed ? 0.5 : 1,
-                  },
-                ]}
-              >
-                <Text style={{ fontSize: 18, padding: 15, color: colors.textAccent }}>
-                  {item.type} #{i + 1}
-                </Text>
-              </Pressable>
-            ))}
-          </View>
+  if (loading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          backgroundColor: colors.backgroundMain,
+        }}
+      >
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
 
-          {!!media?.image.length && (
-            <>
-              <FlatList
-                data={media.image}
-                numColumns={3}
-                keyExtractor={item => item.id.toString()}
-                renderItem={({ item }) => (
-                  <ImageCard
-                    uri={item.url}
-                    id={item.id}
-                    width={125}
-                    height={200}
-                    handleClick={handleClickImage}
-                  />
-                )}
-              />
-              <ImageView
-                images={media.image.map(item => ({
-                  uri: normalizeUrl(item.url),
-                }))}
-                imageIndex={index}
-                visible={visible}
-                onRequestClose={() => setIsVisible(false)}
-              />
-            </>
-          )}
-        </SafeAreaView>
-      )}
-    </>
+  return (
+    !!data && (
+      <SafeAreaView edges={['top']} style={{ backgroundColor: colors.backgroundAccent, flex: 1 }}>
+        <View style={{ flexDirection: 'row' }}>
+          {media?.video.map((item, i) => (
+            <Pressable
+              key={item.id}
+              onPress={() => handleClickVideo(item.id)}
+              style={({ pressed }) => [
+                {
+                  opacity: pressed ? 0.5 : 1,
+                },
+              ]}
+            >
+              <Text style={{ fontSize: 18, padding: 15, color: colors.textAccent }}>
+                {item.type} #{i + 1}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+
+        {!!media?.image.length && (
+          <>
+            <FlatList
+              data={media.image}
+              numColumns={3}
+              keyExtractor={item => item.id.toString()}
+              renderItem={({ item }) => (
+                <ImageCard
+                  uri={item.url}
+                  id={item.id}
+                  width={125}
+                  height={200}
+                  handleClick={handleClickImage}
+                />
+              )}
+            />
+            <ImageView
+              images={media.image.map(item => ({
+                uri: normalizeUrl(item.url),
+              }))}
+              imageIndex={index}
+              visible={visible}
+              onRequestClose={() => setIsVisible(false)}
+            />
+          </>
+        )}
+      </SafeAreaView>
+    )
   );
 };

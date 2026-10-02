@@ -33,13 +33,13 @@ export const Search = () => {
   const handleSearchResultClick = (id: string, type: string) => {
     if (!!id && type === 'books') {
       console.log('books');
-      navigationToBook.navigate('Book', {
+      navigationToBook.navigate('BooksTab', {
         screen: 'BookDetail',
         params: { id },
       });
     } else if (!!id && type === 'authors') {
       console.log('authors');
-      navigationToAuthor.navigate('Author', { id });
+      navigationToAuthor.navigate('AuthorsTab', { screen: 'Author', params: { id } });
     }
     setShowSearchListStatus(false);
     setInputValue('');
@@ -52,7 +52,7 @@ export const Search = () => {
   }, [debouncedValue]);
 
   useEffect(() => {
-    if (!!data?.search.length) {
+    if (data?.search?.length) {
       setSearchListData(
         data?.search.map(item => {
           return checkTypesTitle(item);
@@ -64,7 +64,7 @@ export const Search = () => {
   }, [data]);
 
   return (
-    <View style={{ width: '50%' }}>
+    <View style={{ width: '57%', zIndex: 5 }}>
       <TextInput
         placeholder="Type here to search"
         value={inputValue}
@@ -76,7 +76,7 @@ export const Search = () => {
 
       {!!data && showSearchListStatus && (
         <FlatList
-          style={{ position: 'absolute', top: 45, backgroundColor: colors.dark }}
+          style={{ position: 'absolute', top: 45, backgroundColor: colors.dark, zIndex: 5 }}
           data={searchListData}
           renderItem={({ item }) => (
             <Pressable

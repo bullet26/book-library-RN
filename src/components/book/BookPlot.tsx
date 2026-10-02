@@ -27,45 +27,46 @@ export const BookPlot = ({ route, navigation }: BookPlotProps) => {
 
   const { width } = useWindowDimensions();
 
+  if (loading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          backgroundColor: colors.backgroundMain,
+        }}
+      >
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
+
   return (
-    <>
-      {!!loading && (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            backgroundColor: colors.backgroundMain,
-          }}
-        >
-          <ActivityIndicator size="large" color={colors.primary} />
-        </View>
-      )}
-      {!!data && (
-        <SafeAreaView style={{ backgroundColor: colors.backgroundAccent, flex: 1 }}>
-          <ScrollView style={{ marginTop: 5, paddingHorizontal: 10 }}>
-            <RenderHtml
-              tagsStyles={{ body: { color: colors.textAccent } }}
-              contentWidth={width}
-              source={{
-                html: data?.book?.plot || '<div><h2>No plot available</h2></div>',
-              }}
-            />
-            <Pressable
-              key={Math.random()}
-              onPress={() => handleClick(id || '')}
-              style={({ pressed }) => [
-                {
-                  backgroundColor: pressed ? colors.backgroundMain : '',
-                  paddingVertical: 10,
-                  marginVertical: 10,
-                },
-              ]}
-            >
-              <Text style={{ fontSize: 25, color: colors.textMain }}>Return to book info...</Text>
-            </Pressable>
-          </ScrollView>
-        </SafeAreaView>
-      )}
-    </>
+    !!data && (
+      <SafeAreaView edges={['top']} style={{ backgroundColor: colors.backgroundAccent, flex: 1 }}>
+        <ScrollView style={{ marginTop: 5, paddingHorizontal: 10 }}>
+          <RenderHtml
+            tagsStyles={{ body: { color: colors.textAccent } }}
+            contentWidth={width}
+            source={{
+              html: data?.book?.plot || '<div><h2>No plot available</h2></div>',
+            }}
+          />
+          <Pressable
+            key={Math.random()}
+            onPress={() => handleClick(id || '')}
+            style={({ pressed }) => [
+              {
+                backgroundColor: pressed ? colors.backgroundMain : '',
+                paddingVertical: 10,
+                marginVertical: 10,
+              },
+            ]}
+          >
+            <Text style={{ fontSize: 25, color: colors.textMain }}>Return to book info...</Text>
+          </Pressable>
+        </ScrollView>
+      </SafeAreaView>
+    )
   );
 };
