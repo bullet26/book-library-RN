@@ -22,7 +22,7 @@ export const BooksByYear = () => {
   }
 
   return (
-    <SafeAreaView style={styles.wrapper}>
+    <SafeAreaView edges={['top']} style={styles.wrapper}>
       <YearNavigator years={years} onSelectYear={setYear} selectedYear={year} divider={false} />
 
       {!!books.length && !!year && (

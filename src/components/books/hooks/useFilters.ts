@@ -71,7 +71,7 @@ export const useFilters = () => {
     selectedTag: draftMobileFilters.tagId,
     selectedRating: draftMobileFilters.rating,
     selectedYear: draftMobileFilters.year,
-    sortBy,
+    sortBy: draftMobileFilters.sortBy,
     resetFilters,
     handleFilterChange,
     applyFilters,

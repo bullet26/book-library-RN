@@ -28,6 +28,11 @@ export const FilterDrawer = () => {
   const onClose = () => setIsOpen(false);
   const onOpen = () => setIsOpen(true);
 
+  const navigateToBooksByYear = (year: string | number) => {
+    goToBooksByYear(year);
+    onClose();
+  };
+
   return (
     <>
       <TouchableOpacity style={styles.triggerButton} onPress={onOpen} activeOpacity={0.8}>
@@ -89,7 +94,7 @@ export const FilterDrawer = () => {
               onChange={val => handleFilterChange('year', val)}
             />
 
-            <YearNavigator years={years} onSelectYear={goToBooksByYear} label="Go to year" />
+            <YearNavigator years={years} onSelectYear={navigateToBooksByYear} label="Go to year" />
           </ScrollView>
 
           {/* Footer */}

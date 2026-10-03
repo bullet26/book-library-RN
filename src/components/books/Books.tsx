@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, View, FlatList } from 'react-native';
+import { ActivityIndicator, View, FlatList, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useBooks } from './hooks/useBooks';
 import { ImageCard, Rating } from '../../UI';
@@ -7,9 +7,12 @@ import { colors } from '../../theme';
 import { Search } from '../search';
 import { styles } from './styles';
 import { FilterDrawer } from './Filter';
+import { BookOpen } from 'lucide-react-native';
+import { useFilters } from './hooks/useFilters';
 
 export const Books = () => {
   const { books, loading, page, limit, totalCount, handleClickCard, handlePagination } = useBooks();
+  const { resetFilters } = useFilters();
 
   const [allBooks, setAllBooks] = useState<typeof books>([]);
 
@@ -37,13 +40,38 @@ export const Books = () => {
     );
   }
 
+  if (!books.length && page === 1 && !loading) {
+    return (
+      <SafeAreaView edges={['top']} style={styles.wrapper}>
+        <View style={styles.headers}>
+          <Search />
+          <FilterDrawer />
+        </View>
+        <View style={styles.emptyBookContainer}>
+          <View style={styles.iconContainer}>
+            <BookOpen size={64} color="#6B7280" strokeWidth={1.5} />
+          </View>
+
+          <Text style={styles.emptyBookTitle}>No books found</Text>
+
+          <Text style={styles.description}>
+            Either your criteria are too high, or you haven't read anything matching this yet
+          </Text>
+
+          <TouchableOpacity style={styles.button} onPress={resetFilters} activeOpacity={0.8}>
+            <Text style={styles.buttonText}>Reset filters</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView edges={['top']} style={styles.wrapper}>
       <View style={styles.headers}>
         <Search />
-        <FilterDrawer onApply={() => {}} onReset={() => {}} />
+        <FilterDrawer />
       </View>
-
       <FlatList
         data={allBooks}
         numColumns={2}
