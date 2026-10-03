@@ -1,144 +1,99 @@
-import { useState, useEffect } from 'react';
 import {
   ScrollView,
   ActivityIndicator,
   Text,
   View,
-  Pressable,
   useWindowDimensions,
+  TouchableOpacity,
 } from 'react-native';
-import { useQuery } from '@apollo/client/react';
 import RenderHtml from 'react-native-render-html';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 import { ImageCard, ImageCarousel, Rating } from '../../UI';
-import { ONE_BOOK_BY_ID } from '../../graphQL';
 import { colors } from '../../theme';
-import { BookDetailProps } from './type';
+import { useBookDetail } from './hook/useBook';
+import { styles } from './styles';
 
-export const BookDetail = ({ route, navigation }: BookDetailProps) => {
-  const { id } = route?.params;
-
-  const { loading, data } = useQuery(ONE_BOOK_BY_ID, {
-    skip: !id,
-    variables: { id },
-  });
-  const [bookCover, setBookCover] = useState('');
-
-  useEffect(() => {
-    if (data?.book?.bookCover) {
-      setBookCover(data.book.bookCover);
-    }
-  }, [data]);
-
-  const handleClickTag = (id: string) => {
-    // todo
-    navigation.navigate('BookByTag', { id });
-  };
-
-  const handleClickPlot = () => {
-    navigation.navigate('BookPlot', { id });
-  };
-
-  const handleClickMedia = () => {
-    navigation.navigate('BookMedia', { id });
-  };
-
-  const handleClickAuthor = (id: string) => {
-    navigation.navigate('AuthorsTab', {
-      screen: 'Author',
-      params: { id },
-    });
-  };
-
-  const handleClickDate = (year: string) => {
-    navigation.navigate('BooksListByYear', { year });
-  };
+export const BookDetail = () => {
+  const {
+    loading,
+    book,
+    bookCover,
+    goToBookPlot,
+    goToBookMedia,
+    goToAuthor,
+    goToAnotherBook,
+    goToBooksByYear,
+    handleClickTag,
+  } = useBookDetail();
 
   const { width } = useWindowDimensions();
 
   if (loading) {
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          backgroundColor: colors.backgroundMain,
-        }}
-      >
+      <View style={styles.centeredLoader}>
         <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
 
   return (
-    !!data && (
-      <SafeAreaView edges={['top']} style={{ backgroundColor: colors.backgroundAccent, flex: 1 }}>
+    !!book && (
+      <SafeAreaView edges={['top']} style={styles.wrapper}>
         <ScrollView style={{ paddingHorizontal: 10 }}>
           <View
-            style={{
-              justifyContent: data.book?.isAdditionalMediaExist ? 'flex-end' : 'center',
-              flexDirection: 'row',
-              alignItems: 'center',
-              columnGap: 10,
-              marginTop: 10,
-            }}
+            style={[
+              styles.bookInfoWRapper,
+              { justifyContent: book.isAdditionalMediaExist ? 'flex-end' : 'center' },
+            ]}
           >
             <ImageCard uri={bookCover} width={250} height={415} />
-            {data?.book?.isAdditionalMediaExist && (
-              <Pressable
-                onPress={handleClickMedia}
-                style={({ pressed }) => [
-                  {
-                    backgroundColor: pressed ? colors.backgroundMain : '',
-                    paddingVertical: 5,
-                    paddingHorizontal: 7,
-                  },
-                ]}
+            {book.isAdditionalMediaExist && (
+              <TouchableOpacity
+                onPress={goToBookMedia}
+                activeOpacity={0.7}
+                style={{
+                  paddingVertical: 5,
+                  paddingHorizontal: 7,
+                }}
               >
                 <FontAwesome6 name={'image'} iconStyle="solid" size={30} color={colors.primary} />
-              </Pressable>
+              </TouchableOpacity>
             )}
           </View>
           <Text
             style={{ marginTop: 15, fontSize: 30, textAlign: 'center', color: colors.textMain }}
           >
-            {data.book?.title}
+            {book.title}
           </Text>
-          <Rating rating={data.book?.rating || 0} type="star" />
-          <Pressable
-            onPress={() => handleClickAuthor(data.book?.author.id || '')}
-            style={({ pressed }) => [
-              {
-                backgroundColor: pressed ? colors.backgroundMain : '',
-                paddingVertical: 5,
-                marginTop: 5,
-              },
-            ]}
+          <Rating rating={book.rating || 0} type="star" />
+          <TouchableOpacity
+            onPress={() => goToAuthor(book.author.id || '')}
+            activeOpacity={0.7}
+            style={{
+              paddingVertical: 5,
+              marginTop: 5,
+            }}
           >
             <View>
               <Text style={{ color: colors.textAccent }}>author</Text>
               <Text style={{ color: colors.textAccent }}>
-                {data.book?.author.name} {data.book?.author.surname}
+                {book.author.name} {book.author.surname}
               </Text>
             </View>
-          </Pressable>
-          {data?.book?.readDate?.map(({ readEnd }, i) => (
-            <Pressable
+          </TouchableOpacity>
+          {book.readDate?.map(({ readEnd }, i) => (
+            <TouchableOpacity
               key={i.toString()}
-              onPress={() => handleClickDate(readEnd.year || '')}
-              style={({ pressed }) => [
-                {
-                  backgroundColor: pressed ? colors.backgroundMain : '',
-                  paddingVertical: 5,
-                },
-              ]}
+              activeOpacity={0.7}
+              onPress={() => goToBooksByYear(readEnd.year || '')}
+              style={{ paddingVertical: 5 }}
             >
               <Text style={{ color: colors.textAccent }}>read date</Text>
               <Text style={{ color: colors.textAccent }}>
                 {readEnd.day} {readEnd.month}, {readEnd.year}
               </Text>
-            </Pressable>
+            </TouchableOpacity>
           ))}
 
           <View style={{ marginTop: 10 }}>
@@ -146,54 +101,34 @@ export const BookDetail = ({ route, navigation }: BookDetailProps) => {
               contentWidth={width}
               tagsStyles={{ body: { color: colors.textAccent } }}
               source={{
-                html: data?.book?.description || 'Add annotation someday',
+                html: book.description || 'Add annotation someday',
               }}
             />
           </View>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              columnGap: 5,
-              rowGap: 10,
-              justifyContent: 'space-around',
-              marginTop: 15,
-            }}
-          >
-            {data.book?.tags.map(item => (
-              <Pressable
+
+          <View style={styles.tagContainer}>
+            {book.tags.map(item => (
+              <TouchableOpacity
                 key={item.id}
-                onPress={() => {
-                  handleClickTag(item.id);
-                }}
-                style={({ pressed }) => [
-                  {
-                    backgroundColor: pressed ? colors.primary : 'purple',
-                    padding: 10,
-                    borderRadius: 8,
-                  },
-                ]}
+                activeOpacity={0.7}
+                onPress={() => handleClickTag(item.id)}
+                style={styles.tag}
               >
-                <Text style={{ fontSize: 25, color: colors.textMain }}>{item.tag}</Text>
-              </Pressable>
+                <Text style={styles.tagText}>#{item.tag}</Text>
+              </TouchableOpacity>
             ))}
           </View>
-          {data.book?.series && (
-            <ImageCarousel data={data?.book.series.booksInSeries} title={data?.book.series.title} />
+
+          {book.series && (
+            <ImageCarousel
+              data={book.series.booksInSeries}
+              title={book.series.title}
+              handleClick={goToAnotherBook}
+            />
           )}
-          <Pressable
-            onPress={handleClickPlot}
-            style={({ pressed }) => [
-              {
-                backgroundColor: pressed ? colors.backgroundMain : '',
-                paddingVertical: 10,
-                marginVertical: 10,
-              },
-            ]}
-          >
-            <Text style={{ fontSize: 25, color: colors.textMain }}>Read book plot...</Text>
-          </Pressable>
+          <TouchableOpacity style={styles.triggerButton} onPress={goToBookPlot} activeOpacity={0.8}>
+            <Text style={styles.triggerText}>Read book plot...</Text>
+          </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
     )

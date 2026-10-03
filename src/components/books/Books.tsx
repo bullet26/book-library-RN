@@ -5,6 +5,8 @@ import { useBooks } from './hooks/useBooks';
 import { ImageCard, Rating } from '../../UI';
 import { colors } from '../../theme';
 import { Search } from '../search';
+import { styles } from './styles';
+import { FilterDrawer } from './Filter';
 
 export const Books = () => {
   const { books, loading, page, limit, totalCount, handleClickCard, handlePagination } = useBooks();
@@ -29,21 +31,18 @@ export const Books = () => {
 
   if (loading && page === 1) {
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          backgroundColor: colors.backgroundMain,
-        }}
-      >
+      <View style={styles.centeredLoader}>
         <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
 
   return (
-    <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: colors.backgroundMain }}>
-      <Search />
+    <SafeAreaView edges={['top']} style={styles.wrapper}>
+      <View style={styles.headers}>
+        <Search />
+        <FilterDrawer onApply={() => {}} onReset={() => {}} />
+      </View>
 
       <FlatList
         data={allBooks}

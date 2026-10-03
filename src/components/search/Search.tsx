@@ -4,13 +4,14 @@ import { useLazyQuery } from '@apollo/client/react';
 import { SEARCH_IN_BOOKS_AND_AUTHORS } from '../../graphQL';
 import { useNavigation } from '@react-navigation/native';
 import { colors } from '../../theme';
+import { styles } from './styles';
 
 import type { ToBookPage, ToAuthorPage } from './type';
 import { checkTypesTitle } from './utils';
 import { useDebounce } from '../../hooks';
 
 export const Search = () => {
-  const [makeSearch, { error, data }] = useLazyQuery(SEARCH_IN_BOOKS_AND_AUTHORS);
+  const [makeSearch, { data }] = useLazyQuery(SEARCH_IN_BOOKS_AND_AUTHORS);
   const [showSearchListStatus, setShowSearchListStatus] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const debouncedValue = useDebounce(inputValue, 800);
@@ -23,11 +24,6 @@ export const Search = () => {
 
   const handleInputChange = (value: string) => {
     setInputValue(value);
-  };
-
-  const handleSearch = (searchString: string) => {
-    makeSearch({ variables: { searchString } });
-    setShowSearchListStatus(true);
   };
 
   const handleSearchResultClick = (id: string, type: string) => {
@@ -47,7 +43,10 @@ export const Search = () => {
 
   useEffect(() => {
     if (debouncedValue) {
-      handleSearch(debouncedValue);
+      makeSearch({ variables: { searchString: debouncedValue } });
+      setShowSearchListStatus(true);
+    } else {
+      setShowSearchListStatus(false);
     }
   }, [debouncedValue]);
 
@@ -64,19 +63,17 @@ export const Search = () => {
   }, [data]);
 
   return (
-    <View style={{ width: '57%', zIndex: 5 }}>
+    <View style={styles.wrapper}>
       <TextInput
         placeholder="Type here to search"
         value={inputValue}
         onChangeText={newText => handleInputChange(newText)}
-        style={{
-          color: colors.textWhite,
-        }}
+        style={styles.input}
       />
 
       {!!data && showSearchListStatus && (
         <FlatList
-          style={{ position: 'absolute', top: 45, backgroundColor: colors.dark, zIndex: 5 }}
+          style={styles.resultList}
           data={searchListData}
           renderItem={({ item }) => (
             <Pressable
@@ -93,7 +90,7 @@ export const Search = () => {
                 handleSearchResultClick(item.id, item.type);
               }}
             >
-              <Text style={{ fontSize: 18, color: colors.textMain }}>{item.title}</Text>
+              <Text style={styles.text}>{item.title}</Text>
             </Pressable>
           )}
           keyExtractor={item => item.id}

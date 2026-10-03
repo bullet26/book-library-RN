@@ -4,6 +4,7 @@ import { colors } from '../../theme';
 import { SectionList, ActivityIndicator, Text, View, FlatList } from 'react-native';
 import { colorRate } from '../../utils';
 import { useAuthor } from './hook/useAuthor';
+import { styles } from './styles';
 
 export const Author = () => {
   const { author, handleClickBook, booksData, booksQuant, booksAverageRating, loading } =
@@ -11,24 +12,14 @@ export const Author = () => {
 
   if (loading || !booksData.length) {
     return (
-      <View
-        style={{
-          flex: 1,
-          justify: 'center',
-          alignItems: 'center',
-          backgroundColor: colors.backgroundMain,
-        }}
-      >
+      <View style={styles.centeredLoader}>
         <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
 
   return (
-    <SafeAreaView
-      edges={['top']}
-      style={{ backgroundColor: colors.backgroundAccent, flex: 1, paddingTop: 20 }}
-    >
+    <SafeAreaView edges={['top']} style={styles.wrapper}>
       <SectionList
         sections={booksData}
         keyExtractor={(_, index) => index.toString()}

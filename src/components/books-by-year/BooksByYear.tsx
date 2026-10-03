@@ -2,12 +2,11 @@ import { ActivityIndicator, FlatList, SectionList, Text, View } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useBooksByYear } from './hooks/useBooksByYear';
 import { colors } from '../../theme';
-import { ImageCard, Rating } from '../../UI';
+import { ImageCard, Rating, YearNavigator } from '../../UI';
 import { styles } from './style';
-import { YearSelect } from './year-select';
 
 export const BooksByYear = () => {
-  const { books, year, loading, handleClickCard, setYear } = useBooksByYear();
+  const { books, year, loading, handleClickCard, years, setYear } = useBooksByYear();
 
   const sections = books.map(group => ({
     title: group.month,
@@ -16,21 +15,16 @@ export const BooksByYear = () => {
 
   if (loading) {
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          backgroundColor: colors.backgroundMain,
-        }}
-      >
+      <View style={styles.centeredLoader}>
         <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
 
   return (
-    <SafeAreaView edges={['top']} style={{ backgroundColor: colors.backgroundMain, flex: 1 }}>
-      <YearSelect year={year} handleChange={setYear} />
+    <SafeAreaView style={styles.wrapper}>
+      <YearNavigator years={years} onSelectYear={setYear} selectedYear={year} divider={false} />
+
       {!!books.length && !!year && (
         <SectionList
           sections={sections}

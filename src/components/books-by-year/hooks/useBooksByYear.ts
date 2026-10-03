@@ -7,7 +7,7 @@ import {
 } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useQuery } from '@apollo/client/react';
-import { ALL_BOOKS } from '../../../graphQL';
+import { ALL_BOOKS, READ_STATISTIC } from '../../../graphQL';
 import { BookSortBy } from '../../../graphQL/__generated__/enums';
 import { AllBooks, BooksStackParamList, TabParamList } from '../../../types/index';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
@@ -27,7 +27,7 @@ export const useBooksByYear = () => {
   const navigation = useNavigation<BooksNavigationProp>();
   const route = useRoute<BooksScreenRouteProp>();
 
-  const [year, setYear] = useState(route.params?.year);
+  const [year, setYear] = useState<string>(route.params.year.toString());
 
   const { loading, error, data } = useQuery(ALL_BOOKS, {
     skip: !year,
@@ -37,6 +37,10 @@ export const useBooksByYear = () => {
       filter: { year: Number(year) },
       sort: BookSortBy.DateAsc,
     },
+  });
+
+  const { data: years } = useQuery(READ_STATISTIC, {
+    variables: { label: 'all' },
   });
 
   const books = useMemo<MonthGroup[]>(() => {
@@ -76,6 +80,7 @@ export const useBooksByYear = () => {
     loading,
     error: error?.message,
     handleClickCard,
-    setYear: (value: string) => setYear(value),
+    years: years?.statistic || [],
+    setYear: (value: string | number) => setYear(value.toString()),
   };
 };

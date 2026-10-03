@@ -2,25 +2,17 @@ import { StyleSheet } from 'react-native';
 import { colors } from '../../theme';
 
 export const styles = StyleSheet.create({
-  title: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    width: '100%',
-    fontSize: 18,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  mainTitle: {
-    backgroundColor: '#000000',
-    fontSize: 26,
-    textAlign: 'center',
-    color: '#ffffff',
-  },
   wrapper: { flex: 1, backgroundColor: colors.backgroundMain },
   centeredLoader: {
     flex: 1,
     justifyContent: 'center',
     backgroundColor: colors.backgroundMain,
+  },
+  headers: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    justifyContent: 'space-between',
+    backgroundColor: '#000',
   },
 });

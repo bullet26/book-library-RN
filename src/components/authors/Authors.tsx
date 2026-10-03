@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { FlatList, ActivityIndicator, View, Button, StyleSheet } from 'react-native';
+import { FlatList, ActivityIndicator, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../../theme';
-import { CountBadge, ImageCard } from '../../UI';
+import { CountBadge, ImageCard, SelectPicker } from '../../UI';
 import { Search } from '../search';
-import { useAuthors, SortOptions } from './hooks/useAuthors';
+import { useAuthors, SortOptions, ALL_SORT_OPTIONS } from './hooks/useAuthors';
+import { styles } from './styles';
 
 export const Authors = () => {
   const {
@@ -38,32 +39,30 @@ export const Authors = () => {
     }
   }, [authors, page]);
 
-  const toggleSort = nextSort => {
-    handleSortChange(nextSort);
-  };
-
   const handleEndReached = () => {
     if (!loading && allAuthors.length < totalCount) {
       handlePagination(page + 1, limit);
     }
   };
 
+  if (loading && page === 1) {
+    return (
+      <View style={styles.centeredLoader}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
+
   return (
-    <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: colors.backgroundMain }}>
+    <SafeAreaView edges={['top']} style={styles.wrapper}>
       <View style={styles.headers}>
         <Search />
-        {/* <Button
-          title={sortBy === SortOptions.surname ? 'Sort by: Last Name' : 'Sort by: Book Count'}
-          color="#6c0e4b"
-          onPress={e => toggleSort(e.target.v)}
-        /> */}
+        <SelectPicker
+          value={sortBy}
+          onChange={val => handleSortChange(val)}
+          options={ALL_SORT_OPTIONS}
+        />
       </View>
-
-      {loading && page === 1 && (
-        <View style={styles.centeredLoader}>
-          <ActivityIndicator size="large" color={colors.primary} />
-        </View>
-      )}
 
       <FlatList
         data={allAuthors}
@@ -71,7 +70,7 @@ export const Authors = () => {
         horizontal={false}
         columnWrapperStyle={{ marginBottom: 10 }}
         renderItem={({ item }) => (
-          <View style={styles.cardContainer}>
+          <View>
             <ImageCard
               uri={item.portraitThumbnail}
               width={180}
@@ -99,32 +98,3 @@ export const Authors = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  centeredLoader: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: colors.backgroundMain,
-  },
-  cardContainer: {
-    position: 'relative',
-  },
-  headers: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'nowrap',
-    justifyContent: 'space-between',
-    backgroundColor: '#000',
-    zIndex: 2,
-    paddingHorizontal: 10,
-    marginVertical: 5,
-  },
-  container: {
-    backgroundColor: colors.backgroundMain,
-    borderRadius: 8,
-  },
-  input: {
-    fontSize: 16,
-    color: colors.textWhite,
-  },
-});

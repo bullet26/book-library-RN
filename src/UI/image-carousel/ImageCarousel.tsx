@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, FlatList, Dimensions, StyleSheet, Text } from 'react-native';
 import { ImageCard } from '../../UI';
-import { GetOneBookIdQuery } from '../../graphQL/__generated__/graphql';
+import { GetOneBookByIdQuery } from '../../graphQL/__generated__/graphql';
 import { colors } from '../../theme';
 
 const { width } = Dimensions.get('window');
@@ -10,11 +10,12 @@ const ITEM_WIDTH = width / ITEMS_PER_PAGE;
 
 interface ImageCarouselProps {
   title: string;
-  data: NonNullable<NonNullable<GetOneBookIdQuery['book']>['series']>['booksInSeries'];
+  data: NonNullable<NonNullable<GetOneBookByIdQuery['book']>['series']>['booksInSeries'];
+  handleClick?: (id: string) => void;
 }
 
 export const ImageCarousel = (props: ImageCarouselProps) => {
-  const { data, title } = props;
+  const { data, title, handleClick } = props;
 
   return (
     <View style={{ marginTop: 15 }}>
@@ -39,6 +40,8 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
               width={ITEM_WIDTH - 10}
               height={200}
               title={item.title}
+              id={item.id}
+              handleClick={handleClick}
             />
           </View>
         )}
