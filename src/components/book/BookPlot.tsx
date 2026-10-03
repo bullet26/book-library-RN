@@ -30,8 +30,14 @@ export const BookPlot = () => {
       <SafeAreaView edges={['top']} style={styles.wrapper}>
         <ScrollView style={{ marginTop: 5, paddingHorizontal: 10 }}>
           <RenderHtml
-            tagsStyles={{ body: { color: colors.textAccent } }}
+            tagsStyles={{
+              body: { color: colors.textAccent },
+              b: { fontWeight: 'bold' },
+              strong: { fontWeight: 'bold' },
+              em: { fontStyle: 'italic' },
+            }}
             contentWidth={width}
+            enableCSSInlineProcessing={true}
             source={{
               html: data?.book?.plot || '<div><h2>No plot available</h2></div>',
             }}
