@@ -27,7 +27,7 @@ export const BookPlot = () => {
       .replace(/<div[^>]*>\s*(<br\s*\/?>)?\s*<\/div>/gi, '')
       .replace(/<div/gi, '<p')
       .replace(/<\/div>/gi, '</p>');
-  }, [data]);
+  }, [data?.book?.plot]);
 
   if (loading) {
     return (
