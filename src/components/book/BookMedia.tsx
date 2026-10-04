@@ -28,50 +28,50 @@ export const BookMedia = () => {
     );
   }
 
-  return (
-    !!media && (
-      <SafeAreaView edges={['top']} style={styles.wrapper}>
-        <View style={styles.videoWrapper}>
-          {media.video.map((item, i) => (
-            <TouchableOpacity
-              style={styles.videoButton}
-              onPress={() => handleClickVideo(item.id)}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.triggerText}>
-                {item.type} #{i + 1}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+  if (!media) return null;
 
-        {!!media.image.length && (
-          <>
-            <FlatList
-              data={media.image}
-              numColumns={3}
-              keyExtractor={item => item.id.toString()}
-              renderItem={({ item }) => (
-                <ImageCard
-                  uri={item.url}
-                  id={item.id}
-                  width={125}
-                  height={200}
-                  handleClick={handleClickImage}
-                />
-              )}
-            />
-            <ImageView
-              images={media.image.map(item => ({
-                uri: normalizeUrl(item.url),
-              }))}
-              imageIndex={index}
-              visible={visible}
-              onRequestClose={() => setIsVisible(false)}
-            />
-          </>
-        )}
-      </SafeAreaView>
-    )
+  return (
+    <SafeAreaView edges={['top']} style={styles.wrapper}>
+      <View style={styles.videoWrapper}>
+        {media.video.map((item, i) => (
+          <TouchableOpacity
+            style={styles.videoButton}
+            onPress={() => handleClickVideo(item.id)}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.triggerText}>
+              {item.type} #{i + 1}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      {!!media.image.length && (
+        <>
+          <FlatList
+            data={media.image}
+            numColumns={3}
+            keyExtractor={item => item.id.toString()}
+            renderItem={({ item }) => (
+              <ImageCard
+                uri={item.url}
+                id={item.id}
+                width={125}
+                height={200}
+                handleClick={handleClickImage}
+              />
+            )}
+          />
+          <ImageView
+            images={media.image.map(item => ({
+              uri: normalizeUrl(item.url),
+            }))}
+            imageIndex={index}
+            visible={visible}
+            onRequestClose={() => setIsVisible(false)}
+          />
+        </>
+      )}
+    </SafeAreaView>
   );
 };

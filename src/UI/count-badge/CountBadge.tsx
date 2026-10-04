@@ -12,7 +12,7 @@ export const CountBadge = (props: CountBadgeProps) => {
 
   return (
     <View style={{ ...styles.circle, backgroundColor: getCountColor(count) }}>
-      {!!count && <Text style={styles.circleText}>{count}</Text>}
+      {<Text style={styles.circleText}>{count || 0}</Text>}
     </View>
   );
 };

@@ -6,6 +6,7 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
+import { useMemo } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import RenderHtml from 'react-native-render-html';
 import { colors } from '../../theme';
@@ -17,6 +18,17 @@ export const BookPlot = () => {
 
   const { width } = useWindowDimensions();
 
+  const htmlContent = useMemo(() => {
+    const html = data?.book?.plot;
+
+    if (!html) return '<h2>No plot available</h2>';
+
+    return html
+      .replace(/<div[^>]*>\s*(<br\s*\/?>)?\s*<\/div>/gi, '')
+      .replace(/<div/gi, '<p')
+      .replace(/<\/div>/gi, '</p>');
+  }, [data]);
+
   if (loading) {
     return (
       <View style={styles.centeredLoader}>
@@ -25,32 +37,29 @@ export const BookPlot = () => {
     );
   }
 
+  if (!data) return null;
+
   return (
-    !!data && (
-      <SafeAreaView edges={['top']} style={styles.wrapper}>
-        <ScrollView style={{ marginTop: 5, paddingHorizontal: 10 }}>
-          <RenderHtml
-            tagsStyles={{
-              body: { color: colors.textAccent },
-              b: { fontWeight: 'bold' },
-              strong: { fontWeight: 'bold' },
-              em: { fontStyle: 'italic' },
-            }}
-            contentWidth={width}
-            enableCSSInlineProcessing={true}
-            source={{
-              html: data?.book?.plot || '<div><h2>No plot available</h2></div>',
-            }}
-          />
-          <TouchableOpacity
-            style={styles.triggerButton}
-            onPress={goToBookDetail}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.triggerText}>Return to book info...</Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </SafeAreaView>
-    )
+    <SafeAreaView edges={['top']} style={styles.wrapper}>
+      <ScrollView style={{ marginTop: 5, paddingHorizontal: 10 }}>
+        <RenderHtml
+          tagsStyles={{
+            body: { color: colors.textAccent },
+            b: { fontWeight: 'bold' },
+            strong: { fontWeight: 'bold' },
+            em: { fontStyle: 'italic' },
+            p: { marginBottom: 10 },
+          }}
+          contentWidth={width}
+          enableCSSInlineProcessing={true}
+          source={{
+            html: htmlContent,
+          }}
+        />
+        <TouchableOpacity style={styles.triggerButton} onPress={goToBookDetail} activeOpacity={0.8}>
+          <Text style={styles.triggerText}>Return to book info...</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </SafeAreaView>
   );
 };

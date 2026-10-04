@@ -15,54 +15,55 @@ interface RatingProps {
 export const Rating = (props: RatingProps) => {
   const { rating, type, style } = props;
 
-  return (
-    <>
-      {type === 'star' && (
-        <SafeAreaView style={{ ...styles.wrapper, ...(style && { style }) }}>
-          <View style={{ flexDirection: 'row', columnGap: 5 }}>
-            <FlatList
-              data={makeArray(rating)}
-              horizontal={true}
-              renderItem={() => (
-                <View>
-                  <FontAwesome6
-                    name="star"
-                    iconStyle="solid"
-                    style={{ color: colorRate(rating) }}
-                    size={40}
-                  />
-                </View>
-              )}
-              keyExtractor={(_, index) => index.toString()}
-              ItemSeparatorComponent={() => <View style={{ width: 5 }} />}
+  if (type === 'star') {
+    return (
+      <SafeAreaView style={{ ...styles.wrapper, ...(style && { style }) }}>
+        <View style={{ flexDirection: 'row', columnGap: 5 }}>
+          <FlatList
+            data={makeArray(rating)}
+            horizontal={true}
+            renderItem={() => (
+              <View>
+                <FontAwesome6
+                  name="star"
+                  iconStyle="solid"
+                  style={{ color: colorRate(rating) }}
+                  size={40}
+                />
+              </View>
+            )}
+            keyExtractor={(_, index) => index.toString()}
+            ItemSeparatorComponent={() => <View style={{ width: 5 }} />}
+          />
+          {!Number.isInteger(rating) && (
+            <FontAwesome6
+              name="star-half"
+              iconStyle="solid"
+              style={{ color: colorRate(rating) }}
+              size={40}
             />
-            {!Number.isInteger(rating) && (
-              <FontAwesome6
-                name="star-half"
-                iconStyle="solid"
-                style={{ color: colorRate(rating) }}
-                size={40}
-              />
-            )}
-          </View>
-          <View style={{ ...styles.ratingCircle, backgroundColor: colorRate(rating) }}>
-            {!!rating ? (
-              <Text style={styles.text}>{rating}</Text>
-            ) : (
-              <FontAwesome6 iconStyle="solid" name="check" size={40} />
-            )}
-          </View>
-        </SafeAreaView>
-      )}
-      {type === 'circle-only' && (
-        <View style={{ ...styles.circleOnly, backgroundColor: colorRate(rating) }}>
-          {!!rating ? (
-            <Text style={styles.circleOnlyText}>{rating}</Text>
+          )}
+        </View>
+        <View style={{ ...styles.ratingCircle, backgroundColor: colorRate(rating) }}>
+          {rating ? (
+            <Text style={styles.text}>{rating}</Text>
           ) : (
             <FontAwesome6 iconStyle="solid" name="check" size={40} />
           )}
         </View>
-      )}
-    </>
-  );
+      </SafeAreaView>
+    );
+  }
+
+  if (type === 'circle-only') {
+    return (
+      <View style={{ ...styles.circleOnly, backgroundColor: colorRate(rating) }}>
+        {rating ? (
+          <Text style={styles.circleOnlyText}>{rating}</Text>
+        ) : (
+          <FontAwesome6 iconStyle="solid" name="check" size={40} />
+        )}
+      </View>
+    );
+  }
 };

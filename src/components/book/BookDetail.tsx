@@ -37,100 +37,98 @@ export const BookDetail = () => {
     );
   }
 
+  if (!book) return null;
+
   return (
-    !!book && (
-      <SafeAreaView edges={['top']} style={styles.wrapper}>
-        <ScrollView style={{ paddingHorizontal: 10 }}>
-          <View
-            style={[
-              styles.bookInfoWRapper,
-              { justifyContent: book.isAdditionalMediaExist ? 'flex-end' : 'center' },
-            ]}
-          >
-            <ImageCard uri={bookCover} width={250} height={415} />
-            {book.isAdditionalMediaExist && (
-              <TouchableOpacity
-                onPress={goToBookMedia}
-                activeOpacity={0.7}
-                style={{
-                  paddingVertical: 5,
-                  paddingHorizontal: 7,
-                }}
-              >
-                <FontAwesome6 name={'image'} iconStyle="solid" size={30} color={colors.primary} />
-              </TouchableOpacity>
-            )}
-          </View>
-          <Text
-            style={{ marginTop: 15, fontSize: 30, textAlign: 'center', color: colors.textMain }}
-          >
-            {book.title}
-          </Text>
-          <Rating rating={book.rating || 0} type="star" />
-          <TouchableOpacity
-            onPress={() => goToAuthor(book.author.id || '')}
-            activeOpacity={0.7}
-            style={{
-              paddingVertical: 5,
-              marginTop: 5,
-            }}
-          >
-            <View>
-              <Text style={{ color: colors.textAccent }}>author</Text>
-              <Text style={{ color: colors.textAccent }}>
-                {book.author.name} {book.author.surname}
-              </Text>
-            </View>
-          </TouchableOpacity>
-          {book.readDate?.map(({ readEnd }, i) => (
+    <SafeAreaView edges={['top']} style={styles.wrapper}>
+      <ScrollView style={{ paddingHorizontal: 10 }}>
+        <View
+          style={[
+            styles.bookInfoWRapper,
+            { justifyContent: book.isAdditionalMediaExist ? 'flex-end' : 'center' },
+          ]}
+        >
+          <ImageCard uri={bookCover} width={250} height={415} />
+          {book.isAdditionalMediaExist && (
             <TouchableOpacity
-              key={i.toString()}
+              onPress={goToBookMedia}
               activeOpacity={0.7}
-              onPress={() => goToBooksByYear(readEnd.year || '')}
-              style={{ paddingVertical: 5 }}
+              style={{
+                paddingVertical: 5,
+                paddingHorizontal: 7,
+              }}
             >
-              <Text style={{ color: colors.textAccent }}>read date</Text>
-              <Text style={{ color: colors.textAccent }}>
-                {readEnd.day} {readEnd.month}, {readEnd.year}
-              </Text>
+              <FontAwesome6 name={'image'} iconStyle="solid" size={30} color={colors.primary} />
+            </TouchableOpacity>
+          )}
+        </View>
+        <Text style={{ marginTop: 15, fontSize: 30, textAlign: 'center', color: colors.textMain }}>
+          {book.title}
+        </Text>
+        <Rating rating={book.rating || 0} type="star" />
+        <TouchableOpacity
+          onPress={() => goToAuthor(book.author.id || '')}
+          activeOpacity={0.7}
+          style={{
+            paddingVertical: 5,
+            marginTop: 5,
+          }}
+        >
+          <View>
+            <Text style={{ color: colors.textAccent }}>author</Text>
+            <Text style={{ color: colors.textAccent }}>
+              {book.author.name} {book.author.surname}
+            </Text>
+          </View>
+        </TouchableOpacity>
+        {book.readDate?.map(({ readEnd }, i) => (
+          <TouchableOpacity
+            key={i.toString()}
+            activeOpacity={0.7}
+            onPress={() => goToBooksByYear(readEnd.year || '')}
+            style={{ paddingVertical: 5 }}
+          >
+            <Text style={{ color: colors.textAccent }}>read date</Text>
+            <Text style={{ color: colors.textAccent }}>
+              {readEnd.day} {readEnd.month}, {readEnd.year}
+            </Text>
+          </TouchableOpacity>
+        ))}
+
+        <View style={{ marginTop: 10 }}>
+          <RenderHtml
+            contentWidth={width}
+            tagsStyles={{ body: { color: colors.textAccent } }}
+            source={{
+              html: book.description || 'Add annotation someday',
+            }}
+          />
+        </View>
+
+        <View style={styles.tagContainer}>
+          {book.tags.map(item => (
+            <TouchableOpacity
+              key={item.id}
+              activeOpacity={0.7}
+              onPress={() => handleClickTag(item.id)}
+              style={styles.tag}
+            >
+              <Text style={styles.tagText}>#{item.tag}</Text>
             </TouchableOpacity>
           ))}
+        </View>
 
-          <View style={{ marginTop: 10 }}>
-            <RenderHtml
-              contentWidth={width}
-              tagsStyles={{ body: { color: colors.textAccent } }}
-              source={{
-                html: book.description || 'Add annotation someday',
-              }}
-            />
-          </View>
-
-          <View style={styles.tagContainer}>
-            {book.tags.map(item => (
-              <TouchableOpacity
-                key={item.id}
-                activeOpacity={0.7}
-                onPress={() => handleClickTag(item.id)}
-                style={styles.tag}
-              >
-                <Text style={styles.tagText}>#{item.tag}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-
-          {book.series && (
-            <ImageCarousel
-              data={book.series.booksInSeries}
-              title={book.series.title}
-              handleClick={goToAnotherBook}
-            />
-          )}
-          <TouchableOpacity style={styles.triggerButton} onPress={goToBookPlot} activeOpacity={0.8}>
-            <Text style={styles.triggerText}>Read book plot...</Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </SafeAreaView>
-    )
+        {book.series && (
+          <ImageCarousel
+            data={book.series.booksInSeries}
+            title={book.series.title}
+            handleClick={goToAnotherBook}
+          />
+        )}
+        <TouchableOpacity style={styles.triggerButton} onPress={goToBookPlot} activeOpacity={0.8}>
+          <Text style={styles.triggerText}>Read book plot...</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </SafeAreaView>
   );
 };

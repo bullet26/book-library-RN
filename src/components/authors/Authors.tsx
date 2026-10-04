@@ -12,7 +12,6 @@ export const Authors = () => {
     authors,
     totalCount,
     loading,
-    error,
     page,
     limit,
     sortBy,
@@ -22,8 +21,6 @@ export const Authors = () => {
   } = useAuthors();
 
   const [allAuthors, setAllAuthors] = useState<typeof authors>([]);
-
-  console.log(error, 'Authors');
 
   useEffect(() => {
     setAllAuthors([]);

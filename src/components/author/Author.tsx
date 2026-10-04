@@ -10,13 +10,15 @@ export const Author = () => {
   const { author, handleClickBook, booksData, booksQuant, booksAverageRating, loading } =
     useAuthor();
 
-  if (loading || !booksData.length) {
+  if (loading) {
     return (
       <View style={styles.centeredLoader}>
         <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
+
+  if (!author || !booksData.length) return null;
 
   return (
     <SafeAreaView edges={['top']} style={styles.wrapper}>
@@ -65,7 +67,7 @@ export const Author = () => {
                 color: colors.textMain,
               }}
             >
-              {author?.name || ''} {author?.surname || ''}
+              {author.name || ''} {author.surname || ''}
             </Text>
             <Text style={{ marginTop: 10, fontSize: 20, color: colors.textAccent }}>
               Total number of books read:&nbsp;{booksQuant || 'unknown'}

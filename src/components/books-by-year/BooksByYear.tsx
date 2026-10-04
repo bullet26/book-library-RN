@@ -21,49 +21,55 @@ export const BooksByYear = () => {
     );
   }
 
+  if (!books.length && !!year)
+    return (
+      <View>
+        <YearNavigator years={years} onSelectYear={setYear} selectedYear={year} divider={false} />
+      </View>
+    );
+
   return (
     <SafeAreaView edges={['top']} style={styles.wrapper}>
       <YearNavigator years={years} onSelectYear={setYear} selectedYear={year} divider={false} />
-
-      {!!books.length && !!year && (
-        <SectionList
-          sections={sections}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item: booksList }) => (
-            <FlatList
-              data={booksList}
-              numColumns={3}
-              horizontal={false}
-              columnWrapperStyle={{ marginVertical: 12, marginLeft: 20 }}
-              renderItem={({ item: book }) => (
-                <View>
-                  <ImageCard
-                    uri={book.bookCoverThumbnail}
-                    width={100}
-                    height={162}
-                    style={{ marginRight: 5, marginLeft: 10 }}
-                    id={book.id}
-                    handleClick={() => handleClickCard(book.id)}
-                    title={book.title}
-                  />
-                  <Rating rating={book.rating || 0} type="circle-only" />
-                </View>
-              )}
-            />
-          )}
-          renderSectionHeader={({ section: { title } }) => (
-            <Text
-              style={[
-                styles.title,
-                { backgroundColor: colors.lighterBGC, color: colors.fontDividerColor },
-              ]}
-            >
-              &nbsp;&nbsp;{title}&nbsp;&nbsp;
-            </Text>
-          )}
-          ListHeaderComponent={() => (year ? <Text style={styles.mainTitle}>{year}</Text> : null)}
-        />
-      )}
+      (
+      <SectionList
+        sections={sections}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item: booksList }) => (
+          <FlatList
+            data={booksList}
+            numColumns={3}
+            horizontal={false}
+            columnWrapperStyle={{ marginVertical: 12, marginLeft: 20 }}
+            renderItem={({ item: book }) => (
+              <View>
+                <ImageCard
+                  uri={book.bookCoverThumbnail}
+                  width={100}
+                  height={162}
+                  style={{ marginRight: 5, marginLeft: 10 }}
+                  id={book.id}
+                  handleClick={() => handleClickCard(book.id)}
+                  title={book.title}
+                />
+                <Rating rating={book.rating || 0} type="circle-only" />
+              </View>
+            )}
+          />
+        )}
+        renderSectionHeader={({ section: { title } }) => (
+          <Text
+            style={[
+              styles.title,
+              { backgroundColor: colors.lighterBGC, color: colors.fontDividerColor },
+            ]}
+          >
+            &nbsp;&nbsp;{title}&nbsp;&nbsp;
+          </Text>
+        )}
+        ListHeaderComponent={() => (year ? <Text style={styles.mainTitle}>{year}</Text> : null)}
+      />
+      )
     </SafeAreaView>
   );
 };
