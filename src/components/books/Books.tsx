@@ -32,7 +32,7 @@ export const Books = () => {
     }
   };
 
-  if (loading && page === 1) {
+  if (loading && !books.length && page === 1) {
     return (
       <View style={styles.centeredLoader}>
         <ActivityIndicator size="large" color={colors.primary} />

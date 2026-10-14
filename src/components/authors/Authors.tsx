@@ -42,7 +42,7 @@ export const Authors = () => {
     }
   };
 
-  if (loading && page === 1) {
+  if (loading && !authors.length && page === 1) {
     return (
       <View style={styles.centeredLoader}>
         <ActivityIndicator size="large" color={colors.primary} />

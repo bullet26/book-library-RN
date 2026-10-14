@@ -20,7 +20,7 @@ export const BookMedia = () => {
     setIsVisible(true);
   };
 
-  if (loading) {
+  if (loading && !media) {
     return (
       <View style={styles.centeredLoader}>
         <ActivityIndicator size="large" color={colors.primary} />

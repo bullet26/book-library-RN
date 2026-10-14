@@ -29,7 +29,7 @@ export const BookPlot = () => {
       .replace(/<\/div>/gi, '</p>');
   }, [data?.book?.plot]);
 
-  if (loading) {
+  if (loading && !data) {
     return (
       <View style={styles.centeredLoader}>
         <ActivityIndicator size="large" color={colors.primary} />

@@ -13,7 +13,7 @@ export const BooksByYear = () => {
     data: [group.books],
   }));
 
-  if (loading) {
+  if (loading && !books.length) {
     return (
       <View style={styles.centeredLoader}>
         <ActivityIndicator size="large" color={colors.primary} />

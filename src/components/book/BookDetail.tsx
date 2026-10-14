@@ -29,7 +29,7 @@ export const BookDetail = () => {
 
   const { width } = useWindowDimensions();
 
-  if (loading) {
+  if (loading && !book) {
     return (
       <View style={styles.centeredLoader}>
         <ActivityIndicator size="large" color={colors.primary} />

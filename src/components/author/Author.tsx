@@ -10,7 +10,7 @@ export const Author = () => {
   const { author, handleClickBook, booksData, booksQuant, booksAverageRating, loading } =
     useAuthor();
 
-  if (loading) {
+  if (loading && !author) {
     return (
       <View style={styles.centeredLoader}>
         <ActivityIndicator size="large" color={colors.primary} />

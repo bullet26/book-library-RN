@@ -19,6 +19,11 @@ if (savedCache) {
 export const client = new ApolloClient({
   link: new HttpLink({ uri: 'https://book-server-rose.vercel.app/graphql' }),
   cache,
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'cache-and-network',
+    },
+  },
 });
 
 const saveCache = () => {
